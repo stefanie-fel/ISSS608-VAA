@@ -1,0 +1,16 @@
+---
+title: "Hands-on Exercise 1"
+author: "Stefanie Felicia"
+---
+
+Geting Started
+
+Install and launch R packages
+
+```{r}
+pacman::p_load(tidyverse)
+
+
+```
+
+---
