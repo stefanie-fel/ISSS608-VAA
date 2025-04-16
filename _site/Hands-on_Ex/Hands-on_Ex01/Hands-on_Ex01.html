@@ -186,80 +186,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Geting Started</p>
-<p>Install and launch R packages</p>
+<h1>
+Getting Started
+</h1>
+<h2 class="anchored">
+Install and launch R packages
+</h2>
+<p>The code below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Installing package into 'C:/Users/stefa/AppData/Local/R/win-library/4.5'
-(as 'lib' is unspecified)</code></pre>
 </div>
+<p>Importing the data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>exam_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Exam_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>also installing the dependencies 'colorspace', 'bit', 'farver', 'labeling', 'munsell', 'RColorBrewer', 'viridisLite', 'rematch', 'bit64', 'backports', 'generics', 'blob', 'DBI', 'tidyselect', 'data.table', 'gtable', 'isoband', 'scales', 'gargle', 'uuid', 'cellranger', 'ids', 'rematch2', 'timechange', 'vroom', 'tzdb', 'progress', 'selectr', 'broom', 'conflicted', 'dbplyr', 'dplyr', 'dtplyr', 'forcats', 'ggplot2', 'googledrive', 'googlesheets4', 'haven', 'hms', 'httr', 'lubridate', 'modelr', 'readr', 'readxl', 'reprex', 'rvest', 'tidyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: unable to access index for repository http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/4.5:
-  cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/4.5/PACKAGES'</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>package 'colorspace' successfully unpacked and MD5 sums checked
-package 'bit' successfully unpacked and MD5 sums checked
-package 'farver' successfully unpacked and MD5 sums checked
-package 'labeling' successfully unpacked and MD5 sums checked
-package 'munsell' successfully unpacked and MD5 sums checked
-package 'RColorBrewer' successfully unpacked and MD5 sums checked
-package 'viridisLite' successfully unpacked and MD5 sums checked
-package 'rematch' successfully unpacked and MD5 sums checked
-package 'bit64' successfully unpacked and MD5 sums checked
-package 'backports' successfully unpacked and MD5 sums checked
-package 'generics' successfully unpacked and MD5 sums checked
-package 'blob' successfully unpacked and MD5 sums checked
-package 'DBI' successfully unpacked and MD5 sums checked
-package 'tidyselect' successfully unpacked and MD5 sums checked
-package 'data.table' successfully unpacked and MD5 sums checked
-package 'gtable' successfully unpacked and MD5 sums checked
-package 'isoband' successfully unpacked and MD5 sums checked
-package 'scales' successfully unpacked and MD5 sums checked
-package 'gargle' successfully unpacked and MD5 sums checked
-package 'uuid' successfully unpacked and MD5 sums checked
-package 'cellranger' successfully unpacked and MD5 sums checked
-package 'ids' successfully unpacked and MD5 sums checked
-package 'rematch2' successfully unpacked and MD5 sums checked
-package 'timechange' successfully unpacked and MD5 sums checked
-package 'vroom' successfully unpacked and MD5 sums checked
-package 'tzdb' successfully unpacked and MD5 sums checked
-package 'progress' successfully unpacked and MD5 sums checked
-package 'selectr' successfully unpacked and MD5 sums checked
-package 'broom' successfully unpacked and MD5 sums checked
-package 'conflicted' successfully unpacked and MD5 sums checked
-package 'dbplyr' successfully unpacked and MD5 sums checked
-package 'dplyr' successfully unpacked and MD5 sums checked
-package 'dtplyr' successfully unpacked and MD5 sums checked
-package 'forcats' successfully unpacked and MD5 sums checked
-package 'ggplot2' successfully unpacked and MD5 sums checked
-package 'googledrive' successfully unpacked and MD5 sums checked
-package 'googlesheets4' successfully unpacked and MD5 sums checked
-package 'haven' successfully unpacked and MD5 sums checked
-package 'hms' successfully unpacked and MD5 sums checked
-package 'httr' successfully unpacked and MD5 sums checked
-package 'lubridate' successfully unpacked and MD5 sums checked
-package 'modelr' successfully unpacked and MD5 sums checked
-package 'readr' successfully unpacked and MD5 sums checked
-package 'readxl' successfully unpacked and MD5 sums checked
-package 'reprex' successfully unpacked and MD5 sums checked
-package 'rvest' successfully unpacked and MD5 sums checked
-package 'tidyr' successfully unpacked and MD5 sums checked
-package 'tidyverse' successfully unpacked and MD5 sums checked
+<pre><code>Rows: 322 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (4): ID, CLASS, GENDER, RACE
+dbl (3): ENGLISH, MATHS, SCIENCE
 
-The downloaded binary packages are in
-    C:\Users\stefa\AppData\Local\Temp\RtmpIt3cyW\downloaded_packages</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-tidyverse installed</code></pre>
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 </div>
 <hr>
+<h1>
+Plotting a simple bar chart
+</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, <span class="fu">aes</span>(<span class="at">x=</span>RACE)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hands-on_Ex01_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 
