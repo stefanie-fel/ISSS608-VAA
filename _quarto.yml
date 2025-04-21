@@ -28,7 +28,6 @@ format:
     toc-location: right
     toc-depth: 2
     theme: pulse
-    fontsize: 1.2rem
     page-layout: full
     font-family: "Roboto"
     css: styles.css
