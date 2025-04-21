@@ -1,12 +1,16 @@
 /* css styles */
 body, {
   background-color: #f8f9fa; 
-  color: #2E2E2E;           
+  color: #2E2E2E;    
+  font-size: 16pt;
 }
 h1, h2, h3 {
   color: #593196;
 }
-.sidebar nav {
-  padding-right: 6rem;
-  margin-left: 2rem; 
+
+.content column-page-left{
+  max-width: 90%;
+  width:90%;
+  
 }
+

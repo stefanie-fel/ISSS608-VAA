@@ -38,7 +38,7 @@ First we will explore **geom_bar**, which is used to plot bar charts. Here is ho
 ggplot(data=exam_data, aes(x=RACE))+geom_bar()
 ```
 
-Next, we'll be exploring dot plots (**geom_dotplot**). It's quite similar to bar chart but in dot form instead of a bar.
+Next, we'll be exploring dot plots (**geom_dotplot**). It's quite similar to bar chart but in dot form instead of a bar. But it may not always be the most useful graph, as it leaves out y-axis values.
 
 ```{r}
 ggplot(data=exam_data, aes(x=MATHS))+geom_dotplot(binwidth=2.5, dotsize=0.5) + scale_y_continuous(NULL, breaks=NULL)
