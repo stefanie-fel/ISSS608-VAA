@@ -8,4 +8,5 @@ h1, h2, h3 {
 }
 .sidebar nav {
   padding-right: 6rem;
+  margin-left: 2rem; 
 }
