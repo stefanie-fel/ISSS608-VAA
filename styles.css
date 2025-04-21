@@ -1,1 +1,8 @@
 /* css styles */
+body {
+  background-color: #f8f9fa; 
+  color: #2E2E2E;           /* Dark text */
+}
+h1, h2, h3 {
+  color: #593196; /* Pulse purple */
+}
