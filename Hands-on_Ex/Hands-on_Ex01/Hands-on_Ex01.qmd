@@ -31,34 +31,45 @@ ggplot(data=exam_data, aes(x=RACE)) + geom_bar()
 ```
 
 <h2>Exploring different geometric objects</h2>
+
 First we will explore <b>geom_bar</b>, which is used to plot bar charts. Here is how the code looks like and the graph:
+
 ```{r}
 ggplot(data=exam_data, aes(x=RACE))+geom_bar()
 ```
 
 Next, we'll be exploring dot plots<b>(geom_dotplot</b>). It's quite similar to bar chart but in dot form instead of a bar.
+
 ```{r}
 ggplot(data=exam_data, aes(x=MATHS))+geom_dotplot(binwidth=2.5, dotsize=0.5) + scale_y_continuous(NULL, breaks=NULL)
 ```
-Next, <b>geom_histogram</b> plots a histogram. But it's possible to stack different categorical values to compare distributions of each varaible like below:
+
+Next, <b>geom_histogram</b> plots a histogram. But it's possible to stack different categorical values to compare distributions of each variable like below:
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x = MATHS, fill = GENDER)) +
   geom_histogram(bins=20, color="grey30")  
 ```
+
 <b>Geom_density</b> is used to draw density estimate, which is a smoother version of a histogram. Similar to the histogram, you can stack different variables.
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x = MATHS, colour=GENDER)) +
   geom_density()    
 ```
+
 <b>Geom_boxplot</b> is used to plot boxplot.
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, x= GENDER)) +    
   geom_boxplot(notch=TRUE)   
 ```
+
 <b>Geom_violin</b> is used to plot a violin plot as a compact display of continuous distribution (similar to boxplot).
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, 
@@ -67,6 +78,7 @@ ggplot(data=exam_data,
 ```
 
 <b>Geom_point</b> is used to plot scatterplot.
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, 
@@ -74,23 +86,27 @@ ggplot(data=exam_data,
   geom_point()      
 ```
 
-It's also possible to plot two different geometry objects at the same graph. In this example, I'll be plotting boxplot and scatterplot at the same graph. It is done by just adding '+' after the first geom object.  
+It's also possible to plot two different geometry objects at the same graph. In this example, I'll be plotting boxplot and scatterplot at the same graph. It is done by just adding '+' after the first geom object.
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, x= GENDER)) +
 geom_boxplot() +          geom_point(position="jitter", size = 0.5)  
 ```
 
+<h3>Exploring stats summary</h3>
 
-<h3>Exploring stats summary</h3> 
 Incorporating <b>stats_summary</b> after geom object reveal statistic summary, such as average, median, max or min. In this example, the function mean is used:
+
 ```{r}
 ggplot(data=exam_data, 
        aes(y = MATHS, x= GENDER)) +
   geom_boxplot() +
   stat_summary(geom ="point", fun = "mean",    colour ="red", size=4)     
 ```
+
 Adding best fit line is possible by using the function <b>geom_smooth</b>
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, y=ENGLISH)) +
@@ -98,10 +114,13 @@ ggplot(data=exam_data,
   geom_smooth(method=lm, 
 linewidth=0.5)
 ```
+
 <h2>Exploring facet object</h2>
+
 Facet generate small multiple trellis plot, which display different subset of data. There are two types of facet: <b>facet_wrap</b> and <b>facet_grid</b>
 
 <b>Facet_wrap</b> is used to wrap 1-dimension sequence of panels into 2-dimension. So this creates multiple plot for one variable like below:
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS)) +
@@ -110,16 +129,20 @@ ggplot(data=exam_data,
 ```
 
 <b>Facet_grid</b> is used to create a grid of panels using one or two variables.
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS)) +
   geom_histogram(bins=20) +
     facet_grid(~ CLASS)
 ```
+
 <h2>Exploring coordinates</h2>
-There are different types of coordinates available such as: coord_cartesian(), coord_flip(), coord_fixed() and coord_quickmap(). 
+
+There are different types of coordinates available such as: coord_cartesian(), coord_flip(), coord_fixed() and coord_quickmap().
 
 <b>Coord_flip</b> is used to flip horizontal bars into vertical bars.
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +
@@ -128,7 +151,9 @@ ggplot(data=exam_data,
 ```
 
 <h2>Changing y and x-axis range in coord object</h2>
+
 Changing the range of y and x-axis can be done by specifying <i>xlim</i> and <i>ylim</i> in the coord object.
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, y=ENGLISH)) +
@@ -138,8 +163,11 @@ linewidth=0.5) +
   coord_cartesian(xlim=c(0,100),
 ylim=c(0,100))
 ```
+
 <h2>Themes in R</h2>
+
 Themes affects background color, size of fonts, gridline and color of labels. Different themes will affect the look of the graph. In thsi example, I used the minimal theme:
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x=RACE)) +

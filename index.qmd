@@ -2,4 +2,4 @@
 title: "ISSS608-VAA"
 ---
 
-Welcome to <b>ISSS608 Visual Analytics and Applications</b>. In this website, you will find my coursework prepared for this course.
+Welcome to my portfolio for <b> Visual Analytics and Applications</b> module in Singapore Management University. In this website, you will find my coursework prepared for this course. My coursework will be under the <b>Take-home Exercise</b>

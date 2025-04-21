@@ -28,7 +28,7 @@ format:
     toc_float: true
     toc_depth: 2
     theme: pulse
-    fontsize: 1.1rem
+    fontsize: 1.2rem
     css: styles.css
 
 editor: visual
