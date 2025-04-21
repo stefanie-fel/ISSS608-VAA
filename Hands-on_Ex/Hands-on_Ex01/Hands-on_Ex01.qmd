@@ -34,7 +34,7 @@ ggplot(data=exam_data, aes(x=RACE)) + geom_bar()
 
 Grammar of Graphics defined by Leeland Wilkinson (1999) to be framework that follows a layered approach to describe and construct visualization. ggplot2 applies the grammar of graphics:
 
-![7 layers of grammar of graphics]("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.linkedin.com%2Fpulse%2Fintroduction-ggplot-series-mukul-kr-singh-chauhan&psig=AOvVaw1XJNvpHkJgzeekF8sTB597&ust=1745335562335000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNi11uS36YwDFQAAAAAdAAAAABAE")
+![7 layers of grammar of graphics](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.linkedin.com%2Fpulse%2Fintroduction-ggplot-series-mukul-kr-singh-chauhan&psig=AOvVaw1XJNvpHkJgzeekF8sTB597&ust=1745335562335000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNi11uS36YwDFQAAAAAdAAAAABAE)
 
 1.  Data: dataset that's being plotted
 
