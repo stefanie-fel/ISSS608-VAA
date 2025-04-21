@@ -9,6 +9,14 @@ website:
       menu:
         - text: "Hands-on Exercise 1"
           href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
+    - text: "In-class Exercise"
+      menu:
+        - text: "In-class Exercise 1"
+          href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
+    - text: "Take-home Exercise"
+      menu:
+        - text: "Take-home Exercise 1"
+          href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
     right:    
       - href: index.qmd
         text: Home
@@ -16,9 +24,12 @@ website:
 
 format:
   html:
-    theme: pulse
-    css: styles.css
     toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: pulse
+    fontsize: 1.1rem
+    css: styles.css
 
 editor: visual
 
