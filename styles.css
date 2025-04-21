@@ -3,7 +3,7 @@
 body, {
   background-color: #f8f9fa; 
   color: #2E2E2E;    
-  font-size: 14pt;
+  font-size: 12pt;
   font-family; "Roboto";
 }
 h1, h2, h3 {
@@ -11,10 +11,10 @@ h1, h2, h3 {
 }
 
 .content column-page-left{
-  max-width: 100%;
-  width:100%;
+  max-width: 90%;
+  width:90%;
 }
 
 #quarto-margin-sidebar{
-  font-size: 12pt;
+  font-size: 10pt;
 }
