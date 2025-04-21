@@ -1,8 +1,11 @@
 /* css styles */
-body {
+body, {
   background-color: #f8f9fa; 
-  color: #2E2E2E;           /* Dark text */
+  color: #2E2E2E;           
 }
 h1, h2, h3 {
-  color: #593196; /* Pulse purple */
+  color: #593196;
+}
+.sidebar nav {
+  padding-right: 2rem;
 }

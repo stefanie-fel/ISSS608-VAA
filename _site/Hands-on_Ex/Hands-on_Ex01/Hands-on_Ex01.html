@@ -177,8 +177,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#install-and-launch-r-packages" id="toc-install-and-launch-r-packages" class="nav-link" data-scroll-target="#install-and-launch-r-packages">Install and launch R packages</a></li>
+  <li><a href="#exploring-different-geometric-objects" id="toc-exploring-different-geometric-objects" class="nav-link" data-scroll-target="#exploring-different-geometric-objects">Exploring different geometric objects</a></li>
+  <li><a href="#exploring-facet-object" id="toc-exploring-facet-object" class="nav-link" data-scroll-target="#exploring-facet-object">Exploring facet object</a></li>
+  <li><a href="#exploring-coordinates" id="toc-exploring-coordinates" class="nav-link" data-scroll-target="#exploring-coordinates">Exploring coordinates</a></li>
+  <li><a href="#aesthetic-in-r" id="toc-aesthetic-in-r" class="nav-link" data-scroll-target="#aesthetic-in-r">Aesthetic in R</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -208,12 +221,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<h1>
-Getting Started
-</h1>
-<h2 class="anchored">
-Install and launch R packages
-</h2>
+<section id="getting-started" class="level1">
+<h1>Getting Started</h1>
+<section id="install-and-launch-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="install-and-launch-r-packages">Install and launch R packages</h2>
 <p>The code below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -233,9 +244,7 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 </div>
 </div>
 <hr>
-<h1>
-Plotting a simple bar chart
-</h1>
+<p>Plotting a simple bar chart</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, <span class="fu">aes</span>(<span class="at">x=</span>RACE)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -246,10 +255,10 @@ Plotting a simple bar chart
 </div>
 </div>
 </div>
-<h2 class="anchored">
-Exploring different geometric objects
-</h2>
-<p>First we will explore <b>geom_bar</b>, which is used to plot bar charts. Here is how the code looks like and the graph:</p>
+</section>
+<section id="exploring-different-geometric-objects" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-different-geometric-objects">Exploring different geometric objects</h2>
+<p>First we will explore <strong>geom_bar</strong>, which is used to plot bar charts. Here is how the code looks like and the graph:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, <span class="fu">aes</span>(<span class="at">x=</span>RACE))<span class="sc">+</span><span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -260,7 +269,7 @@ Exploring different geometric objects
 </div>
 </div>
 </div>
-<p>Next, we’ll be exploring dot plots<b>(geom_dotplot</b>). It’s quite similar to bar chart but in dot form instead of a bar.</p>
+<p>Next, we’ll be exploring dot plots (<strong>geom_dotplot</strong>). It’s quite similar to bar chart but in dot form instead of a bar.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, <span class="fu">aes</span>(<span class="at">x=</span>MATHS))<span class="sc">+</span><span class="fu">geom_dotplot</span>(<span class="at">binwidth=</span><span class="fl">2.5</span>, <span class="at">dotsize=</span><span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="cn">NULL</span>, <span class="at">breaks=</span><span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -271,7 +280,7 @@ Exploring different geometric objects
 </div>
 </div>
 </div>
-<p>Next, <b>geom_histogram</b> plots a histogram. But it’s possible to stack different categorical values to compare distributions of each variable like below:</p>
+<p>Next, <strong>geom_histogram</strong> plots a histogram. But it’s possible to stack different categorical values to compare distributions of each variable like below:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> MATHS, <span class="at">fill =</span> GENDER)) <span class="sc">+</span></span>
@@ -284,7 +293,7 @@ Exploring different geometric objects
 </div>
 </div>
 </div>
-<p><b>Geom_density</b> is used to draw density estimate, which is a smoother version of a histogram. Similar to the histogram, you can stack different variables.</p>
+<p><strong>Geom_density</strong> is used to draw density estimate, which is a smoother version of a histogram. Similar to the histogram, you can stack different variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> MATHS, <span class="at">colour=</span>GENDER)) <span class="sc">+</span></span>
@@ -297,7 +306,7 @@ Exploring different geometric objects
 </div>
 </div>
 </div>
-<p><b>Geom_boxplot</b> is used to plot boxplot.</p>
+<p><strong>Geom_boxplot</strong> is used to plot boxplot.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">y =</span> MATHS, <span class="at">x=</span> GENDER)) <span class="sc">+</span>    </span>
@@ -310,7 +319,7 @@ Exploring different geometric objects
 </div>
 </div>
 </div>
-<p><b>Geom_violin</b> is used to plot a violin plot as a compact display of continuous distribution (similar to boxplot).</p>
+<p><strong>Geom_violin</strong> is used to plot a violin plot as a compact display of continuous distribution (similar to boxplot).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">y =</span> MATHS, </span>
@@ -324,7 +333,7 @@ Exploring different geometric objects
 </div>
 </div>
 </div>
-<p><b>Geom_point</b> is used to plot scatterplot.</p>
+<p><strong>Geom_point</strong> is used to plot scatterplot.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS, </span>
@@ -351,10 +360,9 @@ Exploring different geometric objects
 </div>
 </div>
 </div>
-<h3 class="anchored">
-Exploring stats summary
-</h3>
-<p>Incorporating <b>stats_summary</b> after geom object reveal statistic summary, such as average, median, max or min. In this example, the function mean is used:</p>
+<section id="exploring-stats-summary" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-stats-summary">Exploring stats summary</h3>
+<p>Incorporating <strong>stats_summary</strong> after geom object reveal statistic summary, such as average, median, max or min. In this example, the function mean is used:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">y =</span> MATHS, <span class="at">x=</span> GENDER)) <span class="sc">+</span></span>
@@ -368,7 +376,7 @@ Exploring stats summary
 </div>
 </div>
 </div>
-<p>Adding best fit line is possible by using the function <b>geom_smooth</b></p>
+<p>Adding best fit line is possible by using the function <strong>geom_smooth</strong>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS, <span class="at">y=</span>ENGLISH)) <span class="sc">+</span></span>
@@ -386,11 +394,12 @@ Exploring stats summary
 </div>
 </div>
 </div>
-<h2 class="anchored">
-Exploring facet object
-</h2>
-<p>Facet generate small multiple trellis plot, which display different subset of data. There are two types of facet: <b>facet_wrap</b> and <b>facet_grid</b></p>
-<p><b>Facet_wrap</b> is used to wrap 1-dimension sequence of panels into 2-dimension. So this creates multiple plot for one variable like below:</p>
+</section>
+</section>
+<section id="exploring-facet-object" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-facet-object">Exploring facet object</h2>
+<p>Facet generate small multiple trellis plot, which display different subset of data. There are two types of facet: <strong>facet_wrap</strong> and <strong>facet_grid</strong></p>
+<p><strong>Facet_wrap</strong> is used to wrap 1-dimension sequence of panels into 2-dimension. So this creates multiple plot for one variable like below:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS)) <span class="sc">+</span></span>
@@ -404,7 +413,7 @@ Exploring facet object
 </div>
 </div>
 </div>
-<p><b>Facet_grid</b> is used to create a grid of panels using one or two variables.</p>
+<p><strong>Facet_grid</strong> is used to create a grid of panels using one or two variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS)) <span class="sc">+</span></span>
@@ -418,11 +427,11 @@ Exploring facet object
 </div>
 </div>
 </div>
-<h2 class="anchored">
-Exploring coordinates
-</h2>
-<p>There are different types of coordinates available such as: coord_cartesian(), coord_flip(), coord_fixed() and coord_quickmap().</p>
-<p><b>Coord_flip</b> is used to flip horizontal bars into vertical bars.</p>
+</section>
+<section id="exploring-coordinates" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-coordinates">Exploring coordinates</h2>
+<p>There are different types of coordinates available such as: <strong>coord_cartesian()</strong>, <strong>coord_flip()</strong>, <strong>coord_fixed()</strong> and <strong>coord_quickmap()</strong>.</p>
+<p><strong>Coord_flip</strong> is used to flip horizontal bars into vertical bars.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>RACE)) <span class="sc">+</span></span>
@@ -436,10 +445,9 @@ Exploring coordinates
 </div>
 </div>
 </div>
-<h2 class="anchored">
-Changing y and x-axis range in coord object
-</h2>
-<p>Changing the range of y and x-axis can be done by specifying <i>xlim</i> and <i>ylim</i> in the coord object.</p>
+<section id="changing-y-and-x-axis-range-in-coord-object" class="level3">
+<h3 class="anchored" data-anchor-id="changing-y-and-x-axis-range-in-coord-object">Changing y and x-axis range in coord object</h3>
+<p>Changing the range of y and x-axis can be done by specifying <em>xlim</em> and <em>ylim</em> in the coord object.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS, <span class="at">y=</span>ENGLISH)) <span class="sc">+</span></span>
@@ -459,10 +467,11 @@ Changing y and x-axis range in coord object
 </div>
 </div>
 </div>
-<h2 class="anchored">
-Themes in R
-</h2>
-<p>Themes affects background color, size of fonts, gridline and color of labels. Different themes will affect the look of the graph. In thsi example, I used the minimal theme:</p>
+</section>
+</section>
+<section id="aesthetic-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="aesthetic-in-r">Aesthetic in R</h2>
+<p>Themes affects background color, size of fonts, gridline and color of labels. Different themes will affect the look of the graph. In this example, I used the minimal theme:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>RACE)) <span class="sc">+</span></span>
@@ -479,6 +488,8 @@ Themes in R
 </div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
