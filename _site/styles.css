@@ -1,16 +1,20 @@
 /* css styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 body, {
   background-color: #f8f9fa; 
   color: #2E2E2E;    
-  font-size: 16pt;
+  font-size: 14pt;
+  font-family; "Roboto";
 }
 h1, h2, h3 {
   color: #593196;
 }
 
 .content column-page-left{
-  max-width: 90%;
-  width:90%;
-  
+  max-width: 100%;
+  width:100%;
 }
 
+#quarto-margin-sidebar{
+  font-size: 12pt;
+}
