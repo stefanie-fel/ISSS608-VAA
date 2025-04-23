@@ -33,6 +33,5 @@ format:
     page-layout: full
     font-family: "Roboto"
     css: styles.css
-
 editor: visual
 
