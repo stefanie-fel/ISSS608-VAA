@@ -1,6 +1,8 @@
 ---
-title: "Hands-on_Ex02"
+title: "Hands-on Exercise 2"
 author: "Stefanie Felicia"
+date: "April 23, 2025"
+date-modified: "last-modified"
 ---
 
 ## Getting Started
@@ -31,7 +33,7 @@ exam_data <- read_csv("Exam_data.csv")
 
 ## ggrepel Package
 
-It replaces **geom_text** with **geom_text_repel** and **geom_label** with **geom_label_repel**. In this example, a graph of primary 3 students' maths and english scores were plotted using geom_label.
+It replaces **`geom_text`** with **`geom_text_repel`** and **`geom_label`** with **`geom_label_repel`**. In this example, a graph of primary 3 students' maths and english scores were plotted using `geom_label`.
 
 ```{r}
 ggplot(data=exam_data, aes(x= MATHS, y=ENGLISH)) +
@@ -59,13 +61,13 @@ The graph looks better as there's no more overlapping labels so that the graph b
 
 ## ggtheme Package
 
-When using ggplot2, we can customize how the graph looks like as ggplot2 offers in-built themes (e.g. $theme_gray$, $theme_bw$, $theme_classic$, $theme_dark$$, theme_light$, $theme_linedraw$, $theme_minimal$ and $theme_void$). In this example, $theme_gray$ is used, which looks like this:
+When using ggplot2, we can customize how the graph looks like as ggplot2 offers in-built themes (e.g. `theme_gray`, `theme_bw`, `theme_classic`, `theme_dark`, `theme_light`, `theme_linedraw`, `theme_minimal` and `theme_void`). For more information about themes in ggtheme, click <a href = https://ggplot2.tidyverse.org/reference/ggtheme.html>here</a>. In this example, `theme_gray` is used, which looks like this:
 
 ```{r}
 ggplot(data=exam_data, aes(x = MATHS)) + geom_histogram(bins=20, boundary = 100, color="grey25", fill="grey90") + theme_gray() + ggtitle("Distribution of Maths scores") 
 ```
 
-However, ggtheme package offers more than just basic themes. It also has professional-looking themes that are aesthetically more pleasing for presentation. In this example, the $theme_economist$ is used:
+However, ggtheme package offers more than just basic themes. It also has professional-looking themes that are aesthetically more pleasing for presentation. In this example, the \`theme_economist\` is used:
 
 ```{r}
 ggplot(data=exam_data, aes(x = MATHS)) + geom_histogram(bins=20, boundary = 100,         color="grey25", fill="grey90") + ggtitle("Distribution of Maths scores") + theme_economist()
@@ -73,7 +75,7 @@ ggplot(data=exam_data, aes(x = MATHS)) + geom_histogram(bins=20, boundary = 100,
 
 ## hrbthems Package
 
-hrbthems package provides a base theme that focus on typographic elemenyts (incl. where labels are placed and fonts)
+hrbthems package provides a base theme that focus on typographic elements (incl. where labels are placed and fonts)
 
 ```{r, message=FALSE}
 ggplot(data=exam_data, 

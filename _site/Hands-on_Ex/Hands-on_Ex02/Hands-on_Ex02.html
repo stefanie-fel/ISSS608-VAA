@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Stefanie Felicia">
+<meta name="dcterms.date" content="2025-04-23">
 
-<title>Hands-on_Ex02 – ISSS608-VAA</title>
+<title>Hands-on Exercise 2 – ISSS608-VAA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -233,7 +234,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on_Ex02</h1>
+<h1 class="title">Hands-on Exercise 2</h1>
 </div>
 
 
@@ -247,7 +248,19 @@ window.Quarto = {
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 23, 2025</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">April 24, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -289,7 +302,7 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 </section>
 <section id="ggrepel-package" class="level2">
 <h2 class="anchored" data-anchor-id="ggrepel-package">ggrepel Package</h2>
-<p>It replaces <strong>geom_text</strong> with <strong>geom_text_repel</strong> and <strong>geom_label</strong> with <strong>geom_label_repel</strong>. In this example, a graph of primary 3 students’ maths and english scores were plotted using geom_label.</p>
+<p>It replaces <strong><code>geom_text</code></strong> with <strong><code>geom_text_repel</code></strong> and <strong><code>geom_label</code></strong> with <strong><code>geom_label_repel</code></strong>. In this example, a graph of primary 3 students’ maths and english scores were plotted using <code>geom_label</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, <span class="fu">aes</span>(<span class="at">x=</span> MATHS, <span class="at">y=</span>ENGLISH)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -333,7 +346,7 @@ increasing max.overlaps</code></pre>
 </section>
 <section id="ggtheme-package" class="level2">
 <h2 class="anchored" data-anchor-id="ggtheme-package">ggtheme Package</h2>
-<p>When using ggplot2, we can customize how the graph looks like as ggplot2 offers in-built themes (e.g.&nbsp;<span class="math inline">\(theme_gray\)</span>, <span class="math inline">\(theme_bw\)</span>, <span class="math inline">\(theme_classic\)</span>, <span class="math inline">\(theme_dark\)</span><span class="math inline">\(, theme_light\)</span>, <span class="math inline">\(theme_linedraw\)</span>, <span class="math inline">\(theme_minimal\)</span> and <span class="math inline">\(theme_void\)</span>). In this example, <span class="math inline">\(theme_gray\)</span> is used, which looks like this:</p>
+<p>When using ggplot2, we can customize how the graph looks like as ggplot2 offers in-built themes (e.g.&nbsp;<code>theme_gray</code>, <code>theme_bw</code>, <code>theme_classic</code>, <code>theme_dark</code>, <code>theme_light</code>, <code>theme_linedraw</code>, <code>theme_minimal</code> and <code>theme_void</code>). For more information about themes in ggtheme, click <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">here</a>. In this example, <code>theme_gray</code> is used, which looks like this:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, <span class="fu">aes</span>(<span class="at">x =</span> MATHS)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">boundary =</span> <span class="dv">100</span>, <span class="at">color=</span><span class="st">"grey25"</span>, <span class="at">fill=</span><span class="st">"grey90"</span>) <span class="sc">+</span> <span class="fu">theme_gray</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Distribution of Maths scores"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -344,7 +357,7 @@ increasing max.overlaps</code></pre>
 </div>
 </div>
 </div>
-<p>However, ggtheme package offers more than just basic themes. It also has professional-looking themes that are aesthetically more pleasing for presentation. In this example, the <span class="math inline">\(theme_economist\)</span> is used:</p>
+<p>However, ggtheme package offers more than just basic themes. It also has professional-looking themes that are aesthetically more pleasing for presentation. In this example, the `theme_economist` is used:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, <span class="fu">aes</span>(<span class="at">x =</span> MATHS)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">boundary =</span> <span class="dv">100</span>,         <span class="at">color=</span><span class="st">"grey25"</span>, <span class="at">fill=</span><span class="st">"grey90"</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Distribution of Maths scores"</span>) <span class="sc">+</span> <span class="fu">theme_economist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -358,7 +371,7 @@ increasing max.overlaps</code></pre>
 </section>
 <section id="hrbthems-package" class="level2">
 <h2 class="anchored" data-anchor-id="hrbthems-package">hrbthems Package</h2>
-<p>hrbthems package provides a base theme that focus on typographic elemenyts (incl.&nbsp;where labels are placed and fonts)</p>
+<p>hrbthems package provides a base theme that focus on typographic elements (incl.&nbsp;where labels are placed and fonts)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">x =</span> MATHS)) <span class="sc">+</span></span>
