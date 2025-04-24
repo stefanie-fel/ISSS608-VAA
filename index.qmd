@@ -6,4 +6,4 @@ Welcome to my portfolio for <b> Visual Analytics and Applications</b> module in 
 
 In this website, you will find my hands-on exercise, in-class exercise as well as coursework for this course.
 
-![](images/visual_anlaytics_pic.jpg){width="600px" height="400px"}
+![](images/visual_anlaytics_pic.jpg){width="600px" height="350px"}
