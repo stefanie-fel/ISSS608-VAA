@@ -1,6 +1,8 @@
 ---
 title: "Hands-on Exercise 1"
 author: "Stefanie Felicia"
+date: "April 18, 2025"
+date-modified: "last-modified"
 ---
 
 # Getting Started
