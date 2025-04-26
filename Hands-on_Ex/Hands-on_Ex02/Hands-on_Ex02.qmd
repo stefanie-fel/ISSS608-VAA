@@ -187,6 +187,7 @@ p3 + inset_element(p2,
 It's possible to combine your graphs while applying theme to it like below.
 
 ```{r}
+#| fig-width: 14
 patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
 ```
