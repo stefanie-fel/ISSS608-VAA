@@ -39,7 +39,7 @@ It replaces **`geom_text`** with **`geom_text_repel`** and **`geom_label`** with
 ggplot(data=exam_data, aes(x= MATHS, y=ENGLISH)) +
 geom_point() +
 geom_smooth(method=lm, 
-size=0.5) +  
+linewidth=0.5) +  
 geom_label(aes(label = ID), 
 hjust = .5, vjust = -.5) +
 coord_cartesian(xlim=c(0,100),
