@@ -3,6 +3,11 @@ title: "Hands-on Exercise 2"
 author: "Stefanie Felicia"
 date: "April 23, 2025"
 date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 ## Getting Started
@@ -172,7 +177,7 @@ While this code chunk plots *p1* to be above *p2*, and p3 to be beside both plot
 
 ### Adding Another Graph in a Graph
 
-We can add another graph anywhere within a graph using $inset-element()$ of patchwork package.
+We can add another graph anywhere within a graph using **inset-element()** of patchwork package.
 
 ```{r, message=FALSE}
 p3 + inset_element(p2, 
