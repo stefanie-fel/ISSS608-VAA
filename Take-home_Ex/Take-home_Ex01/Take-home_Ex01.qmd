@@ -1,0 +1,39 @@
+---
+title: "Take-home_Ex01"
+author: "Stefanie Felicia"
+date: ""
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## Background
+
+background of what I'm doing and objective of the analysis
+
+A local online media company that publishes daily content on digital platforms is planning to release an article on **demographic structures and distribution of Singapore in 2024**.
+
+Assuming the role of the graphical editor of the media company, you are tasked to prepare **at most three data visualisation** for the article.
+
+## The Data
+
+The dataset was extracted from <a href = https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data>Singstat</a> under the name <b>Singapore Residents by Planning Area / Subzone, Single Year of Age and Sex, June 2024</b>.
+
+![](images/screenshot_dataset.png)
+
+It comprised of 6 variables and 60K records. The dataset recorded the demographics and count of residents who lived in each sub zone and planning area in June 2024.
+
+## Load Required Libraries
+
+```{r}
+pacman::p_load(ggrepel, tidyverse)
+```
+
+## Import Data
+
+```{r}
+population_data <- read_csv("respopagesex2024.csv")
+```

@@ -1,0 +1,15 @@
+{
+  "hash": "71bfba7a6cab0801d8b169b3f8c542e2",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Take-home_Ex01\"\nauthor: \"Stefanie Felicia\"\ndate: \"\"\ndate-modified: \"last-modified\"\nexecute: \n  eval: true\n  echo: true\n  warning: false\n  freeze: true\n---\n\n\n\n## Background\n\nbackground of what I'm doing and objective of the analysis\n\nA local online media company that publishes daily content on digital platforms is planning to release an article on **demographic structures and distribution of Singapore in 2024**.\n\nAssuming the role of the graphical editor of the media company, you are tasked to prepare **at most three data visualisation** for the article.\n\n## The Data\n\nThe dataset was extracted from <a href = https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data>Singstat</a> under the name <b>Singapore Residents by Planning Area / Subzone, Single Year of Age and Sex, June 2024</b>.\n\n![](images/screenshot_dataset.png)\n\nIt comprised of 6 variables and 60K records. The dataset recorded the demographics and count of residents who lived in each sub zone and planning area in June 2024.\n\n## Load Required Libraries\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(ggrepel, tidyverse)\n```\n:::\n\n\n\n## Import Data\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npopulation_data <- read_csv(\"respopagesex2024.csv\")\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
