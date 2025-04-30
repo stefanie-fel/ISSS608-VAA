@@ -1,0 +1,181 @@
+---
+title: "Hands-on Exercise 3"
+date: "April 30, 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+Getting Started In this exercise, we'll be using the following libraries: ggiraph plotly DT tidyverse patchwork
+
+```{r}
+pacman::p_load(ggiraph, plotly, patchwork, DT, tidyverse)
+```
+
+Import data
+
+```{r}
+exam_data <- read_csv("Exam_data.csv")
+```
+
+Exploring Interactive Data Visualization using ggiraph how is it interactive ?
+
+```{r}
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = ID),
+    stackgroups = TRUE, 
+    binwidth = 1, 
+    method = "histodot") +
+  scale_y_continuous(NULL, 
+                     breaks = NULL)
+girafe(
+  ggobj = p,
+  width_svg = 6,
+  height_svg = 6*0.618
+)
+```
+
+```{r}
+exam_data$tooltip <- c(paste0(     
+  "Name = ", exam_data$ID,         
+  "\n Class = ", exam_data$CLASS)) 
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = exam_data$tooltip), 
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot") +
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(
+  ggobj = p,
+  width_svg = 8,
+  height_svg = 8*0.618
+)
+```
+
+Customize Style in Tooltip We can customize the style (e.g. background opacity, duration of transition, or use extra css for customization, etc) by using `opts_tooltip()` function. In this example, we'll change the background color of `girapfe()` object from black to white, black font color and bold font to make it easier to see than a black background color since the dotplot also has black color.
+
+```{r}
+tooltip_css <- "background-color:white; #<<
+font-style:bold; color:black;" #<<
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(tooltip = ID),                   
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +               
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(                                  
+  ggobj = p,                             
+  width_svg = 6,                         
+  height_svg = 6*0.618,
+  options = list(    #<<
+    opts_tooltip(    #<<
+      css = tooltip_css)) #<<
+)  
+```
+
+Display Statistics using tooltip It is also possible to display other information, e.g. statistics. In this example, the tooltip calculates the average and 90% of confidence interval and it will be displayed when the mouse hovers onto the bar graph:
+
+```{r}
+tooltip <- function(y, ymax, accuracy = .01) {
+  mean <- scales::number(y, accuracy = accuracy)
+  sem <- scales::number(ymax - y, accuracy = accuracy)
+  paste("Mean maths scores:", mean, "+/-", sem)
+}
+
+gg_point <- ggplot(data=exam_data, 
+                   aes(x = RACE),
+) +
+  stat_summary(aes(y = MATHS, 
+                   tooltip = after_stat(
+                     tooltip(y, ymax))),  
+    fun.data = "mean_se", 
+    geom = GeomInteractiveCol,  
+    fill = "light blue"
+  ) +
+  stat_summary(aes(y = MATHS),
+    fun.data = mean_se,
+    geom = "errorbar", width = 0.2, size = 0.2
+  )
+
+girafe(ggobj = gg_point,
+       width_svg = 8,
+       height_svg = 8*0.618)
+```
+
+Interactive Feature using data_id Another way to incorporate interactivity in graph is by using `data_id`. `data_id` is used to assign unique identifier to each graphical element. It's usually used to group elements for hover or election. In this code chunk, it assigns each dot of the ID to its CLASS, so when user hover to a particular CLASS, data point with the same CLASS will be highlighted together.
+
+```{r}
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(   
+    aes(data_id = CLASS), 
+    stackgroups = TRUE,   
+    binwidth = 1,         
+    
+    method = "histodot") + scale_y_continuous(NULL,               breaks = NULL)
+
+girafe(                 
+  ggobj = p,              
+  width_svg = 6,          
+  height_svg = 6*0.618    
+)      
+```
+Customizing Style of data_id
+It is also possible to change the color of the hover effect in data_id. By default, the color orange as seen previously, but the color can be changed using `opts_hover` which changes the color of the dots. Additionally, we can add `opts_hover_inv` to change the style of other elements that are not being hovered.  
+```{r}
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(tooltip = CLASS, 
+        data_id = CLASS),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +               
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(                                  
+  ggobj = p,                             
+  width_svg = 6,                         
+  height_svg = 6*0.618,
+  options = list(                        
+    opts_hover(css = "fill: #202020;"),  
+    opts_hover_inv(css = "opacity:0.2;") 
+  )                                        
+)               
+```
+
+
+Click Effect with onclick
+`onlick` argument will
+```{r}
+exam_data$onclick <- sprintf("window.open(\"%s%s\")",
+"https://www.moe.gov.sg/schoolfinder?journey=Primary%20school",
+as.character(exam_data$ID))
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(onclick = onclick),              
+    stackgroups = TRUE,  
+    binwidth = 1,         
+    method = "histodot") +   
+  scale_y_continuous(NULL,
+ breaks = NULL)
+girafe(                   
+  ggobj = p,            
+  width_svg = 6,          
+  height_svg = 6*0.618) 
+```
