@@ -1,5 +1,6 @@
 ---
 title: "Hands-on Exercise 3"
+author: "Stefanie Felicia"
 date: "April 30, 2025"
 date-modified: "last-modified"
 execute: 
@@ -9,19 +10,33 @@ execute:
   freeze: true
 ---
 
-Getting Started In this exercise, we'll be using the following libraries: ggiraph plotly DT tidyverse patchwork
+## Getting Started 
+
+In this exercise, we'll be using the following libraries:
+
+-   ggiraph: allows user to create dynamic ggplot graphs
+
+-   plotly: create interactive and publication-quality graphs
+
+-   DT: provide interface to the JavaScript library called DataTables
+
+-   tidyverse
+
+-   patchwork
 
 ```{r}
 pacman::p_load(ggiraph, plotly, patchwork, DT, tidyverse)
 ```
 
-Import data
+## Import data
 
 ```{r}
 exam_data <- read_csv("Exam_data.csv")
 ```
 
-Exploring Interactive Data Visualization using ggiraph how is it interactive ?
+## Exploring Interactive Data 
+
+Visualization using ggiraph how is it interactive ?
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -61,7 +76,9 @@ girafe(
 )
 ```
 
-Customize Style in Tooltip We can customize the style (e.g. background opacity, duration of transition, or use extra css for customization, etc) by using `opts_tooltip()` function. In this example, we'll change the background color of `girapfe()` object from black to white, black font color and bold font to make it easier to see than a black background color since the dotplot also has black color.
+### Customize Style in Tooltip 
+
+We can customize the style (e.g. background opacity, duration of transition, or use extra css for customization, etc) by using `opts_tooltip()` function. In this example, we'll change the background color of `girapfe()` object from black to white, black font color and bold font to make it easier to see than a black background color since the dotplot also has black color.
 
 ```{r}
 tooltip_css <- "background-color:white; #<<
@@ -86,7 +103,9 @@ girafe(
 )  
 ```
 
-Display Statistics using tooltip It is also possible to display other information, e.g. statistics. In this example, the tooltip calculates the average and 90% of confidence interval and it will be displayed when the mouse hovers onto the bar graph:
+### Display Statistics using tooltip
+
+It is also possible to display other information, e.g. statistics. In this example, the tooltip calculates the average and 90% of confidence interval and it will be displayed when the mouse hovers onto the bar graph:
 
 ```{r}
 tooltip <- function(y, ymax, accuracy = .01) {
@@ -115,7 +134,9 @@ girafe(ggobj = gg_point,
        height_svg = 8*0.618)
 ```
 
-Interactive Feature using data_id Another way to incorporate interactivity in graph is by using `data_id`. `data_id` is used to assign unique identifier to each graphical element. It's usually used to group elements for hover or election. In this code chunk, it assigns each dot of the ID to its CLASS, so when user hover to a particular CLASS, data point with the same CLASS will be highlighted together.
+## Interactive Feature using data_id 
+
+Another way to incorporate interactivity in graph is by using `data_id`. `data_id` is used to assign unique identifier to each graphical element. It's usually used to group elements for hover or election. In this code chunk, it assigns each dot of the ID to its CLASS, so when user hover to a particular CLASS, data point with the same CLASS will be highlighted together.
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -133,8 +154,11 @@ girafe(
   height_svg = 6*0.618    
 )      
 ```
-Customizing Style of data_id
-It is also possible to change the color of the hover effect in data_id. By default, the color orange as seen previously, but the color can be changed using `opts_hover` which changes the color of the dots. Additionally, we can add `opts_hover_inv` to change the style of other elements that are not being hovered.  
+
+### Customizing Style of data_id 
+
+It is also possible to change the color of the hover effect in data_id. By default, the color orange as seen previously, but the color can be changed using `opts_hover` which changes the color of the dots. Additionally, we can add `opts_hover_inv` to change the style of other elements that are not being hovered.
+
 ```{r}
 p <- ggplot(data=exam_data, 
        aes(x = MATHS)) +
@@ -157,9 +181,10 @@ girafe(
 )               
 ```
 
+### Click Effect with onclick
 
-Click Effect with onclick
-`onlick` argument will
+`onlick` argument will allow user who click on the graph to be redirected according to link provided on the `onclick` argument.
+
 ```{r}
 exam_data$onclick <- sprintf("window.open(\"%s%s\")",
 "https://www.moe.gov.sg/schoolfinder?journey=Primary%20school",
@@ -179,3 +204,40 @@ girafe(
   width_svg = 6,          
   height_svg = 6*0.618) 
 ```
+
+Coordinated graphs using ggiraph and patchwork
+
+```{r, echo=TRUE}
+p1 <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +  
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+p2 <- ggplot(data=exam_data, 
+       aes(x = ENGLISH)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") + 
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+girafe(code = print(p1 + p2), 
+       width_svg = 6,
+       height_svg = 3,
+       options = list(
+         opts_hover(css = "fill: #202020;"),
+         opts_hover_inv(css = "opacity:0.2;")
+         )
+       ) 
+```
+
+Interactive Visualization Using plotly
