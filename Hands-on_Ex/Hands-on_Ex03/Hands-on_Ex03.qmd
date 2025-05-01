@@ -270,15 +270,32 @@ There are two ways to create interactive graph by using plotly:
 
 ### Interactive Graph using plot_ly()
 
+Another way we can incorporate interactivity in graohs is by using plot_ly(). In this example, we build a scatterplot with MATHS over ENGLISH.
+
 ```{r}
 plot_ly(data = exam_data, 
              x = ~MATHS, 
              y = ~ENGLISH)
 ```
 
-Customize Styles in Plot_ly()
 
-Interactive Graph using ggplotly()
+
+::: {.callout-tip title="Fun fact"}
+Interestingly, `plot_ly()` guesses what graph type we want build based on the variable. So technically, we can build a graph without specifying what graph we want to build. But we can specify what graph we want to build by adding <a href = https://www.rdocumentation.org/packages/plotly/versions/4.10.4/topics/plot_ly>`type`</a> argument.
+:::
+
+### Customize Styles in plot_ly()
+We can customize the style of plot_ly() by adding customization to axes and legend, color of charts, or even add theme to the plots (for more information, refer to the <a href=https://plotly.com/r/styling-figures/>documentation</a>). In this example, we add color to the scatterplot based on the race column. 
+```{r}
+plot_ly(data = exam_data, 
+        x = ~ENGLISH, 
+        y = ~MATHS, 
+        color = ~RACE)
+```
+
+### Interactive Graph using ggplotly()
+
+In this example, we create interactive plots by using ggplotly on existing ggplot.
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -290,7 +307,7 @@ p <- ggplot(data=exam_data,
 ggplotly(p)
 ```
 
-Multiple Graph using plotly
+### Multiple Graph using plotly
 
 In this example, to merge multiple graph similar to Hands-on Exercise 2, the following steps are used:
 
