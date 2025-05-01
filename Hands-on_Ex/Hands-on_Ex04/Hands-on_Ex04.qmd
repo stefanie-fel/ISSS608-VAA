@@ -1,6 +1,6 @@
 ---
 title: "Hands-on Exercise 4"
-date: ""
+date: "May 2, 2025"
 date-modified: "last-modified"
 execute: 
   eval: true
@@ -8,3 +8,52 @@ execute:
   warning: false
   freeze: true
 ---
+
+# How Does Animation Work in Data Visualization ?
+
+When creating animation, the plot doesn't move. Instead, individual plots are stitched together like a video. Each frame is a different plot when conveying motion, which is built using relevant subset of the aggregate data. Then the subset drives the flow of the animation when stitched back together.
+
+![](/images/hands_on 3 illustration.png)
+
+Terminologies in this Exercise:
+
+-   Frame: each frame represent different point in time or category. When the frame changes, the data point also changes which represent the updated version of data.
+
+-   Animation Attributes: the settings that control how the animation behaves e.g. duration of each frame or which plot would be the start of animation).
+
+# Getting Started
+
+In this exercise we'll be using the following libraries:
+
+-   <a href=https://gganimate.com/>gganimate</a>: extends grammar of graphics implemented by ggplot2 to include animation.
+
+-   <a href=https://www.rdocumentation.org/packages/gifski/versions/1.32.0-1/topics/gifski>gifski</a>: converts image frame to high quality GIF.
+
+-   gapminder: is an excerpt of data available at gapminder.org. We'll be using the country_colors scheme in this exercise.
+
+-   plotly
+
+-   tidyverse
+
+```{r}
+pacman::p_load(readxl, gifski, gapminder,
+               plotly, gganimate, tidyverse)
+```
+
+# Import Data
+
+```{r}
+col <- c("Country", "Continent")
+globalPop <- read_xls("GlobalPopulation.xls",
+                      sheet="Data") %>%
+  mutate_at(col, as.factor) %>%
+  mutate(Year = as.integer(Year))
+```
+
+::: {.callout-tip title="How to extract data from .xls file"}
+
+:::
+
+# Animate Visualization using gganimate
+
+\(i\) reshape data by using **tidyr** package, and (ii) process, wrangle and transform data by using **dplyr** package.

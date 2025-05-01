@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-05-02">
 
 <title>Hands-on Exercise 4 – ISSS608-VAA</title>
 <style>
@@ -19,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -158,11 +193,20 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#how-does-animation-work-in-data-visualization" id="toc-how-does-animation-work-in-data-visualization" class="nav-link active" data-scroll-target="#how-does-animation-work-in-data-visualization">How Does Animation Work in Data Visualization ?</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a></li>
+  <li><a href="#animate-visualization-using-gganimate" id="toc-animate-visualization-using-gganimate" class="nav-link" data-scroll-target="#animate-visualization-using-gganimate">Animate Visualization using gganimate</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -171,14 +215,20 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 2, 2025</p>
+    </div>
+  </div>
   
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 30, 2025</p>
+      <p class="date-modified">May 2, 2025</p>
     </div>
   </div>
     
@@ -189,8 +239,60 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="how-does-animation-work-in-data-visualization" class="level1">
+<h1>How Does Animation Work in Data Visualization ?</h1>
+<p>When creating animation, the plot doesn’t move. Instead, individual plots are stitched together like a video. Each frame is a different plot when conveying motion, which is built using relevant subset of the aggregate data. Then the subset drives the flow of the animation when stitched back together.</p>
+<p><img src="../..\images/hands_on 3 illustration.png" class="img-fluid"></p>
+<p>Terminologies in this Exercise:</p>
+<ul>
+<li><p>Frame: each frame represent different point in time or category. When the frame changes, the data point also changes which represent the updated version of data.</p></li>
+<li><p>Animation Attributes: the settings that control how the animation behaves e.g.&nbsp;duration of each frame or which plot would be the start of animation).</p></li>
+</ul>
+</section>
+<section id="getting-started" class="level1">
+<h1>Getting Started</h1>
+<p>In this exercise we’ll be using the following libraries:</p>
+<ul>
+<li><p><a href="https://gganimate.com/">gganimate</a>: extends grammar of graphics implemented by ggplot2 to include animation.</p></li>
+<li><p><a href="https://www.rdocumentation.org/packages/gifski/versions/1.32.0-1/topics/gifski">gifski</a>: converts image frame to high quality GIF.</p></li>
+<li><p>gapminder: is an excerpt of data available at gapminder.org. We’ll be using the country_colors scheme in this exercise.</p></li>
+<li><p>plotly</p></li>
+<li><p>tidyverse</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(readxl, gifski, gapminder,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               plotly, gganimate, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="import-data" class="level1">
+<h1>Import Data</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Country"</span>, <span class="st">"Continent"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>globalPop <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"GlobalPopulation.xls"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">sheet=</span><span class="st">"Data"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(col, as.factor) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">as.integer</span>(Year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="How to extract data from .xls file">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How to extract data from .xls file
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+</section>
+<section id="animate-visualization-using-gganimate" class="level1">
+<h1>Animate Visualization using gganimate</h1>
+<p>(i) reshape data by using <strong>tidyr</strong> package, and (ii) process, wrangle and transform data by using <strong>dplyr</strong> package.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
