@@ -13,7 +13,7 @@ execute:
 
 When creating animation, the plot doesn't move. Instead, individual plots are stitched together like a video. Each frame is a different plot when conveying motion, which is built using relevant subset of the aggregate data. Then the subset drives the flow of the animation when stitched back together.
 
-![](/images/hands_on 3 illustration.png)
+![](/images/hands_on%203%20illustration.png)
 
 Terminologies in this Exercise:
 
@@ -51,7 +51,9 @@ globalPop <- read_xls("GlobalPopulation.xls",
 ```
 
 ::: {.callout-tip title="How to extract data from .xls file"}
+1.  use \`read_xls\` instead of `read_csv`
 
+2.  use `mutate_each_()`
 :::
 
 # Animate Visualization using gganimate
