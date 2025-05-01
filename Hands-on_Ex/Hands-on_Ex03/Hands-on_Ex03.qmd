@@ -10,7 +10,7 @@ execute:
   freeze: true
 ---
 
-## Getting Started
+# Getting Started
 
 In this exercise, we'll be using the following libraries:
 
@@ -28,15 +28,25 @@ In this exercise, we'll be using the following libraries:
 pacman::p_load(ggiraph, plotly, patchwork, DT, tidyverse)
 ```
 
-## Import data
+# Import data
 
 ```{r}
 exam_data <- read_csv("Exam_data.csv")
 ```
 
-## Exploring Interactive Data
+# Exploring Interactive Data using ggiraph
 
-Visualization using ggiraph how is it interactive ?
+We can create interactive graphs with ggiraph by utilizing ggplot geometries. ggplot geometries understand 3 arguments:
+
+-   Tooltip: a small message pops up when user hovers over elements.
+
+-   Onclick: contain JavaScript functions that would be executed when the graph is clicked.
+
+-   Data_id: contain an id to be associated with elements.
+
+## Tooltip Argument
+
+The code chunk will plot interactive statistical graph using ggiraph. First, ggplot object will be created and then \`girafe()\` of ggiraph will create interactive svg object,
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -54,6 +64,14 @@ girafe(
   height_svg = 6*0.618
 )
 ```
+
+::: callout-tip
+Note that different from what we've learned before we don't use `geom_dotplot()` like we did on Hands On Exercise 1, instead we use `geom_dotplot_interactive()` to create the basic graph.
+:::
+
+### Display Multiple Information on Tooltip
+
+Content in tooltip can be customized by including a list object like in below code chunk.
 
 ```{r}
 exam_data$tooltip <- c(paste0(     
@@ -75,6 +93,8 @@ girafe(
   height_svg = 8*0.618
 )
 ```
+
+The first line appends a new column using`$tooltip` to the exam_data dataset, whereas the `c(paste0(..)` combines strings to display when user hover on the graph.
 
 ### Customize Style in Tooltip
 
@@ -155,7 +175,7 @@ girafe(
 )      
 ```
 
-### Customizing Style of data_id
+## Customizing Style of data_id
 
 It is also possible to change the color of the hover effect in data_id. By default, the color orange as seen previously, but the color can be changed using `opts_hover` which changes the color of the dots. Additionally, we can add `opts_hover_inv` to change the style of other elements that are not being hovered.
 
@@ -181,7 +201,7 @@ girafe(
 )               
 ```
 
-### Click Effect with onclick
+## Click Effect with Onclick
 
 `onlick` argument will allow user who click on the graph to be redirected according to link provided on the `onclick` argument.
 
@@ -240,10 +260,63 @@ girafe(code = print(p1 + p2),
        ) 
 ```
 
-Interactive Visualization Using plotly
+# Interactive Visualization Using plotly
 
 There are two ways to create interactive graph by using plotly:
 
--   `plot_ly`
+-   `plot_ly()` : used to build interactive plots directly from scratch using Plotly instead of ggplot2
 
--   `ggplotly()`
+-   `ggplotly()` : convert existing ggplot object into interactive Plotly plot
+
+### Interactive Graph using plot_ly()
+
+```{r}
+plot_ly(data = exam_data, 
+             x = ~MATHS, 
+             y = ~ENGLISH)
+```
+
+Customize Styles in Plot_ly()
+
+Interactive Graph using ggplotly()
+
+```{r}
+p <- ggplot(data=exam_data, 
+            aes(x = MATHS,
+                y = ENGLISH)) +
+  geom_point(size=1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+ggplotly(p)
+```
+
+Multiple Graph using plotly
+
+In this example, to merge multiple graph similar to Hands-on Exercise 2, the following steps are used:
+
+-   `highlight_key()` of plotly package is used as shared data to enable linked interactivity between plots. When this function is used, it craetes an object of class crosstalk::SharedData.
+
+-   create scatterplot using ggplot2 function
+
+-   `subplot()` of plotly package is used to place them next to each other
+
+```{r}
+d <- highlight_key(exam_data)
+p1 <- ggplot(data=d, 
+            aes(x = MATHS,
+                y = ENGLISH)) +
+  geom_point(size=1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+
+p2 <- ggplot(data=d, 
+            aes(x = MATHS,
+                y = SCIENCE)) +
+  geom_point(size=1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+subplot(ggplotly(p1),
+        ggplotly(p2))
+```
+
+Interactive Graph using crosstalk
