@@ -53,9 +53,98 @@ globalPop <- read_xls("GlobalPopulation.xls",
 ::: {.callout-tip title="How to extract data from .xls file"}
 1.  use \`read_xls\` instead of `read_csv`
 
-2.  use `mutate_each_()`
+2.  use `mutate_at()` to target specific **columns** to apply function (convert variable, numeric transformation, string transformation, etc).
+
+3.  use `mutate()` to modify or add **column**
 :::
 
 # Animate Visualization using gganimate
 
-\(i\) reshape data by using **tidyr** package, and (ii) process, wrangle and transform data by using **dplyr** package.
+There are a few arguments can be used in gganimate to animate visualizations, such as:\
+transition\_\*(): defines how data should be spread out and how it relates to itself across time.
+
+-   `view_*()`: defines how the axes (zoom, pan) move during the animation (controls what part fo the plot is visible and who it changes).
+
+-   `shadow_*()`: defines how data from other points should be presented in the given point in time.
+
+-   `enter_*()`/`exit_*()` : defines how data goes in and goes out during animation.
+
+-   `ease_aes()`: controls the style of the movement fo the animation
+
+## Example: Build Population Bubble Plot
+
+In this example, we'll build a bubble plot uisng ggplot2.
+
+```{r}
+ggplot(globalPop, aes(x = Old, y = Young, 
+                      size = Population, 
+                      colour = Country)) +
+  geom_point(alpha = 0.7, 
+             show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  labs(title = 'Year: {frame_time}', 
+       x = '% Aged', 
+       y = '% Young') 
+```
+
+## Animated Bubble Plot
+
+We can animate the plot by adding to the code:
+
+-   `transition_time()` to create transition through the YEAR variable (animation moves as the year changes)
+
+-   `ease_aes()` is used to control the of aesthetics. The default is `linear`, but we can choose from quadratic, cubic, quartic, quintic, sine, circular, exponential, elastic, back and bounce.
+
+```{r}
+ggplot(globalPop, aes(x = Old, y = Young, 
+                      size = Population, 
+                      colour = Country)) +
+  geom_point(alpha = 0.7, 
+             show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  labs(title = 'Year: {frame_time}', 
+       x = '% Aged', 
+       y = '% Young') +
+  transition_time(Year) +       
+  ease_aes('linear')        
+```
+
+# Animate Visualization with Plotly (ggplotly())
+
+`ggplotly()` supports key frame animations through `frame` argument.
+
+```{r}
+gg <- ggplot(globalPop, 
+             aes(x = Old, 
+                 y = Young, 
+                 size = Population, 
+                 colour = Country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_size(range = c(2, 12)) +
+  labs(x = '% Aged', y = '% Young')
+
+ggplotly(gg)
+```
+
+# Animate Visualization with Plotly (plot_ly())
+
+`plot_ly()` also supports key frame animations through `frame` argument.
+
+```{r}
+bp <- globalPop %>%
+  plot_ly(x = ~Old, 
+          y = ~Young, 
+          size = ~Population, 
+          color = ~Continent,
+          sizes = c(2, 100),
+          frame = ~Year, 
+          text = ~Country, 
+          hoverinfo = "text",
+          type = 'scatter',
+          mode = 'markers'
+          ) %>%
+  layout(showlegend = FALSE)
+bp
+```

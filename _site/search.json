@@ -207,6 +207,20 @@
     "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html",
     "title": "Hands-on Exercise 4",
     "section": "",
-    "text": "How Does Animation Work in Data Visualization ?\nWhen creating animation, the plot doesn’t move. Instead, individual plots are stitched together like a video. Each frame is a different plot when conveying motion, which is built using relevant subset of the aggregate data. Then the subset drives the flow of the animation when stitched back together.\n\nTerminologies in this Exercise:\n\nFrame: each frame represent different point in time or category. When the frame changes, the data point also changes which represent the updated version of data.\nAnimation Attributes: the settings that control how the animation behaves e.g. duration of each frame or which plot would be the start of animation).\n\n\n\nGetting Started\nIn this exercise we’ll be using the following libraries:\n\ngganimate: extends grammar of graphics implemented by ggplot2 to include animation.\ngifski: converts image frame to high quality GIF.\ngapminder: is an excerpt of data available at gapminder.org. We’ll be using the country_colors scheme in this exercise.\nplotly\ntidyverse\n\n\npacman::p_load(readxl, gifski, gapminder,\n               plotly, gganimate, tidyverse)\n\n\n\nImport Data\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate_at(col, as.factor) %&gt;%\n  mutate(Year = as.integer(Year))\n\n\n\n\n\n\n\nHow to extract data from .xls file\n\n\n\n\nuse `read_xls` instead of read_csv\nuse mutate_each_()\n\n\n\n\n\nAnimate Visualization using gganimate\n(i) reshape data by using tidyr package, and (ii) process, wrangle and transform data by using dplyr package."
+    "text": "When creating animation, the plot doesn’t move. Instead, individual plots are stitched together like a video. Each frame is a different plot when conveying motion, which is built using relevant subset of the aggregate data. Then the subset drives the flow of the animation when stitched back together.\n\nTerminologies in this Exercise:\n\nFrame: each frame represent different point in time or category. When the frame changes, the data point also changes which represent the updated version of data.\nAnimation Attributes: the settings that control how the animation behaves e.g. duration of each frame or which plot would be the start of animation)."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#example-build-population-bubble-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#example-build-population-bubble-plot",
+    "title": "Hands-on Exercise 4",
+    "section": "Example: Build Population Bubble Plot",
+    "text": "Example: Build Population Bubble Plot\nIn this example, we’ll build a bubble plot uisng ggplot2.\n\nggplot(globalPop, aes(x = Old, y = Young, \n                      size = Population, \n                      colour = Country)) +\n  geom_point(alpha = 0.7, \n             show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  labs(title = 'Year: {frame_time}', \n       x = '% Aged', \n       y = '% Young')"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#animated-bubble-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#animated-bubble-plot",
+    "title": "Hands-on Exercise 4",
+    "section": "Animated Bubble Plot",
+    "text": "Animated Bubble Plot\nWe can animate the plot by adding to the code:\n\ntransition_time() to create transition through the YEAR variable (animation moves as the year changes)\nease_aes() is used to control the of aesthetics. The default is linear, but we can choose from quadratic, cubic, quartic, quintic, sine, circular, exponential, elastic, back and bounce.\n\n\nggplot(globalPop, aes(x = Old, y = Young, \n                      size = Population, \n                      colour = Country)) +\n  geom_point(alpha = 0.7, \n             show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  labs(title = 'Year: {frame_time}', \n       x = '% Aged', \n       y = '% Young') +\n  transition_time(Year) +       \n  ease_aes('linear')"
   }
 ]
