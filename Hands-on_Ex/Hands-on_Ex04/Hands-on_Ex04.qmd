@@ -116,16 +116,20 @@ ggplot(globalPop, aes(x = Old, y = Young,
 `ggplotly()` supports key frame animations through `frame` argument.
 
 ```{r}
-gg <- ggplot(globalPop, 
-             aes(x = Old, 
-                 y = Young, 
-                 size = Population, 
-                 colour = Country)) +
-  geom_point(alpha = 0.7, show.legend = FALSE) +
-  scale_size(range = c(2, 12)) +
-  labs(x = '% Aged', y = '% Young')
+gg <- ggplot(globalPop, aes(
+  x = Old, 
+  y = Young, 
+  size = Population, 
+  color = Continent, 
+  frame = Year, 
+  text = Country
+)) +
+  geom_point(alpha = 0.7) +
+  scale_size(range = c(2, 10)) +  
+  theme_minimal()
 
-ggplotly(gg)
+# Convert to interactive plotly plot
+ggplotly(gg, tooltip = "text")
 ```
 
 # Animate Visualization with Plotly (plot_ly())

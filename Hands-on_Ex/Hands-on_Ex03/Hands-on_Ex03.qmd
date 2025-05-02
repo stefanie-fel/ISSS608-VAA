@@ -345,7 +345,7 @@ Crosstalk is an add-on to the htmlwidgets package that allows cross-widget inter
 DT package creates interactive DataTables (through JavaScript library), which renders a HTML data table. Users can filter, highlight rows, link table to other widgets, etc. In this example, we can display all of data in the dataset.
 
 ```{r}
-DT::datatable(exam_data, class= "compact")
+DT::datatable(exam_data, class= "compact", options = list(paging = FALSE))
 ```
 
 ### Linked Brushing with crosstalk
@@ -364,7 +364,7 @@ gg <- highlight(ggplotly(p),
 
 crosstalk::bscols(gg,               
                   DT::datatable(d), 
-                  widths = 5)   
+                  widths = 5, options = list(paging = FALSE))   
 ```
 
 As can be seen, as user filter using the search bar, the graph is linked. What we can learn from this example:
