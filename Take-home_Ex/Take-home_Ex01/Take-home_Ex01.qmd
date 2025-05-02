@@ -10,7 +10,7 @@ execute:
   freeze: true
 ---
 
-## Background
+# Background
 
 background of what I'm doing and objective of the analysis
 
@@ -18,7 +18,7 @@ A local online media company that publishes daily content on digital platforms i
 
 Assuming the role of the graphical editor of the media company, you are tasked to prepare **at most three data visualisation** for the article.
 
-## The Data
+# The Data
 
 The dataset was extracted from <a href = https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data>Singstat</a> under the name <b>Singapore Residents by Planning Area / Subzone, Single Year of Age and Sex, June 2024</b>.
 
@@ -26,14 +26,65 @@ The dataset was extracted from <a href = https://www.singstat.gov.sg/find-data/s
 
 It comprised of 6 variables and 60K records. The dataset recorded the demographics and count of residents who lived in each sub zone and planning area in June 2024.
 
-## Load Required Libraries
+# Load Required Libraries
 
 ```{r}
 pacman::p_load(ggrepel, tidyverse)
 ```
 
-## Import Data
+# Import Data
 
-```{r}
+```{r, message=TRUE}
 population_data <- read_csv("respopagesex2024.csv")
 ```
+
+As can be seen above, the data set comprise of 6 variables: 4 variables are character data type (namely, PA, SZ, age and sex), and 2 variables are double data type (number of population, time). Here is the a snippet of the data set:
+
+```{r}
+head(population_data)
+```
+
+# Data pre-processing
+
+First, we will look if there are duplicates found in the data set.
+
+```{r}
+nrow(population_data[duplicated(population_data), ])
+```
+
+Next, we will check for missing values in the data set.
+
+```{r}
+colSums(is.na(population_data))
+```
+
+Now, that let's convert the age data type from character data type to integer data type.
+
+\
+We first check for unique values in the Age variable.
+
+```{r}
+unique(population_data$Age)
+```
+
+We can't change the variable to numeric data type because we have values "90_and_Over". So we can change it to age 90 and change the data type.
+
+```{r}
+population_data$Age[population_data$Age == "90_and_Over"] <- "90"
+typeof(population_data$Age) 
+population_data$Age <- as.numeric(population_data$Age)
+```
+
+Data Wrangling
+
+Univariate
+
+```{r}
+
+```
+
+Variable Selection
+
+References
+
+1.  <a href=https://www.statology.org/r-count-duplicates/>How to Count Duplicates in R (With Examples)</a>

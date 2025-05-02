@@ -136,6 +136,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html">
  <span class="dropdown-text">Hands-on Exercise 2</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html">
+ <span class="dropdown-text">Hands-on Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html">
+ <span class="dropdown-text">Hands-on Exercise 4</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -194,6 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data</a></li>
   <li><a href="#load-required-libraries" id="toc-load-required-libraries" class="nav-link" data-scroll-target="#load-required-libraries">Load Required Libraries</a></li>
   <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a></li>
+  <li><a href="#data-pre-processing" id="toc-data-pre-processing" class="nav-link" data-scroll-target="#data-pre-processing">Data pre-processing</a></li>
   </ul>
 </nav>
     </div>
@@ -220,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 29, 2025</p>
+      <p class="date-modified">May 2, 2025</p>
     </div>
   </div>
     
@@ -231,29 +240,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
+<section id="background" class="level1">
+<h1>Background</h1>
 <p>background of what I’m doing and objective of the analysis</p>
 <p>A local online media company that publishes daily content on digital platforms is planning to release an article on <strong>demographic structures and distribution of Singapore in 2024</strong>.</p>
 <p>Assuming the role of the graphical editor of the media company, you are tasked to prepare <strong>at most three data visualisation</strong> for the article.</p>
 </section>
-<section id="the-data" class="level2">
-<h2 class="anchored" data-anchor-id="the-data">The Data</h2>
+<section id="the-data" class="level1">
+<h1>The Data</h1>
 <p>The dataset was extracted from <a href="https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data">Singstat</a> under the name <b>Singapore Residents by Planning Area / Subzone, Single Year of Age and Sex, June 2024</b>.</p>
 <p><img src="images/screenshot_dataset.png" class="img-fluid"></p>
 <p>It comprised of 6 variables and 60K records. The dataset recorded the demographics and count of residents who lived in each sub zone and planning area in June 2024.</p>
 </section>
-<section id="load-required-libraries" class="level2">
-<h2 class="anchored" data-anchor-id="load-required-libraries">Load Required Libraries</h2>
+<section id="load-required-libraries" class="level1">
+<h1>Load Required Libraries</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggrepel, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="import-data" class="level2">
-<h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
+<section id="import-data" class="level1">
+<h1>Import Data</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>population_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"respopagesex2024.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 60424 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (4): PA, SZ, Age, Sex
+dbl (2): Pop, Time
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
+</div>
+<p>As can be seen above, the data set comprise of 6 variables: 4 variables are character data type (namely, PA, SZ, age and sex), and 2 variables are double data type (number of population, time). Here is the a snippet of the data set:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(population_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+  PA         SZ                     Age   Sex       Pop  Time
+  &lt;chr&gt;      &lt;chr&gt;                  &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+1 Ang Mo Kio Ang Mo Kio Town Centre 0     Males      10  2024
+2 Ang Mo Kio Ang Mo Kio Town Centre 0     Females    10  2024
+3 Ang Mo Kio Ang Mo Kio Town Centre 1     Males      10  2024
+4 Ang Mo Kio Ang Mo Kio Town Centre 1     Females    10  2024
+5 Ang Mo Kio Ang Mo Kio Town Centre 2     Males      10  2024
+6 Ang Mo Kio Ang Mo Kio Town Centre 2     Females    10  2024</code></pre>
+</div>
+</div>
+</section>
+<section id="data-pre-processing" class="level1">
+<h1>Data pre-processing</h1>
+<p>First, we will look if there are duplicates found in the data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(population_data[<span class="fu">duplicated</span>(population_data), ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p>Next, we will check for missing values in the data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(population_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  PA   SZ  Age  Sex  Pop Time 
+   0    0    0    0    0    0 </code></pre>
+</div>
+</div>
+<p>Now, that let’s convert the age data type from character data type to integer data type.</p>
+<p><br>
+We first check for unique values in the Age variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(population_data<span class="sc">$</span>Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "0"           "1"           "2"           "3"           "4"          
+ [6] "5"           "6"           "7"           "8"           "9"          
+[11] "10"          "11"          "12"          "13"          "14"         
+[16] "15"          "16"          "17"          "18"          "19"         
+[21] "20"          "21"          "22"          "23"          "24"         
+[26] "25"          "26"          "27"          "28"          "29"         
+[31] "30"          "31"          "32"          "33"          "34"         
+[36] "35"          "36"          "37"          "38"          "39"         
+[41] "40"          "41"          "42"          "43"          "44"         
+[46] "45"          "46"          "47"          "48"          "49"         
+[51] "50"          "51"          "52"          "53"          "54"         
+[56] "55"          "56"          "57"          "58"          "59"         
+[61] "60"          "61"          "62"          "63"          "64"         
+[66] "65"          "66"          "67"          "68"          "69"         
+[71] "70"          "71"          "72"          "73"          "74"         
+[76] "75"          "76"          "77"          "78"          "79"         
+[81] "80"          "81"          "82"          "83"          "84"         
+[86] "85"          "86"          "87"          "88"          "89"         
+[91] "90_and_Over"</code></pre>
+</div>
+</div>
+<p>We can’t change the variable to numeric data type because we have values “90_and_Over”. So we can change it to age 90 and change the data type.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>population_data<span class="sc">$</span>Age[population_data<span class="sc">$</span>Age <span class="sc">==</span> <span class="st">"90_and_Over"</span>] <span class="ot">&lt;-</span> <span class="st">"90"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(population_data<span class="sc">$</span>Age) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>population_data<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(population_data<span class="sc">$</span>Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Data Wrangling</p>
+<p>Univariate</p>
+<p>Variable Selection</p>
+<p>References</p>
+<ol type="1">
+<li><a href="https://www.statology.org/r-count-duplicates/">How to Count Duplicates in R (With Examples)</a></li>
+</ol>
 
 
 </section>
