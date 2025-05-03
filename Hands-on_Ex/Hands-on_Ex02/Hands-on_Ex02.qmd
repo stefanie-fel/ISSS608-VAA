@@ -154,7 +154,7 @@ p1 + p2
 
 While this code chunk plots *p1* to be above *p2*, and p3 to be beside both plots.
 
-```{r}
+```{r, fig.width=12}
 (p1 / p2) | p3
 ```
 
@@ -170,9 +170,9 @@ While this code chunk plots *p1* to be above *p2*, and p3 to be beside both plot
 
 We can add another graph anywhere within a graph using **inset-element()** of patchwork package.
 
-```{r, message=FALSE}
+```{r, fig.width=8}
 p3 + inset_element(p2, 
-                   left = 0.02, 
+                   left = 0.01, 
                    bottom = 0.7, 
                    right = 0.5, 
                    top = 1)
