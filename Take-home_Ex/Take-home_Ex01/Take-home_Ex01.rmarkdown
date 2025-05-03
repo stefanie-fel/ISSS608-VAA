@@ -10,6 +10,8 @@ execute:
   freeze: true
 ---
 
+
+
 # Background
 
 background of what I'm doing and objective of the analysis
@@ -28,46 +30,72 @@ It comprised of 6 variables and 60K records. The dataset recorded the demographi
 
 # Load Required Libraries
 
+
+
 ```{r}
 pacman::p_load(dplyr, tidyverse)
 ```
 
+
+
 # Import Data
+
+
 
 ```{r, message=TRUE}
 population_data <- read_csv("respopagesex2024.csv")
 ```
 
+
+
 As can be seen above, the data set comprise of 6 variables: 4 variables are character data type (namely, PA, SZ, age and sex), and 2 variables are double data type (number of population, time). Here is the a snippet of the data set:
+
+
 
 ```{r}
 head(population_data)
 ```
 
+
+
 # Data pre-processing
 
 First, we will look if there are duplicates found in the data set.
+
+
 
 ```{r}
 nrow(population_data[duplicated(population_data), ])
 ```
 
+
+
 Next, we will check for missing values in the data set.
+
+
 
 ```{r}
 sapply(population_data, function(x) sum(is.na(x)))
 ```
+
+
 
 Now, that let's convert the age data type from character data type to integer data type.
 
 \
 We first check for unique values in the Age variable.
 
+
+
 ```{r}
 unique(population_data$Age)
 ```
 
+
+
 We can't change the variable to numeric data type because we have values "90_and_Over". So we can change it to age 90 and change the data type.
+
+
 
 ```{r}
 population_data$Age[population_data$Age == "90_and_Over"] <- "90"
@@ -86,7 +114,11 @@ population_data$Sex[population_data$Sex == "Males"] <- "0"
 population_data$Sex <- as.numeric(population_data$Sex)
 ```
 
+
+
 Univariate
+
+
 
 ```{r}
 ggplot(data = population_data, aes(x = Sex)) +
@@ -104,9 +136,13 @@ ggplot(data=population_data,
   theme_minimal()  
 ```
 
+
+
 Variable Selection
 
 Age and Gender Distribution of Singapore Residents
+
+
 
 ```{r}
 population_data %>%
@@ -117,6 +153,8 @@ population_data %>%
   labs(title = "Age-Sex Pyramid", x = "Age", y = "Population")
 ```
 
+
+
 Population of Residents Living in Each Subzone/Planning Area
 
 Demographics of Residents Living in Each Subzone/Planning Area
@@ -124,3 +162,4 @@ Demographics of Residents Living in Each Subzone/Planning Area
 References
 
 1.  <a href=https://www.statology.org/r-count-duplicates/>How to Count Duplicates in R (With Examples)</a>
+
