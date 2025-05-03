@@ -29,7 +29,7 @@ It comprised of 6 variables and 60K records. The dataset recorded the demographi
 # Load Required Libraries
 
 ```{r}
-pacman::p_load(dplyr, tidyverse)
+pacman::p_load(dplyr, tidyverse, scales)
 ```
 
 # Import Data
@@ -84,24 +84,47 @@ population_data$Sex <- as.numeric(population_data$Sex)
 :::
 
 
+Create New Variables
+
+
 Univariate
 
 ```{r}
-ggplot(data = population_data, aes(x = Sex)) +
+ggplot(population_data, aes(x = factor(Sex))) +
   geom_bar(color = "grey30", fill = "steelblue") +
-  labs(y = "Count", title = "Count of Records by Sex")
+  scale_x_discrete(labels = c("0" = "Male", "1" = "Female")) +
+  labs(x = "Gender", y = "Count", title = "Count of Records by Gender")
 ```
 
 ```{r}
 ggplot(data=population_data, 
        aes(x = Age)) +
-  geom_histogram(bins=20, color="gray30", fill="cyan3")+ 
-  labs(title = "Age Distribution of Singapore Resident June 2024",
+  geom_histogram(bins=20, color="gray30", fill="steelblue")+ 
+  labs(title = "Age Distribution of Singapore Resident",
        x = "Age",
-       y = "Count") +
-  theme_minimal()  
+       y = "Count")
 ```
-
+```{r}
+population_data <- population_data %>%
+  mutate(age_group = cut(Age, 
+               breaks = c(seq(0, 90, 5), Inf),  
+               right = FALSE, 
+               include.lowest = TRUE,
+               labels = c(paste(seq(0, 85, 5), seq(4, 89, 5), sep = "-"), "90+")),
+             Sex = factor(Sex, levels = c(0, 1), labels = c("Male", "Female")),
+    PopAdj = ifelse(Sex == "Male", -Pop, Pop)
+  )
+agg_data <- population_data %>%
+  group_by(age_group, Sex) %>%
+  summarise(Pop = sum(PopAdj), .groups = 'drop')
+ggplot(agg_data, aes(x = age_group, y = Pop, fill = Sex)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(title = "Age-Sex Pyramid", x = "Age Group", y = "Population") +
+  scale_y_continuous(labels = abs)
+options(scipen = 999) 
+    
+```
 Variable Selection
 
 Age and Gender Distribution of Singapore Residents
@@ -112,6 +135,7 @@ population_data %>%
   ggplot(aes(x = Age, y = population, fill = Sex)) +
   geom_bar(stat = "identity") +
   coord_flip() +
+  scale_x_discrete(labels = c("0" = "Male", "1" = "Female")) +
   labs(title = "Age-Sex Pyramid", x = "Age", y = "Population")
 ```
 
