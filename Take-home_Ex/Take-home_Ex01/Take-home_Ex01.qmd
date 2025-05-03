@@ -58,16 +58,13 @@ Next, we will check for missing values in the data set.
 sapply(population_data, function(x) sum(is.na(x)))
 ```
 
-Now, that let's convert the age data type from character data type to integer data type.
+Column Transformation
 
-\
-We first check for unique values in the Age variable.
+      
+::: {.panel-tabset}
+## Age
 
-```{r}
-unique(population_data$Age)
-```
-
-We can't change the variable to numeric data type because we have values "90_and_Over". So we can change it to age 90 and change the data type.
+Currently, the Age variable is in string data type and we want to change it to numeric data type.
 
 ```{r}
 population_data$Age[population_data$Age == "90_and_Over"] <- "90"
@@ -75,16 +72,17 @@ typeof(population_data$Age)
 population_data$Age <- as.numeric(population_data$Age)
 ```
 
-```{r}
-unique(population_data$Sex)
+## Sex
 
-```
+We also want to recode the Sex variable from "Males" to 0 and "Females" to 1, why ? 
 
 ```{r}
 population_data$Sex[population_data$Sex == "Females"] <- "1"
 population_data$Sex[population_data$Sex == "Males"] <- "0"
 population_data$Sex <- as.numeric(population_data$Sex)
 ```
+:::
+
 
 Univariate
 
