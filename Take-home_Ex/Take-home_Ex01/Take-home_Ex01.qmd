@@ -168,7 +168,7 @@ Insight from the visualization:
 
 -   Singapore also has roughly similar proportion of male to female population as well as similar age distribution between male and female.
 
--   The population also has a high number of young dependents, which reflects  a …..
+-   The population also has a high number of elderly, which can indicate an advanced healthcare system and low mortality rate.
 
 ## 3. 2 Population and Demographics of Residents Living in Each Planning Area
 
@@ -212,7 +212,7 @@ ggplot(data = pop_pa, aes(x = PA, y = total_pop)) +
 
 Demographics of Residents Living in Each Planning Area
 
-```{r}
+```{r, echo=FALSE}
 
 population_binned <- population_data %>%
   mutate(age_group = cut(
@@ -234,19 +234,15 @@ population_binned_wide %>%
   )
 ```
 
-Inisght from visualization:
+Insight from in demographics and population distribution:
 
 -   Most residents live in Tampines, Bedok, Sengkang, Jurong West, or Woodlands. With each planning area having more than 200,000 residents living in the planning area. This could be
 
--   In contrast, there are no residents who live in Western Island, Tuas, Straits View, Simpang or Pioneer.
+-   There are 13 out of 55 planning areas no residents live in.
 
--   A lot of younger population (aged 0 – 14) ;ive in Tampines, Sengkang. Punggol, Woodlands, Yishun or Jurong West
+-   A lot of younger population (aged 0 – 14) lIve in these planning area: Tampines, Sengkang. Punggol, Woodlands, Yishun or Jurong West
 
--   Elderly lived in Bedok, Bukit Merah, Ang Mo Kio, Toa Payoh, Hougang
-
--   Woodlands, Tampines, Jurong West, Bedok, Choa Chu Kang (25- 29)
-
--   Sengkang, Punggol, tampines, Jurong west (40-44)
+-   The following planning areas have higher number of elderly who lives there: Bedok, Bukit Merah, Ang Mo Kio, Toa Payoh, Hougang
 
 # 4. References
 
