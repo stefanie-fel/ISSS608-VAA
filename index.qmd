@@ -2,7 +2,7 @@
 title: "ISSS608-VAA"
 ---
 
-Welcome to my portfolio for <b> Visual Analytics and Applications</b> module in Singapore Management University! 
+Welcome to my portfolio for <b> Visual Analytics and Applications</b> module in Singapore Management University!
 
 In this website, you will find my hands-on exercise, in-class exercise as well as coursework for this course.
 
