@@ -105,7 +105,7 @@ population_data$Sex <- as.numeric(population_data$Sex)
 
 ## 2.2 Data Exploration
 
-### 2.2.1. Gender Ratio
+### 2.2.1. Frequency of Genders 
 
 ```{r}
 gender_distribution <- population_data %>%
