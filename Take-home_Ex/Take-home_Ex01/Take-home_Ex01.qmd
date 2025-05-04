@@ -146,8 +146,6 @@ datatable(pa_count,
           caption = "Number of Subzones per Planning Area")
 ```
 
-We explored the how many planning area Singapore has and subzone each planning area has.
-
 # 3. Visualization
 
 ## 3.1 Age and Gender Distribution of Singapore Residents
