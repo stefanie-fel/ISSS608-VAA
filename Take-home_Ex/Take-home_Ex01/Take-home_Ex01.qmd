@@ -115,7 +115,7 @@ gender_distribution <- population_data %>%
 ggplot(gender_distribution, aes(x = factor(Sex),y=Pop)) +
   geom_bar(stat = "identity", color = "grey30", fill = "steelblue") +
   scale_x_discrete(labels = c("0" = "Male", "1" = "Female")) +
-  labs(x = "Gender", y = "Population", title = "Count of Records by Gender")
+  labs(x = "Gender", y = "Population", title = "Count of Each Gender")
 ```
 
 ### 2.2.2 Distribution of Age 
