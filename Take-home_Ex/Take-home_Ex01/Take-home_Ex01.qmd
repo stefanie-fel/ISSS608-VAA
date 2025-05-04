@@ -1,7 +1,7 @@
 ---
 title: "Take-home_Ex01"
 author: "Stefanie Felicia"
-date: ""
+date: "May, 3 2025"
 date-modified: "last-modified"
 execute: 
   eval: true
@@ -12,11 +12,17 @@ execute:
 
 # 1. Background
 
-background of what I'm doing and objective of the analysis
+Singapore is a country home to more than 5 million population. Though it may be a small country, but understanding its demographic structure and distribution is crucial for assessing its development and planning needs.
 
-A local online media company that publishes daily content on digital platforms is planning to release an article on **demographic structures and distribution of Singapore in 2024**.
+Understanding demographic structure and distribution is vital as helps us to see how a country is doing. The distribution and structure of a country can reveal how developed a country is, through birth rate, death rates, economy and literacy.
 
-## 1.2 The Data
+Additionally, understanding demographics also helps governments, and businesses in order to design policies, allocate resources and infrastructure development and provide public services that are effectively targeted.
+
+## 1.2 Objective 
+
+In this take home exercise, we desire to create demographic structures and distribution of Singapore in 2024.
+
+## 1.3 The Data
 
 The dataset was extracted from <a href = https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data>Singstat</a> under the name <b>Singapore Residents by Planning Area / Subzone, Single Year of Age and Sex, June 2024</b>.
 
@@ -24,13 +30,28 @@ The dataset was extracted from <a href = https://www.singstat.gov.sg/find-data/s
 
 It comprised of 6 variables and 60K records. The dataset recorded the demographics and count of residents who lived in each sub zone and planning area in June 2024.
 
-## 1.3 Load Required Libraries
+## 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(dplyr, tidyverse, scales, forcats, DT)
+pacman::p_load(dplyr, tidyverse, scales, forcats, DT, knitr)
 ```
 
-## 1.4 Import Data
+the library used for this exercise are:
+
+```{r, echo=FALSE}
+table_data <- matrix(c("dplyr", "Grammar of data mainpulation",
+  "tidyverse", "Provide key data transformation functions",
+                       "scales", "Provides internal scaling infrastructure used by ggplot2 to a general framework", 
+                       "forcats", "Tools for working with factors (categorical variable)",
+                       "DT", "Provides R interface to JavaScript library DataTables", 
+                       "knitr", "Provides a tool for dynamic report generation"), 
+                     nrow = 6, byrow = TRUE)
+
+
+kable(table_data, col.names = c("Package Name", "Description"))
+```
+
+## 1.5 Import Data
 
 ```{r, message=TRUE}
 population_data <- read_csv("respopagesex2024.csv")
@@ -46,15 +67,17 @@ head(population_data)
 
 First, we will look if there are duplicates found in the data set.
 
-```{r}
+```{r, eval=TRUE}
 nrow(population_data[duplicated(population_data), ])
 ```
 
-Next, we will check for missing values in the data set.
+As we found no duplicate records in the data set, next we will check for missing values in the data set.
 
-```{r}
+```{r, eval=TRUE}
 sapply(population_data, function(x) sum(is.na(x)))
 ```
+
+As there's no missing values in each column, we will move on to column transformation.
 
 ## 2.1 Column Transformation
 
@@ -71,7 +94,7 @@ population_data$Age <- as.numeric(population_data$Age)
 
 ## Sex
 
-We also want to recode the Sex variable from "Males" to 0 and "Females" to 1, why ?
+We also want to implement dummy encoding to the Sex variable from "Males" to 0 and "Females" to 1:
 
 ```{r}
 population_data$Sex[population_data$Sex == "Females"] <- "1"
@@ -80,37 +103,50 @@ population_data$Sex <- as.numeric(population_data$Sex)
 ```
 :::
 
-Univariate
+## 2.2 Data Exploration
+
+2.2.1.
 
 ```{r}
-ggplot(population_data, aes(x = factor(Sex))) +
-  geom_bar(color = "grey30", fill = "steelblue") +
+gender_distribution <- population_data %>%
+  group_by(Sex) %>%
+  summarise(Pop = sum(Pop), .groups = "drop")
+
+ggplot(gender_distribution, aes(x = factor(Sex),y=Pop)) +
+  geom_bar(stat = "identity", color = "grey30", fill = "steelblue") +
   scale_x_discrete(labels = c("0" = "Male", "1" = "Female")) +
-  labs(x = "Gender", y = "Count", title = "Count of Records by Gender")
+  labs(x = "Gender", y = "Population", title = "Count of Records by Gender")
 ```
+
+### 2.2.2 Distribution of Age 
 
 ```{r}
-ggplot(data=population_data, 
-       aes(x = Age)) +
-  geom_histogram(bins=20, color="gray30", fill="steelblue")+ 
-  labs(title = "Age Distribution of Singapore Resident",
+age_distribution <- population_data %>%
+  group_by(Age) %>%
+  summarise(Pop = sum(Pop), .groups = "drop")
+
+
+
+ggplot(age_distribution, aes(x = Age, y = Pop)) +
+  geom_col(fill = "steelblue", color = "gray30") +
+  labs(title = "Age Distribution of Singapore Residents",
        x = "Age",
-       y = "Count")
+       y = "Population")
 ```
 
-# Variable Selection
+### 2.2.3. Number of Subzone each Planning Area Has
 
-The following variables are used to create visualizations:
+```{r}
+pa_count <- population_data %>%
+  distinct(PA, SZ) %>%              
+  count(PA, name = "number_of_subzones") %>%
+  arrange(desc(number_of_subzones))
+datatable(pa_count, 
+          options = list(pageLength = 10, autoWidth = TRUE),
+          caption = "Number of Subzones per Planning Area")
+```
 
--   Population count (Pop):
-
--   Age:
-
--   Gender (Sex):
-
--   Planning Area (PA):
-
--   Subzone (SZ)
+We explored the how many planning area Singapore has and subzone each planning area has.
 
 # 3. Visualization
 
@@ -162,18 +198,36 @@ ggplot(agg_data, aes(x = age_group, y = Pop, fill = Sex)) +
 ```
 :::
 
-Insight from the visualization:
-
+::: {.callout-tip title="Insight from the visualization"}
 -   Singapore has a higher economically active population (aged 15 – 65) than elderly (aged 65+) and young dependents (aged 0 – 14) in 2024. Thus, we can conclude that Singapore’s population has a stationary pyramid
 
 -   Singapore also has roughly similar proportion of male to female population as well as similar age distribution between male and female.
 
 -   The population also has a high number of elderly, which can indicate an advanced healthcare system and low mortality rate.
+:::
 
 ## 3. 2 Population and Demographics of Residents Living in Each Planning Area
 
 ::: panel-tabset
-## Graph
+## Population of Residents
+
+```{r, eval=FALSE}
+
+
+pop_pa <- population_data %>%
+  group_by(PA) %>%
+  summarise(total_pop = sum(Pop))
+pop_pa$PA <- fct_rev(factor(pop_pa$PA, levels = pop_pa$PA[order(pop_pa$total_pop, decreasing = TRUE)]))
+ggplot(data = pop_pa, aes(x = PA, y = total_pop)) +
+  geom_col(color = "gray30", fill = "steelblue") +
+  labs(
+    title = "Singapore Resident Population by Planning Area",
+    x = "Planning Area",
+    y = "Count"
+  ) +
+  scale_y_continuous(labels = label_comma())+ theme_minimal() +
+  coord_flip()
+```
 
 ```{r, echo=FALSE, fig.height=10, fig.width=8}
 pop_pa <- population_data %>%
@@ -191,33 +245,14 @@ ggplot(data = pop_pa, aes(x = PA, y = total_pop)) +
   coord_flip()
 ```
 
-## Code
+## Demographics of Residents Living in Each Planning Area
 
-```{r, eval=FALSE}
-pop_pa <- population_data %>%
-  group_by(PA) %>%
-  summarise(total_pop = sum(Pop))
-pop_pa$PA <- fct_rev(factor(pop_pa$PA, levels = pop_pa$PA[order(pop_pa$total_pop, decreasing = TRUE)]))
-ggplot(data = pop_pa, aes(x = PA, y = total_pop)) +
-  geom_col(color = "gray30", fill = "steelblue") +
-  labs(
-    title = "Singapore Resident Population by Planning Area",
-    x = "Planning Area",
-    y = "Count"
-  ) +
-  scale_y_continuous(labels = label_comma())+ theme_minimal() +
-  coord_flip()
-```
-:::
-
-Demographics of Residents Living in Each Planning Area
-
-```{r, echo=FALSE}
+```{r, eval=FALSE, message=FALSE}
 
 population_binned <- population_data %>%
   mutate(age_group = cut(
     Age,
-    breaks = c(seq(0, 90, 5), Inf),   # include 90+
+    breaks = c(seq(0, 90, 5), Inf), 
     labels = c(paste(seq(0, 85, 5), seq(4, 89, 5), sep = "-"), "90+"),
     right = FALSE,
     include.lowest = TRUE
@@ -226,7 +261,6 @@ population_binned <- population_data %>%
   summarise(total_pop = sum(Pop), .groups = "drop")
 population_binned_wide <- population_binned %>%
   pivot_wider(names_from = age_group, values_from = total_pop, values_fill = 0)
-population_binned_wide
 population_binned_wide %>%
   datatable(
     caption = "Population by Planning Area and Age Group",
@@ -234,8 +268,29 @@ population_binned_wide %>%
   )
 ```
 
-Insight from in demographics and population distribution:
+```{r, echo=FALSE, message=FALSE}
 
+population_binned <- population_data %>%
+  mutate(age_group = cut(
+    Age,
+    breaks = c(seq(0, 90, 5), Inf),  
+    labels = c(paste(seq(0, 85, 5), seq(4, 89, 5), sep = "-"), "90+"),
+    right = FALSE,
+    include.lowest = TRUE
+  )) %>%
+  group_by(PA, age_group) %>%
+  summarise(total_pop = sum(Pop), .groups = "drop")
+population_binned_wide <- population_binned %>%
+  pivot_wider(names_from = age_group, values_from = total_pop, values_fill = 0)
+population_binned_wide %>%
+  datatable(
+    caption = "Population by Planning Area and Age Group",
+    options = list(pageLength = 10)
+  )
+```
+:::
+
+::: {.callout-tip title="Demographics of Residents per Planning Area"}
 -   Most residents live in Tampines, Bedok, Sengkang, Jurong West, or Woodlands. With each planning area having more than 200,000 residents living in the planning area. This could be
 
 -   There are 13 out of 55 planning areas no residents live in.
@@ -243,6 +298,7 @@ Insight from in demographics and population distribution:
 -   A lot of younger population (aged 0 – 14) lIve in these planning area: Tampines, Sengkang. Punggol, Woodlands, Yishun or Jurong West
 
 -   The following planning areas have higher number of elderly who lives there: Bedok, Bukit Merah, Ang Mo Kio, Toa Payoh, Hougang
+:::
 
 # 4. References
 
