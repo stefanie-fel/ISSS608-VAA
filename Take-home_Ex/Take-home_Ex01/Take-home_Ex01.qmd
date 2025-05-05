@@ -18,7 +18,7 @@ Understanding demographic structure and distribution is vital as helps us to see
 
 Additionally, understanding demographics also helps governments, and businesses in order to design policies, allocate resources and infrastructure development and provide public services that are effectively targeted.
 
-## 1.2 Objective 
+## 1.2 Objective
 
 In this take home exercise, we desire to create demographic structures and distribution of Singapore in 2024.
 
@@ -105,7 +105,7 @@ population_data$Sex <- as.numeric(population_data$Sex)
 
 ## 2.2 Data Exploration
 
-### 2.2.1. Frequency of Genders 
+### 2.2.1. Frequency of Genders
 
 ```{r}
 gender_distribution <- population_data %>%
@@ -118,7 +118,7 @@ ggplot(gender_distribution, aes(x = factor(Sex),y=Pop)) +
   labs(x = "Gender", y = "Population", title = "Count of Each Gender")
 ```
 
-### 2.2.2 Distribution of Age 
+### 2.2.2 Distribution of Age
 
 ```{r}
 age_distribution <- population_data %>%
@@ -301,3 +301,24 @@ population_binned_wide %>%
 # 4. References
 
 1.  <a href=https://www.statology.org/r-count-duplicates/>How to Count Duplicates in R (With Examples)</a>
+
+# Phase 2: Peer Review Visualization
+
+Objective
+
+We are tasked with:
+
+1.  Review a classmate's work
+
+<https://isss608-visualanalytics.netlify.app/take-home_ex/take-home_ex01/take-home_ex01>
+
+what is good about the visualization:
+
+\- the graph is clearly labeled (x-axis, y-axis, title) - good explanation (legends) to help reader understand
+
+\- point 2: each visualization is connected and goes deeper to expound (?) on dependency ratios, instead of general overview of demographics and population structure
+
+\- good use of color -\> using bold colors to emphasize the dependency ratio of elderly and youth, whereas muted colors are used for working age
+
+-   trend lines and reference line can be confusing as it isn't stated what they represent -\> the trend line and bar chart can be seperated into 2 graph because it might overwhelm reader
+-   what is depth (in secodn graph), it's not clearly stated how we can see it in the graph
