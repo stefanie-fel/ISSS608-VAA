@@ -1,0 +1,202 @@
+---
+title: "Hands-on_Ex04c"
+author: "Stefanie Felicia"
+date: "May, 6 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# Getting Started
+
+Objective of this exercise:
+
+-   Learn about uncertainty
+
+-   How to visualize uncertainty with different package (ggplot2, plotly, DT and ggdist) and different visualization techniques (i.e. error bar)
+
+-   Creaye hyptheitical outcome plots (HOPs) by using ungeviz package
+
+# Import Libraries
+
+```{r}
+pacman::p_load(plotly, crosstalk, DT, 
+               ggdist, ggridges, colorspace,
+               gganimate, tidyverse)
+```
+
+In this exercise, we'll be using the following libraries:
+
+-   plotly
+
+-   crosstalk
+
+-   DT
+
+-   ggdist: used to visualize distribution adn uncertainty
+
+-   ggridges
+
+-   colorspace
+
+-   gganimate
+
+-   tidyverse
+
+# Import Data
+
+```{r}
+exam <- read_csv("Exam_data.csv")
+```
+
+# Uncertainty
+
+Main point:
+
+-   Main concept: how much of the visualization we create is realiable since the dataset used **may not fully represent the full population**.
+
+-   However, we can mitigate this by using statistical methods (i.e. confidence interval, credible interval and standard error)
+
+## Visualizing Uncertainty of Point Estimates with ggplot2
+
+Point of estimate is a single best guess for population parameter calculated from sample data (e.g. sample mean, sample SD, etc). Though point of estimate don't tell us how accurate the value, but it tells us how the value might vary from the true value because of sampling variability. These approach are used to express uncertainty:
+
+-   Standard error: standard deviation of sampling distribution
+
+-   Confidence interval: range likely to contain true value
+
+-   Credible interval: probability-based range for parameter
+
+```{r}
+my_sum <- exam %>%
+  group_by(RACE) %>%
+  summarise(
+    n=n(),
+    mean=mean(MATHS),
+    sd=sd(MATHS)
+    ) %>%
+  mutate(se=sd/sqrt(n-1))
+
+knitr::kable(head(my_sum), format = 'html')
+```
+
+::: callout_tip
+What's happening in the code:
+
+-   `group_by()` is used in line 2 to group data by RACE
+
+-   `summarize()` is used to generate the count, mean and SD of the Maths scores
+
+-   `mutate()` is used to derive standard error of Maths score by RACE
+
+-   the knitr package display the tibble data frame into table
+:::
+
+## Plotting Standard Error Bars of Point Estimates
+
+We can plot error bar by using `geom_errorbar()` which will compute the formula of mean - standard error for bottom of error bar (`ymin` argument) and mean + standard error for the top error bar (`ymax` argument).
+
+```{r}
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=RACE, 
+        ymin=mean-se, 
+        ymax=mean+se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  ggtitle("Standard error of mean maths score by race")
+```
+
+## Plotting Confidence Interval of Point Estimates
+
+We can plot the confidence interval instead of standard error like below.
+
+```{r}
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=reorder(RACE, -mean), 
+        ymin=mean-1.96*se, 
+        ymax=mean+1.96*se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  labs(x = "Maths score",
+       title = "95% confidence interval of mean maths score by race")
+```
+
+::: callout_tip
+What's the difference between this code and the one before:
+
+-   the `ymax` and `ymin` arguments are different depending on the measure used. The code above factors in 1.96 (captures 95% of the area under the curve)
+
+-   The code `reorder(RACE, -mean)` reorders the error bar by the average Maths score
+:::
+
+## Making Point Estimates Visualization Interactive 
+
+```{r}
+shared_df = SharedData$new(my_sum)
+
+bscols(widths = c(4,8),
+       ggplotly((ggplot(shared_df) +
+                   geom_errorbar(aes(
+                     x=reorder(RACE, -mean),
+                     ymin=mean-2.58*se, 
+                     ymax=mean+2.58*se), 
+                     width=0.2, 
+                     colour="black", 
+                     alpha=0.9, 
+                     size=0.5) +
+                   geom_point(aes(
+                     x=RACE, 
+                     y=mean, 
+                     text = paste("Race:", `RACE`, 
+                                  "<br>N:", `n`,
+                                  "<br>Avg. Scores:", round(mean, digits = 2),
+                                  "<br>95% CI:[", 
+                                  round((mean-2.58*se), digits = 2), ",",
+                                  round((mean+2.58*se), digits = 2),"]")),
+                     stat="identity", 
+                     color="red", 
+                     size = 1.5, 
+                     alpha=1) + 
+                   xlab("Race") + 
+                   ylab("Average Scores") + 
+                   theme_minimal() + 
+                   theme(axis.text.x = element_text(
+                     angle = 45, vjust = 0.5, hjust=1)) +
+                   ggtitle("99% Confidence interval of average /<br>maths scores by race")), 
+                tooltip = "text"), 
+       DT::datatable(shared_df, 
+                     rownames = FALSE, 
+                     class="compact", 
+                     width="100%", 
+                     options = list(pageLength = 10,
+                                    scrollX=T), 
+                     colnames = c("No. of pupils", 
+                                  "Avg Scores",
+                                  "Std Dev",
+                                  "Std Error")) %>%
+         formatRound(columns=c('mean', 'sd', 'se'),
+                     digits=2))
+```

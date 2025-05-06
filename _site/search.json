@@ -319,7 +319,7 @@
     "href": "Hands-on_Ex/Hands-on_Ex04/Hands_on_Ex04a.html",
     "title": "Hands-on Exrecise 4a",
     "section": "",
-    "text": "Objective of this exercise:\n\nLearn about new graphs: ridgeline plot and raincloud plot to plot uncertainty\nUse ggridge library to plot ridgeline plot and ggdist library to plot raincloud plot\n\n\npacman::p_load(ggdist, ggridges, ggthemes,\n               colorspace, tidyverse)\n\nThe libraries used in this exercise would be:\n\nggridges: create ridgeline plots in ggplot2\nggdist: provide ggplot2 geoms and stats designed for visualizing distribution and uncertainty\ntidyverse\nggthemes\ncolorspace: toolbox for manipulating anf assessing colors and palettes"
+    "text": "Objective of this exercise:\n\nLearn about new graphs: ridgeline plot and raincloud plot to plot uncertainty\nUse ggridge library to plot ridgeline plot and ggdist library to plot raincloud plot\n\n\n\npacman::p_load(ggdist, ggridges, ggthemes,\n               colorspace, tidyverse)\n\nThe libraries used in this exercise would be:\n\nggridges: create ridgeline plots in ggplot2\nggdist: provide ggplot2 geoms and stats designed for visualizing distribution and uncertainty\ntidyverse\nggthemes\ncolorspace: toolbox for manipulating anf assessing colors and palettes"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands_on_Ex04a.html#ridgeline-plot",
@@ -376,5 +376,40 @@
     "title": "Hands-on Exrcise 4b",
     "section": "Bayes Factor:",
     "text": "Bayes Factor:\nMain point:\n\nDefinition: is a ratio that quantifies how much more likely a data is under one hypothesis over the other (\\(H_1\\) over \\(H_0\\))\nIt uses the the following formula to calculate:\nBayes Factor = \\(\\frac{P(\\text{Data} \\mid H_1)}{P(\\text{Data} \\mid H_0)}\\)\nHow to interpret the result:\n\n\n\n\n\nIf result is…\nWhat does it mean\n\n\n\n\n&gt; 100\nExtreme evidence for H1\n\n\n30 - 100\nVery strong evidence for H1\n\n\n10 - 30\nStrong evidence for H1\n\n\n3 - 10\nModerate evidence of H1\n\n\n1 - 3\nUnreliable evidence for H1\n\n\n1\nNo evidence\n\n\n0.333 - 1\nUnreliable evidence for H1\n\n\n0.333 - 0.1\nModerate evidence for H1\n\n\n0.1 - 0.0333\nStrong evidence for H1\n\n\n0.0333 - 0.001\nVery strong evidence for H1\n\n\n&lt; 0.001\nExtreme evidence for H1"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html",
+    "title": "Hands-on_Ex04c",
+    "section": "",
+    "text": "Objective of this exercise:\n\nLearn about uncertainty\nHow to visualize uncertainty with different package (ggplot2, plotly, DT and ggdist) and different visualization techniques (i.e. error bar)\nCreaye hyptheitical outcome plots (HOPs) by using ungeviz package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#visualizing-uncertainty-of-point-estimates-with-ggplot2",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#visualizing-uncertainty-of-point-estimates-with-ggplot2",
+    "title": "Hands-on_Ex04c",
+    "section": "Visualizing Uncertainty of Point Estimates with ggplot2",
+    "text": "Visualizing Uncertainty of Point Estimates with ggplot2\nPoint of estimate is a single best guess for population parameter calculated from sample data (e.g. sample mean, sample SD, etc). Though point of estimate don’t tell us how accurate the value, but it tells us how the value might vary from the true value because of sampling variability. These approach are used to express uncertainty:\n\nStandard error: standard deviation of sampling distribution\nConfidence interval: range likely to contain true value\nCredible interval: probability-based range for parameter\n\n\nmy_sum &lt;- exam %&gt;%\n  group_by(RACE) %&gt;%\n  summarise(\n    n=n(),\n    mean=mean(MATHS),\n    sd=sd(MATHS)\n    ) %&gt;%\n  mutate(se=sd/sqrt(n-1))\n\nknitr::kable(head(my_sum), format = 'html')\n\n\n\n\nRACE\nn\nmean\nsd\nse\n\n\n\n\nChinese\n193\n76.50777\n15.69040\n1.132357\n\n\nIndian\n12\n60.66667\n23.35237\n7.041005\n\n\nMalay\n108\n57.44444\n21.13478\n2.043177\n\n\nOthers\n9\n69.66667\n10.72381\n3.791438\n\n\n\n\n\n\n\n\nWhat’s happening in the code:\n\ngroup_by() is used in line 2 to group data by RACE\nsummarize() is used to generate the count, mean and SD of the Maths scores\nmutate() is used to derive standard error of Maths score by RACE\nthe knitr package display the tibble data frame into table"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#plotting-standard-error-bars-of-point-estimates",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#plotting-standard-error-bars-of-point-estimates",
+    "title": "Hands-on_Ex04c",
+    "section": "Plotting Standard Error Bars of Point Estimates",
+    "text": "Plotting Standard Error Bars of Point Estimates\nWe can plot error bar by using geom_errorbar() which will compute the formula of mean - standard error for bottom of error bar (ymin argument) and mean + standard error for the top error bar (ymax argument).\n\nggplot(my_sum) +\n  geom_errorbar(\n    aes(x=RACE, \n        ymin=mean-se, \n        ymax=mean+se), \n    width=0.2, \n    colour=\"black\", \n    alpha=0.9, \n    linewidth=0.5) +\n  geom_point(aes\n           (x=RACE, \n            y=mean), \n           stat=\"identity\", \n           color=\"red\",\n           size = 1.5,\n           alpha=1) +\n  ggtitle(\"Standard error of mean maths score by race\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#plotting-confidence-interval-of-point-estimates",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#plotting-confidence-interval-of-point-estimates",
+    "title": "Hands-on_Ex04c",
+    "section": "Plotting Confidence Interval of Point Estimates",
+    "text": "Plotting Confidence Interval of Point Estimates\nWe can plot the confidence interval instead of standard error like below.\n\nggplot(my_sum) +\n  geom_errorbar(\n    aes(x=reorder(RACE, -mean), \n        ymin=mean-1.96*se, \n        ymax=mean+1.96*se), \n    width=0.2, \n    colour=\"black\", \n    alpha=0.9, \n    linewidth=0.5) +\n  geom_point(aes\n           (x=RACE, \n            y=mean), \n           stat=\"identity\", \n           color=\"red\",\n           size = 1.5,\n           alpha=1) +\n  labs(x = \"Maths score\",\n       title = \"95% confidence interval of mean maths score by race\")\n\n\n\n\n\n\n\n\n\nWhat’s the difference between this code and the one before:\n\nthe ymax and ymin arguments are different depending on the measure used. The code above factors in 1.96 (captures 95% of the area under the curve)\nThe code reorder(RACE, -mean) reorders the error bar by the average Maths score"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#making-point-estimates-visualization-interactive",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#making-point-estimates-visualization-interactive",
+    "title": "Hands-on_Ex04c",
+    "section": "Making Point Estimates Visualization Interactive",
+    "text": "Making Point Estimates Visualization Interactive\n\nshared_df = SharedData$new(my_sum)\n\nbscols(widths = c(4,8),\n       ggplotly((ggplot(shared_df) +\n                   geom_errorbar(aes(\n                     x=reorder(RACE, -mean),\n                     ymin=mean-2.58*se, \n                     ymax=mean+2.58*se), \n                     width=0.2, \n                     colour=\"black\", \n                     alpha=0.9, \n                     size=0.5) +\n                   geom_point(aes(\n                     x=RACE, \n                     y=mean, \n                     text = paste(\"Race:\", `RACE`, \n                                  \"&lt;br&gt;N:\", `n`,\n                                  \"&lt;br&gt;Avg. Scores:\", round(mean, digits = 2),\n                                  \"&lt;br&gt;95% CI:[\", \n                                  round((mean-2.58*se), digits = 2), \",\",\n                                  round((mean+2.58*se), digits = 2),\"]\")),\n                     stat=\"identity\", \n                     color=\"red\", \n                     size = 1.5, \n                     alpha=1) + \n                   xlab(\"Race\") + \n                   ylab(\"Average Scores\") + \n                   theme_minimal() + \n                   theme(axis.text.x = element_text(\n                     angle = 45, vjust = 0.5, hjust=1)) +\n                   ggtitle(\"99% Confidence interval of average /&lt;br&gt;maths scores by race\")), \n                tooltip = \"text\"), \n       DT::datatable(shared_df, \n                     rownames = FALSE, \n                     class=\"compact\", \n                     width=\"100%\", \n                     options = list(pageLength = 10,\n                                    scrollX=T), \n                     colnames = c(\"No. of pupils\", \n                                  \"Avg Scores\",\n                                  \"Std Dev\",\n                                  \"Std Error\")) %&gt;%\n         formatRound(columns=c('mean', 'sd', 'se'),\n                     digits=2))"
   }
 ]

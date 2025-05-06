@@ -1,6 +1,7 @@
 ---
 title: "Hands-on Exercise 3a"
-date: "May 2, 2025"
+author: "Stefanie Felicia"
+date: "April 30, 2025"
 date-modified: "last-modified"
 execute: 
   eval: true
@@ -9,146 +10,365 @@ execute:
   freeze: true
 ---
 
-# How Does Animation Work in Data Visualization ?
-
-When creating animation, the plot doesn't move. Instead, individual plots are stitched together like a video. Each frame is a different plot when conveying motion, which is built using relevant subset of the aggregate data. Then the subset drives the flow of the animation when stitched back together.
-
-![](/images/hands_on%203%20illustration.png)
-
-Terminologies in this Exercise:
-
--   Frame: each frame represent different point in time or category. When the frame changes, the data point also changes which represent the updated version of data.
-
--   Animation Attributes: the settings that control how the animation behaves e.g. duration of each frame or which plot would be the start of animation).
-
 # Getting Started
 
-In this exercise we'll be using the following libraries:
+In this exercise, we'll be using the following libraries:
 
--   <a href=https://gganimate.com/>gganimate</a>: extends grammar of graphics implemented by ggplot2 to include animation.
+-   ggiraph: allows user to create dynamic ggplot graphs
 
--   <a href=https://www.rdocumentation.org/packages/gifski/versions/1.32.0-1/topics/gifski>gifski</a>: converts image frame to high quality GIF.
+-   plotly: create interactive and publication-quality graphs
 
--   gapminder: is an excerpt of data available at gapminder.org. We'll be using the country_colors scheme in this exercise.
-
--   plotly
+-   DT: provide interface to the JavaScript library called DataTables
 
 -   tidyverse
 
-```{r}
-pacman::p_load(readxl, gifski, gapminder,
-               plotly, gganimate, tidyverse)
-```
-
-# Import Data
+-   patchwork
 
 ```{r}
-col <- c("Country", "Continent")
-globalPop <- read_xls("GlobalPopulation.xls",
-                      sheet="Data") %>%
-  mutate_at(col, as.factor) %>%
-  mutate(Year = as.integer(Year))
+pacman::p_load(ggiraph, plotly, patchwork, DT, tidyverse)
 ```
 
-::: {.callout-tip title="How to extract data from .xls file"}
-1.  use \`read_xls\` instead of `read_csv`
+# Import data
 
-2.  use `mutate_at()` to target specific **columns** to apply function (convert variable, numeric transformation, string transformation, etc).
+```{r}
+exam_data <- read_csv("Exam_data.csv")
+```
 
-3.  use `mutate()` to modify or add **column**
+# Exploring Interactive Data using ggiraph
+
+We can create interactive graphs with ggiraph by utilizing ggplot geometries. ggplot geometries understand 3 arguments:
+
+-   Tooltip: a small message pops up when user hovers over elements.
+
+-   Onclick: contain JavaScript functions that would be executed when the graph is clicked.
+
+-   Data_id: contain an id to be associated with elements.
+
+## Tooltip Argument
+
+The code chunk will plot interactive statistical graph using ggiraph. First, ggplot object will be created and then \`girafe()\` of ggiraph will create interactive svg object,
+
+```{r}
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = ID),
+    stackgroups = TRUE, 
+    binwidth = 1, 
+    method = "histodot") +
+  scale_y_continuous(NULL, 
+                     breaks = NULL)
+girafe(
+  ggobj = p,
+  width_svg = 6,
+  height_svg = 6*0.618
+)
+```
+
+::: callout-tip
+Note that different from what we've learned before we don't use `geom_dotplot()` like we did on Hands On Exercise 1, instead we use `geom_dotplot_interactive()` to create the basic graph.
 :::
 
-# Animate Visualization using gganimate
+### Display Multiple Information on Tooltip
 
-There are a few arguments can be used in gganimate to animate visualizations, such as:\
-transition\_\*(): defines how data should be spread out and how it relates to itself across time.
-
--   `view_*()`: defines how the axes (zoom, pan) move during the animation (controls what part fo the plot is visible and who it changes).
-
--   `shadow_*()`: defines how data from other points should be presented in the given point in time.
-
--   `enter_*()`/`exit_*()` : defines how data goes in and goes out during animation.
-
--   `ease_aes()`: controls the style of the movement fo the animation
-
-## Example: Build Population Bubble Plot
-
-In this example, we'll build a bubble plot uisng ggplot2.
+Content in tooltip can be customized by including a list object like in below code chunk.
 
 ```{r}
-ggplot(globalPop, aes(x = Old, y = Young, 
-                      size = Population, 
-                      colour = Country)) +
-  geom_point(alpha = 0.7, 
-             show.legend = FALSE) +
-  scale_colour_manual(values = country_colors) +
-  scale_size(range = c(2, 12)) +
-  labs(title = 'Year: {frame_time}', 
-       x = '% Aged', 
-       y = '% Young') 
+exam_data$tooltip <- c(paste0(     
+  "Name = ", exam_data$ID,         
+  "\n Class = ", exam_data$CLASS)) 
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(
+    aes(tooltip = exam_data$tooltip), 
+    stackgroups = TRUE,
+    binwidth = 1,
+    method = "histodot") +
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(
+  ggobj = p,
+  width_svg = 8,
+  height_svg = 8*0.618
+)
 ```
 
-## Animated Bubble Plot
+The first line appends a new column using`$tooltip` to the exam_data dataset, whereas the `c(paste0(..)` combines strings to display when user hover on the graph.
 
-We can animate the plot by adding to the code:
+### Customize Style in Tooltip
 
--   `transition_time()` to create transition through the YEAR variable (animation moves as the year changes)
-
--   `ease_aes()` is used to control the of aesthetics. The default is `linear`, but we can choose from quadratic, cubic, quartic, quintic, sine, circular, exponential, elastic, back and bounce.
+We can customize the style (e.g. background opacity, duration of transition, or use extra css for customization, etc) by using `opts_tooltip()` function. In this example, we'll change the background color of `girapfe()` object from black to white, black font color and bold font to make it easier to see than a black background color since the dotplot also has black color.
 
 ```{r}
-ggplot(globalPop, aes(x = Old, y = Young, 
-                      size = Population, 
-                      colour = Country)) +
-  geom_point(alpha = 0.7, 
-             show.legend = FALSE) +
-  scale_colour_manual(values = country_colors) +
-  scale_size(range = c(2, 12)) +
-  labs(title = 'Year: {frame_time}', 
-       x = '% Aged', 
-       y = '% Young') +
-  transition_time(Year) +       
-  ease_aes('linear')        
+tooltip_css <- "background-color:white; #<<
+font-style:bold; color:black;" #<<
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(tooltip = ID),                   
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +               
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(                                  
+  ggobj = p,                             
+  width_svg = 6,                         
+  height_svg = 6*0.618,
+  options = list(    #<<
+    opts_tooltip(    #<<
+      css = tooltip_css)) #<<
+)  
 ```
 
-# Animate Visualization with Plotly (ggplotly())
+### Display Statistics using tooltip
 
-`ggplotly()` supports key frame animations through `frame` argument.
+It is also possible to display other information, e.g. statistics. In this example, the tooltip calculates the average and 90% of confidence interval and it will be displayed when the mouse hovers onto the bar graph:
 
 ```{r}
-gg <- ggplot(globalPop, aes(
-  x = Old, 
-  y = Young, 
-  size = Population, 
-  color = Continent, 
-  frame = Year, 
-  text = Country
-)) +
-  geom_point(alpha = 0.7) +
-  scale_size(range = c(2, 10)) +  
-  theme_minimal()
+tooltip <- function(y, ymax, accuracy = .01) {
+  mean <- scales::number(y, accuracy = accuracy)
+  sem <- scales::number(ymax - y, accuracy = accuracy)
+  paste("Mean maths scores:", mean, "+/-", sem)
+}
 
-# Convert to interactive plotly plot
-ggplotly(gg, tooltip = "text")
+gg_point <- ggplot(data=exam_data, 
+                   aes(x = RACE),
+) +
+  stat_summary(aes(y = MATHS, 
+                   tooltip = after_stat(
+                     tooltip(y, ymax))),  
+    fun.data = "mean_se", 
+    geom = GeomInteractiveCol,  
+    fill = "light blue"
+  ) +
+  stat_summary(aes(y = MATHS),
+    fun.data = mean_se,
+    geom = "errorbar", width = 0.2, size = 0.2
+  )
+
+girafe(ggobj = gg_point,
+       width_svg = 8,
+       height_svg = 8*0.618)
 ```
 
-# Animate Visualization with Plotly (plot_ly())
+## Interactive Feature using data_id
 
-`plot_ly()` also supports key frame animations through `frame` argument.
+Another way to incorporate interactivity in graph is by using `data_id`. `data_id` is used to assign unique identifier to each graphical element. It's usually used to group elements for hover or election. In this code chunk, it assigns each dot of the ID to its CLASS, so when user hover to a particular CLASS, data point with the same CLASS will be highlighted together.
 
 ```{r}
-bp <- globalPop %>%
-  plot_ly(x = ~Old, 
-          y = ~Young, 
-          size = ~Population, 
-          color = ~Continent,
-          sizes = c(2, 100),
-          frame = ~Year, 
-          text = ~Country, 
-          hoverinfo = "text",
-          type = 'scatter',
-          mode = 'markers'
-          ) %>%
-  layout(showlegend = FALSE)
-bp
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(   
+    aes(data_id = CLASS), 
+    stackgroups = TRUE,   
+    binwidth = 1,         
+    
+    method = "histodot") + scale_y_continuous(NULL,               breaks = NULL)
+
+girafe(                 
+  ggobj = p,              
+  width_svg = 6,          
+  height_svg = 6*0.618    
+)      
 ```
+
+## Customizing Style of data_id
+
+It is also possible to change the color of the hover effect in data_id. By default, the color orange as seen previously, but the color can be changed using `opts_hover` which changes the color of the dots. Additionally, we can add `opts_hover_inv` to change the style of other elements that are not being hovered.
+
+```{r}
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(tooltip = CLASS, 
+        data_id = CLASS),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +               
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+girafe(                                  
+  ggobj = p,                             
+  width_svg = 6,                         
+  height_svg = 6*0.618,
+  options = list(                        
+    opts_hover(css = "fill: #202020;"),  
+    opts_hover_inv(css = "opacity:0.2;") 
+  )                                        
+)               
+```
+
+## Click Effect with Onclick
+
+`onlick` argument will allow user who click on the graph to be redirected according to link provided on the `onclick` argument.
+
+```{r}
+exam_data$onclick <- sprintf("window.open(\"%s%s\")",
+"https://www.moe.gov.sg/schoolfinder?journey=Primary%20school",
+as.character(exam_data$ID))
+
+p <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(onclick = onclick),              
+    stackgroups = TRUE,  
+    binwidth = 1,         
+    method = "histodot") +   
+  scale_y_continuous(NULL,
+ breaks = NULL)
+girafe(                   
+  ggobj = p,            
+  width_svg = 6,          
+  height_svg = 6*0.618) 
+```
+
+### Coordinated graphs using ggiraph and patchwork
+
+```{r, echo=TRUE}
+p1 <- ggplot(data=exam_data, 
+       aes(x = MATHS)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") +  
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+p2 <- ggplot(data=exam_data, 
+       aes(x = ENGLISH)) +
+  geom_dotplot_interactive(              
+    aes(data_id = ID),              
+    stackgroups = TRUE,                  
+    binwidth = 1,                        
+    method = "histodot") + 
+  coord_cartesian(xlim=c(0,100)) + 
+  scale_y_continuous(NULL,               
+                     breaks = NULL)
+
+girafe(code = print(p1 + p2), 
+       width_svg = 6,
+       height_svg = 3,
+       options = list(
+         opts_hover(css = "fill: #202020;"),
+         opts_hover_inv(css = "opacity:0.2;")
+         )
+       ) 
+```
+
+# Interactive Visualization Using plotly
+
+There are two ways to create interactive graph by using plotly:
+
+-   `plot_ly()` : used to build interactive plots directly from scratch using Plotly instead of ggplot2
+
+-   `ggplotly()` : convert existing ggplot object into interactive Plotly plot
+
+### Interactive Graph using plot_ly()
+
+Another way we can incorporate interactivity in graohs is by using plot_ly(). In this example, we build a scatterplot with MATHS over ENGLISH.
+
+```{r}
+plot_ly(data = exam_data, 
+             x = ~MATHS, 
+             y = ~ENGLISH)
+```
+
+::: {.callout-tip title="Fun fact"}
+Interestingly, `plot_ly()` guesses what graph type we want build based on the variable. So technically, we can build a graph without specifying what graph we want to build. But we can specify what graph we want to build by adding <a href = https://www.rdocumentation.org/packages/plotly/versions/4.10.4/topics/plot_ly>`type`</a> argument.
+:::
+
+### Customize Styles in plot_ly()
+
+We can customize the style of plot_ly() by adding customization to axes and legend, color of charts, or even add theme to the plots (for more information, refer to the <a href=https://plotly.com/r/styling-figures/>documentation</a>). In this example, we add color to the scatterplot based on the race column.
+
+```{r}
+plot_ly(data = exam_data, 
+        x = ~ENGLISH, 
+        y = ~MATHS, 
+        color = ~RACE)
+```
+
+### Interactive Graph using ggplotly()
+
+In this example, we create interactive plots by using ggplotly on existing ggplot.
+
+```{r}
+p <- ggplot(data=exam_data, 
+            aes(x = MATHS,
+                y = ENGLISH)) +
+  geom_point(size=1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+ggplotly(p)
+```
+
+### Multiple Graph using plotly
+
+In this example, to merge multiple graph similar to Hands-on Exercise 2, the following steps are used:
+
+-   `highlight_key()` of plotly package is used as shared data to enable linked interactivity between plots. When this function is used, it craetes an object of class crosstalk::SharedData.
+
+-   create scatterplot using ggplot2 function
+
+-   `subplot()` of plotly package is used to place them next to each other
+
+```{r}
+d <- highlight_key(exam_data)
+p1 <- ggplot(data=d, 
+            aes(x = MATHS,
+                y = ENGLISH)) +
+  geom_point(size=1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+
+p2 <- ggplot(data=d, 
+            aes(x = MATHS,
+                y = SCIENCE)) +
+  geom_point(size=1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+subplot(ggplotly(p1),
+        ggplotly(p2))
+```
+
+## Interactive Graph using crosstalk
+
+Crosstalk is an add-on to the htmlwidgets package that allows cross-widget interactions (linked brushing and filtering).
+
+### Interactive Data Visualization using DT Package
+
+DT package creates interactive DataTables (through JavaScript library), which renders a HTML data table. Users can filter, highlight rows, link table to other widgets, etc. In this example, we can display all of data in the dataset.
+
+```{r}
+DT::datatable(exam_data, class= "compact")
+```
+
+### Linked Brushing with crosstalk
+
+```{r}
+d <- highlight_key(exam_data) 
+p <- ggplot(d, 
+            aes(ENGLISH, 
+                MATHS)) + 
+  geom_point(size=1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+
+gg <- highlight(ggplotly(p),        
+                "plotly_selected")  
+
+crosstalk::bscols(gg,               
+                  DT::datatable(d), 
+                  widths = 5)   
+```
+
+As can be seen, as user filter using the search bar, the graph is linked. What we can learn from this example:
+
+-   `use highlight()` : add linked brushing functionality (note: it only works for Plotly plots)
+
+-   use `bscols()` : arranges widget side by side using bootstrap\

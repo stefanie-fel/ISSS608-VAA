@@ -18,6 +18,8 @@ Objective of this exercise:
 
 -   Use ggridge library to plot ridgeline plot and ggdist library to plot raincloud plot
 
+    # Import Libraries
+
 ```{r}
 pacman::p_load(ggdist, ggridges, ggthemes,
                colorspace, tidyverse)

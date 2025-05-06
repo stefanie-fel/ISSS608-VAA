@@ -116,7 +116,7 @@ ggbetweenstats(
 
 Note: in this example, we use the non-parametric test
 
-In the next example, we can also build ANOVA test using English scoer segregated by race.
+In the next example, we can also build ANOVA test using English score segregated by race.
 
 ```{r}
 ggbetweenstats(
@@ -134,6 +134,44 @@ ggbetweenstats(
 
 The following is the overall group comparisons tests we can do with ggbetweenstats():
 
+![](/images/overall%20tests.png)
+
+The following section lists the effect size (measuring how great the effect is and not just if it's statistically significant) and confidence interval that are available for each type of test available above:
+
 ![](/images/overall tests.png)
 
-Whereas, the following undefined
+The next section focus on the multiple pairwise comparison test (to find statistically significant difference between groups):
+
+![](/images/pairwise.png)
+
+# Exploring ggscatterstats() Package
+
+Test of significant correlation is used to measure the strength and direction of linear relationship (used for numerical variables). In this example, we will be building **significant test of correlation** of English and Maths score.
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = FALSE,
+  )
+```
+
+# Exploring ggbarstats() Package
+
+The test of association (dependence) is used to test whether 2 categorical variables are associated or independent. By default, it will test using chi-square. In this example, we'll be building **test of dependence (association)** with ggbarstats().
+
+```{r}
+exam1 <- exam %>% 
+  mutate(MATHS_bins = 
+           cut(MATHS, 
+               breaks = c(0,60,75,85,100))
+)
+ggbarstats(exam1, 
+           x = MATHS_bins, 
+           y = GENDER)
+```
+
+::: callout_tip
+What's happening in this code: the `cut()` part of the code bins Maths score into 4 different scores (0 - 60, \>60 - 75, \>75 - 85, \>85 - 100)
+:::
