@@ -1,0 +1,139 @@
+---
+title: "Hands-on Exrcise 4b"
+author: "Stefanie Felicia"
+date: "May, 6 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# Getting Started
+
+Objective of this exercise:
+
+-   Use ggstatsplot to create visual graphics with statistic information in the plot
+
+-   Use performance package to visualize model diagnostics
+
+-   Use parameter package to visualize params
+
+# Import Libraries
+
+```{r}
+pacman::p_load(ggstatsplot, tidyverse)
+```
+
+In this exercise, we'll be using the following libraries:
+
+-   ggstatsplot: extension of ggplot2 for creating graphics with details from statistical tests included in the plots
+
+-   tidyverse
+
+# Import Data
+
+```{r}
+exam <- read_csv("Exam_data.csv")
+exam
+```
+
+# Exploring gghiststats() Package
+
+We can create one-sample test using gghiststats(). In this example, we'll be visualizing the one-sample test of English scores.
+
+```{r}
+set.seed(1234)
+
+gghistostats(
+  data = exam,
+  x = ENGLISH,
+  type = "bayes",
+  test.value = 60,
+  xlab = "English scores"
+)
+
+```
+
+::: callout_tip
+How to read the statistic detail:
+
+-   $\log_e(\text{BF}_{01})$ refer to the log of the Bayes Factor
+
+-   $\hat{\delta}^{\text{posterior}}_{\text{ETI}}$ refers to the posterior estimate of the effect size after looking the data
+
+-   $\text{CI}_{95\%}$ refer to the 95% Bayesian credible interval for size delta
+
+-   \$r\^{\text{JZS}}\_{\text{Cauchy}}\$ determines the spread of prior on the effect size of delta
+
+-   $\hat{\mu}_{\text{MAP}} = 74.74$ refers to the population mean
+:::
+
+## Bayes Factor:
+
+Main point:
+
+-   Definition: is a ratio that quantifies how much more likely a data is under one hypothesis over the other ($H_1$ over $H_0$)
+
+-   It uses the the following formula to calculate:
+
+    Bayes Factor = $\frac{P(\text{Data} \mid H_1)}{P(\text{Data} \mid H_0)}$
+
+-   How to interpret the result:
+
+    ```{r, echo=FALSE}
+    pacman::p_load(knitr)
+    table_data <- matrix(c("> 100", "Extreme evidence for H1",
+      "30 - 100", "Very strong evidence for H1",
+                           "10 - 30", "Strong evidence for H1", 
+                           "3 - 10", "Moderate evidence of H1",
+                           "1 - 3", "Unreliable evidence for H1",
+      "1", "No evidence",
+                           "0.333 - 1", "Unreliable evidence for H1", 
+      "0.333 - 0.1", "Moderate evidence for H1",
+      "0.1 - 0.0333", "Strong evidence for H1",
+     "0.0333 - 0.001", "Very strong evidence for H1", "< 0.001", "Extreme evidence for H1" ), 
+                         nrow = 11, byrow = TRUE)
+
+
+    kable(table_data, col.names = c("If result is... ", "What does it mean"))
+    ```
+
+# Exploring ggbetweenstats() Package
+
+We can build the visual of two-sample test by using ggbetweenstats(). In this example, we'll be visualizing the one-sample test of Maths scores segregated by gender.
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "np",
+  messages = FALSE
+)
+```
+
+Note: in this example, we use the non-parametric test
+
+In the next example, we can also build ANOVA test using English scoer segregated by race.
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = RACE, 
+  y = ENGLISH,
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "s",
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+The following is the overall group comparisons tests we can do with ggbetweenstats():
+
+![](/images/overall tests.png)
+
+Whereas, the following undefined
