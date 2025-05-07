@@ -56,7 +56,7 @@ gghistostats(
 
 ```
 
-::: callout_tip
+::: callout-tip
 How to read the statistic detail:
 
 -   $\log_e(\text{BF}_{01})$ refer to the log of the Bayes Factor
@@ -138,7 +138,7 @@ The following is the overall group comparisons tests we can do with ggbetweensta
 
 The following section lists the effect size (measuring how great the effect is and not just if it's statistically significant) and confidence interval that are available for each type of test available above:
 
-![](/images/overall tests.png)
+![](/images/overall%20tests.png)
 
 The next section focus on the multiple pairwise comparison test (to find statistically significant difference between groups):
 
@@ -172,6 +172,6 @@ ggbarstats(exam1,
            y = GENDER)
 ```
 
-::: callout_tip
-What's happening in this code: the `cut()` part of the code bins Maths score into 4 different scores (0 - 60, \>60 - 75, \>75 - 85, \>85 - 100)
+::: callout-tip
+What's happening in this code: the `cut()` part of the code bins Maths score into 4 different scores (0 - 60, >60 - 75, >75 - 85, >85 - 100)
 :::

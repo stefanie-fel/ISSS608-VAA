@@ -18,7 +18,7 @@ Objective of this exercise:
 
 -   Use ggridge library to plot ridgeline plot and ggdist library to plot raincloud plot
 
-    # Import Libraries
+# Import Libraries
 
 ```{r}
 pacman::p_load(ggdist, ggridges, ggthemes,
@@ -53,7 +53,7 @@ Main point:
 
 -   Data visualization technique used to study the distribution of numeric variable for several variable
 
--   When should to use it: when a variable has 3 to 4 groups or more, and you want to compare the distribution of the groups
+-   When to use it: when a variable has 3 to 4 groups or more, and you want to compare the distribution of the groups
 
 -   Note: rank them according to the pattern (e.g. highest to lowest or lowest to highest) to provide better insight
 
@@ -155,7 +155,10 @@ ggplot(exam,
 ```
 :::
 
-We can also map out probabilities directly to the ridgeline plot using `stat_density_ridges()` ::: panel-tabset \## The graph
+We can also **map out probabilities directly** to the ridgeline plot using `stat_density_ridges()`
+
+::: panel-tabset
+## The graph
 
 ```{r, echo=FALSE}
 ggplot(exam,
@@ -183,16 +186,16 @@ ggplot(exam,
                        direction = -1) +
   theme_ridges()
 ```
-
 :::
 
-::: callout_tip
+::: callout-tip
 Add `calc_ecdf=TRUE` in the `stat_density_ridges()`
 :::
 
-Additionally, we can also color the ridgeline plot using quantile with `geom_density_ridges_gradient()` like below.
+Additionally, we can also color the ridgeline plot **using quantile** with `geom_density_ridges_gradient()` like below.
 
-::: panel-tabset \## The graph
+::: panel-tabset
+## The graph
 
 ```{r, echo=FALSE}
 ggplot(exam,
@@ -225,8 +228,12 @@ ggplot(exam,
   scale_fill_viridis_d(name = "Quartiles") +
   theme_ridges()
 ```
+:::
 
-::: Instead of using quantile number like the graph above, we can also specify the quantiles into ranges like below. ::: panel-tabset \## The graph
+Instead of using quantile number like the graph above, we can also specify the quantiles into ranges like below.
+
+::: panel-tabset
+## The graph
 
 ```{r, echo=FALSE}
 ggplot(exam,
@@ -267,8 +274,9 @@ ggplot(exam,
   ) +
   theme_ridges()
 ```
+:::
 
-::: \## Raincloud Plot
+## Raincloud Plot
 
 Main Point:
 
@@ -276,43 +284,48 @@ Main Point:
 
 2.  It combines boxplot, density plot and scatterplot to give better insight of data (pattern, e.g. clustering or striation)
 
-    ::: callout_tip
-    When to use ridgeline plot or raincloud plot ?
+::: callout-tip
+When to use ridgeline plot or raincloud plot ?
 
-    -   Ridgeline plot: want to compare the distribution of different groups and is interested in density pattern.
+-   Ridgeline plot: want to compare the distribution of different groups and is interested in density pattern.
 
-    -   Raincloud plot: want to show individual data point and want to emphasize on the spread and central tendency.
-    :::
+-   Raincloud plot: want to show individual data point and want to emphasize on the spread and central tendency.
+:::
 
-    ### Plotting using ggdist
+### Plotting using ggdist
 
-    We will plot using `stat_halfeye()` to plot the half-density, while removing the half-slab by adding these arguments `.width = 0, point_colour = NA` in the `stat_halfeye()` . ::: panel-tabset \## The graph
+We will plot using `stat_halfeye()` to plot the half-density, while removing the half-slab by adding these arguments `.width = 0, point_colour = NA` in the `stat_halfeye()` .
 
-    ```{r, echo=FALSE}
-    ggplot(exam, 
-           aes(x = RACE, 
-               y = ENGLISH)) +
-      stat_halfeye(adjust = 0.5,
-                   justification = -0.2,
-                   .width = 0,
-                   point_colour = NA)
-    ```
+::: panel-tabset
+## The graph
 
-    ## The code
+```{r, echo=FALSE}
+ggplot(exam, 
+       aes(x = RACE, 
+           y = ENGLISH)) +
+  stat_halfeye(adjust = 0.5,
+               justification = -0.2,
+               .width = 0,
+               point_colour = NA)
+```
 
-    ```{r, eval=FALSE}
-    ggplot(exam, 
-           aes(x = RACE, 
-               y = ENGLISH)) +
-      stat_halfeye(adjust = 0.5,
-                   justification = -0.2,
-                   .width = 0,
-                   point_colour = NA)
-    ```
+## The code
 
-    :::
+```{r, eval=FALSE}
+ggplot(exam, 
+       aes(x = RACE, 
+           y = ENGLISH)) +
+  stat_halfeye(adjust = 0.5,
+               justification = -0.2,
+               .width = 0,
+               point_colour = NA)
+```
+:::
 
-Next, we will add the boxplot by adding into the graph: ::: panel-tabset \## The graph
+Next, we will add the boxplot by adding into the graph:
+
+::: panel-tabset
+## The graph
 
 ```{r, echo=FALSE}
 ggplot(exam, 
@@ -328,7 +341,7 @@ ggplot(exam,
 
 ## The code
 
-```{r, echo=FALSE}
+```{r, eval=FALSE}
 ggplot(exam, 
        aes(x = RACE, 
            y = ENGLISH)) +
@@ -339,10 +352,14 @@ ggplot(exam,
   geom_boxplot(width = .20,
                outlier.shape = NA)
 ```
+:::
 
-::: Next, we will add half-dotplot to show points of each data. ::: panel-tabset
+Next, we will add half-dotplot to show points of each data.
 
-```{r}
+::: panel-tabset
+## The graph
+
+```{r, echo=FALSE}
 ggplot(exam, 
        aes(x = RACE, 
            y = ENGLISH)) +
@@ -358,9 +375,31 @@ ggplot(exam,
             dotsize = 2)
 ```
 
+## The code
+
+```{r, eval=FALSE}
+ggplot(exam, 
+       aes(x = RACE, 
+           y = ENGLISH)) +
+  stat_halfeye(adjust = 0.5,
+               justification = -0.2,
+               .width = 0,
+               point_colour = NA) +
+  geom_boxplot(width = .20,
+               outlier.shape = NA) +
+  stat_dots(side = "left", 
+            justification = 1.2, 
+            binwidth = .5,
+            dotsize = 2)
+```
+:::
+
 We can also flip the graph for better readibility and add theme for better aesthetics.
 
-```{r}
+::: panel-tabset
+## The graph
+
+```{r, echo=FALSE}
 ggplot(exam, 
        aes(x = RACE, 
            y = ENGLISH)) +
@@ -378,6 +417,27 @@ ggplot(exam,
   theme_economist()
 ```
 
+## The code
+
+```{r, eval=FALSE}
+ggplot(exam, 
+       aes(x = RACE, 
+           y = ENGLISH)) +
+  stat_halfeye(adjust = 0.5,
+               justification = -0.2,
+               .width = 0,
+               point_colour = NA) +
+  geom_boxplot(width = .20,
+               outlier.shape = NA) +
+  stat_dots(side = "left", 
+            justification = 1.2, 
+            binwidth = .5,
+            dotsize = 1.5) +
+  coord_flip() +
+  theme_economist()
+```
+:::
+
 # Reference
 
 -   <a href="https://blog.dailydoseofds.com/p/ridgeline-plots-an-underrated-gem">Ridgeline Plots: An Underrated Gem of Data Visualisation</a>
@@ -385,5 +445,3 @@ ggplot(exam,
 -   <a href="https://www.data-to-viz.com/graph/ridgeline.html">Ridgeline plot</a>
 
 -   <a href="https://datatab.net/statistics-calculator/charts/raincloud-plot">Online Statistics Calculator</a>
-
--   

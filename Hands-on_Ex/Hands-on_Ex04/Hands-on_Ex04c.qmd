@@ -18,7 +18,7 @@ Objective of this exercise:
 
 -   How to visualize uncertainty with different package (ggplot2, plotly, DT and ggdist) and different visualization techniques (i.e. error bar)
 
--   Creaye hyptheitical outcome plots (HOPs) by using ungeviz package
+-   Create hyptheitical outcome plots (HOPs) by using ungeviz package
 
 # Import Libraries
 
@@ -56,7 +56,7 @@ exam <- read_csv("Exam_data.csv")
 
 Main point:
 
--   Main concept: how much of the visualization we create is realiable since the dataset used **may not fully represent the full population**.
+-   Main concept: how much of the visualization we create is reliable since the dataset used **may not fully represent the full population**.
 
 -   However, we can mitigate this by using statistical methods (i.e. confidence interval, credible interval and standard error)
 
@@ -83,7 +83,7 @@ my_sum <- exam %>%
 knitr::kable(head(my_sum), format = 'html')
 ```
 
-::: callout_tip
+::: callout-tip
 What's happening in the code:
 
 -   `group_by()` is used in line 2 to group data by RACE
@@ -152,7 +152,9 @@ What's the difference between this code and the one before:
 -   The code `reorder(RACE, -mean)` reorders the error bar by the average Maths score
 :::
 
-## Making Point Estimates Visualization Interactive 
+## Making Point Estimates Visualization Interactive
+
+In this example, we'll be plotting interactive error bar with 99% confidence interval of mean Maths score by race.
 
 ```{r}
 shared_df = SharedData$new(my_sum)
@@ -200,3 +202,47 @@ bscols(widths = c(4,8),
          formatRound(columns=c('mean', 'sd', 'se'),
                      digits=2))
 ```
+
+::: {.callout-note title="Break down of the code"}
+-   `bscols()` lays out the interactive graph created by `plotly()` with the table created by `DT::datatable` side by side.
+
+-   `plotly()` is used to convert the ggplot2 graph we make to interactive Plotly object.
+
+-   `DT::datatable` displays shared_df data into interactive table
+:::
+
+## Exploring ggdist Package
+
+-   ggdist package is deisgned to visualize distribution and uncertainty from ggplot2 geoms and stats
+
+-   It's designed for frequentist and Bayesian uncertainty visualization, which are the frameworks used to answer how uncertain are we of the data. Both view that uncertainty visualization can be unified through perspective fo distribution visualization.
+
+    -   Frequentist uncertainty: assume that probabilities are objective and fixed. Confidence distribution or bootstrap distribution are used to visualize the model
+
+    -   Bayesian uncertainty: assume that probability change based on new information. Probability distribution is used to visualize bayesian uncertainty
+
+## Visualize Uncertainty of Point Estimate using ggdist
+In this example, we use `stats_pointinterval()` ro display distribution of Maths score by race. 
+
+::: panel-tabset
+## The graph
+```{r, echo=FALSE}
+
+exam %>% ggplot(aes(x = RACE, y = MATHS)) + 
+  stat_pointinterval() + 
+  labs( title = "Visualising confidence intervals of mean math score", subtitle = "Mean Point + Multiple-interval plot")
+
+```   
+## The code
+```{r, eval=FALSE}
+
+exam %>% ggplot(aes(x = RACE, y = MATHS)) + 
+  stat_pointinterval() + 
+  labs( title = "Visualising confidence intervals of mean math score", subtitle = "Mean Point + Multiple-interval plot")
+```
+:::
+
+
+# Reference
+
+-   <a href="<https://medium.com/>@uthrakrishnan3/bayesian-statistics-a-powerful-tool-for-uncertainty-modeling-dc6ddfc79b15">Bayesian Statistics: A Powerful Tool for Uncertainty Modeling</a>
