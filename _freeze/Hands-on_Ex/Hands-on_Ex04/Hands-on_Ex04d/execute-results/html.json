@@ -1,0 +1,15 @@
+{
+  "hash": "0abe7409d96fb1a9898eeff5e2f2901c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Hands-on_Ex04d\"\nauthor: \"Stefanie Felicia\"\ndate: \"May, 7 2025\"\ndate-modified: \"last-modified\"\nexecute: \n  eval: true\n  echo: true\n  warning: false\n  freeze: true\n---\n\n\n\n# Getting Started\n\nObjective of this exercise:\n\n-   Learn about funnel plots\n\n<!-- -->\n\n-   plotting funnel plots by using **funnelPlotR** package\n\n<!-- -->\n\n-   plotting static funnel plot by using ggplot2 package\n\n<!-- -->\n\n-   plotting interactive funnel plot by using both **plotly R** and **ggplot2**\n\n# Import Libraries\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(tidyverse, FunnelPlotR, plotly, knitr)\n```\n:::\n\n\n\nIn this exercise, we'll be using the following libraries:\n\n-   plotly\n\n-   tidyverse\n\n-   FunnelPlotR:\n\n-   knitr\n\n# Import Data\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncovid19 <- read_csv(\"COVID-19_DKI_Jakarta.csv\") %>%\n  mutate_if(is.character, as.factor)\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

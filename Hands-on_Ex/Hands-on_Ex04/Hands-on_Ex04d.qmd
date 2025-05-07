@@ -1,0 +1,52 @@
+---
+title: "Hands-on_Ex04d"
+author: "Stefanie Felicia"
+date: "May, 7 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+# Getting Started
+
+Objective of this exercise:
+
+-   Learn about funnel plots
+
+<!-- -->
+
+-   plotting funnel plots by using **funnelPlotR** package
+
+<!-- -->
+
+-   plotting static funnel plot by using ggplot2 package
+
+<!-- -->
+
+-   plotting interactive funnel plot by using both **plotly R** and **ggplot2**
+
+# Import Libraries
+
+```{r}
+pacman::p_load(tidyverse, FunnelPlotR, plotly, knitr)
+```
+
+In this exercise, we'll be using the following libraries:
+
+-   plotly
+
+-   tidyverse
+
+-   FunnelPlotR:
+
+-   knitr
+
+# Import Data
+
+```{r}
+covid19 <- read_csv("COVID-19_DKI_Jakarta.csv") %>%
+  mutate_if(is.character, as.factor)
+```
