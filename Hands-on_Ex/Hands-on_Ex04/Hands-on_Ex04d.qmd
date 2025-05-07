@@ -1,5 +1,5 @@
 ---
-title: "Hands-on_Ex04d"
+title: "Hands-on Exercise 4d"
 author: "Stefanie Felicia"
 date: "May, 7 2025"
 date-modified: "last-modified"
@@ -37,7 +37,7 @@ In this exercise, we'll be using the following libraries:
 
 # Import Data
 
-In this exercise data from Open Data Covid-19 Provinsi DKI Jakarta portal. We'll be comparing the cumulative COVID-19 cases and death by sub-district (kelurahan).
+In this exercise data from <a href="https://riwayat-file-covid-19-dki-jakarta-jakartagis.hub.arcgis.com/">Open Data Covid-19 Provinsi DKI Jakarta portal</a>. We'll be comparing the cumulative COVID-19 cases and death by sub-district (kelurahan).
 
 ```{r}
 covid19 <- read_csv("COVID-19_DKI_Jakarta.csv") %>%
@@ -68,9 +68,9 @@ FunnelPlotR uses ggplot to create funnel plot. The essential arguments are: `num
 
 -   Aesthetic component
 
-<div>
+::: {.callout-note title="What is a funnel plot ?"}
 
--   When we visualize uncertainty, we’ll always be dealing with variation (dealing with multiple occurances and determine what and how they differ)
+-   When we visualize uncertainty, we’ll always be dealing with variation (dealing with multiple occurrences and determine what and how they differ)
 
 -   Two types of variation:
 
@@ -80,7 +80,7 @@ FunnelPlotR uses ggplot to create funnel plot. The essential arguments are: `num
 
 -   This is where funnel plot comes in! Funnel plot can help us to determine if a data point is noise or signal
 
-</div>
+:::
 
 # Funnel Plot using FunnelPlotR
 
@@ -113,7 +113,7 @@ funnel_plot(
 )
 ```
 
-<div>
+::: {.callout-note title="What does this code do"}
 
 -   `data_type = "PR"` : refers to plotting a proportion ratio plot (used to visualize proportion of percentage of events to compare how different groups perform compared o percentage fo events)
 
@@ -123,7 +123,7 @@ funnel_plot(
 
 -   `label = NA` : used to remove default label outliers feature
 
-</div>
+:::
 
 # Funnel Plot using ggplot2
 
