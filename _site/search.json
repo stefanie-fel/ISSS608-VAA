@@ -508,7 +508,7 @@
     "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#visualize-uncertainty-of-point-estimate-using-ggdist",
     "title": "Hands-on_Ex04c",
     "section": "Visualize Uncertainty of Point Estimate using ggdist",
-    "text": "Visualize Uncertainty of Point Estimate using ggdist\nIn this example, we use stats_pointinterval() ro display distribution of Maths score by race.\n\nThe graphThe code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nexam %&gt;% ggplot(aes(x = RACE, y = MATHS)) + \n  stat_pointinterval() + \n  labs( title = \"Visualising confidence intervals of mean math score\", subtitle = \"Mean Point + Multiple-interval plot\")"
+    "text": "Visualize Uncertainty of Point Estimate using ggdist\nIn this example, we use &lt;a href=\"https://mjskay.github.io/ggdist/\"&gt;stats_pointinterval() to display distribution of Maths score by race.\n\nThe graphThe code\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nexam %&gt;% ggplot(aes(x = RACE, y = MATHS)) + \n  stat_pointinterval() + \n  labs( title = \"Visualising confidence intervals of mean math score\", subtitle = \"Mean Point + Multiple-interval plot\")\n\n\n\n\nWe can visualize with different like below.\n::: callout-note title=“What this code does” * .width = 0.95 will plot a 95% interval (a range which 95% of the ditribution lies) .point = median as central tendency and quantile interval ::"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04c.html#the-code",

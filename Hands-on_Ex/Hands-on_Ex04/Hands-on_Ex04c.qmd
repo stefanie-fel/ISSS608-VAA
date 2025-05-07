@@ -222,7 +222,7 @@ bscols(widths = c(4,8),
     -   Bayesian uncertainty: assume that probability change based on new information. Probability distribution is used to visualize bayesian uncertainty
 
 ## Visualize Uncertainty of Point Estimate using ggdist
-In this example, we use `stats_pointinterval()` ro display distribution of Maths score by race. 
+In this example, we use `<a href="https://mjskay.github.io/ggdist/">stats_pointinterval()`</a> to display distribution of Maths score by race. 
 
 ::: panel-tabset
 ## The graph
@@ -242,6 +242,13 @@ exam %>% ggplot(aes(x = RACE, y = MATHS)) +
 ```
 :::
 
+We can visualize with different like below.  
+
+::: callout-note title="What this code does"
+* `.width = 0.95` will plot a 95% interval (a range which 95% of the ditribution lies)
+`.point = median`
+as central tendency and quantile interval
+::
 
 # Reference
 
