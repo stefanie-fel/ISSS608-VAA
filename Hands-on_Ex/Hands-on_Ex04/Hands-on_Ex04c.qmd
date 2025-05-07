@@ -99,7 +99,9 @@ What's happening in the code:
 
 We can plot error bar by using `geom_errorbar()` which will compute the formula of mean - standard error for bottom of error bar (`ymin` argument) and mean + standard error for the top error bar (`ymax` argument).
 
-```{r}
+::: panel-tabset
+## The graph
+```{r, echo=FALSE}
 ggplot(my_sum) +
   geom_errorbar(
     aes(x=RACE, 
@@ -118,7 +120,27 @@ ggplot(my_sum) +
            alpha=1) +
   ggtitle("Standard error of mean maths score by race")
 ```
-
+## The code
+```{r, eval=FALSE}
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=RACE, 
+        ymin=mean-se, 
+        ymax=mean+se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  ggtitle("Standard error of mean maths score by race")
+```
+:::
 ## Plotting Confidence Interval of Point Estimates
 
 We can plot the confidence interval instead of standard error like below.

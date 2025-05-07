@@ -15,17 +15,8 @@ execute:
 Objective of this exercise:
 
 -   Learn about funnel plots
-
-<!-- -->
-
 -   plotting funnel plots by using **funnelPlotR** package
-
-<!-- -->
-
 -   plotting static funnel plot by using ggplot2 package
-
-<!-- -->
-
 -   plotting interactive funnel plot by using both **plotly R** and **ggplot2**
 
 # Import Libraries
@@ -40,13 +31,187 @@ In this exercise, we'll be using the following libraries:
 
 -   tidyverse
 
--   FunnelPlotR:
+-   FunnelPlotR: draws funnel plots using ggplot2
 
--   knitr
+-   knitr: used for dynamic report generation
 
 # Import Data
+
+In this exercise data from Open Data Covid-19 Provinsi DKI Jakarta portal. We'll be comparing the cumulative COVID-19 cases and death by sub-district (kelurahan).
 
 ```{r}
 covid19 <- read_csv("COVID-19_DKI_Jakarta.csv") %>%
   mutate_if(is.character, as.factor)
+```
+
+::: callout-note
+What does the code do:
+
+-   `%>%` passes the tibble to the next function
+
+-   `mutate_if(is.character, as.factor)` line of code checks every column if it's character data type. If it is, it will be stored as integer with labels (or categorical variable)
+:::
+
+# FunnelPlotR Package
+
+FunnelPlotR uses ggplot to create funnel plot. The essential arguments are: `numerator` (event of interest), `denominator` (population to be considered) and `group`. The package has the following arguments that can be customized:
+
+-   `limit` : specifies confidence limits for funnel plot (95 or 99)
+
+-   `label_outliers` : label outliers (true or false)
+
+-   `Poisson_limits` : add poisson limit to the plot
+
+-   `OD_adjust` : add overdispersed limit to the plot, which inflates the control limits
+
+-   `xrange` and `yrange` : specify range to display for each axes
+
+-   Aesthetic component
+
+<div>
+
+-   When we visualize uncertainty, we’ll always be dealing with variation (dealing with multiple occurances and determine what and how they differ)
+
+-   Two types of variation:
+
+    -   Noise: they are completely random (unknown reasons)
+
+    -   Signal: they are not totally random and can point to underlying causes that can be insightful (to improve)
+
+-   This is where funnel plot comes in! Funnel plot can help us to determine if a data point is noise or signal
+
+</div>
+
+# Funnel Plot using FunnelPlotR
+
+The example uses creates funnel plot grouped by sub-district and uses standardized ratio (comapre observed performance agaianst expected) as default plot type.
+
+```{r}
+funnel_plot(
+  .data = covid19,
+  numerator = Positive,
+  denominator = Death,
+  group = `Sub-district`
+)
+```
+
+# FunnelPlotR Makeover
+
+```{r}
+funnel_plot(
+  .data = covid19,
+  numerator = Death,
+  denominator = Positive,
+  group = `Sub-district`,
+  data_type = "PR",   
+  x_range = c(0, 6500),  
+  y_range = c(0, 0.05),   
+  label = NA,
+  title = "Cumulative COVID-19 Fatality Rate by Cumulative Total Number of COVID-19 Positive Cases",          
+  x_label = "Cumulative COVID-19 Positive Cases",
+  y_label = "Cumulative Fatality Rate"
+)
+```
+
+<div>
+
+-   `data_type = "PR"` : refers to plotting a proportion ratio plot (used to visualize proportion of percentage of events to compare how different groups perform compared o percentage fo events)
+
+-   `x_range` : sets range of value for x-axis
+
+-   y_range : sets range of value for y-axis
+
+-   `label = NA` : used to remove default label outliers feature
+
+</div>
+
+# Funnel Plot using ggplot2
+
+In this example, we want to create funnel plot that plots the cumulative fatality rate by cumulative number of cases.
+
+First, we derive the cumulative death rate and standard error of cumulative death rate.
+
+```{r}
+df <- covid19 %>%
+  mutate(rate = Death / Positive) %>%
+  mutate(rate.se = sqrt((rate*(1-rate)) / (Positive))) %>%
+  filter(rate > 0)
+```
+
+Then we compute the weighted mean.
+
+```{r}
+fit.mean <- weighted.mean(df$rate, 1/df$rate.se^2)
+```
+
+Next, we compute the lower and upper limit for 95% and 99% CI
+
+```{r}
+number.seq <- seq(1, max(df$Positive), 1)
+number.ll95 <- fit.mean - 1.96 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) 
+number.ul95 <- fit.mean + 1.96 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) 
+number.ll999 <- fit.mean - 3.29 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) 
+number.ul999 <- fit.mean + 3.29 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) 
+dfCI <- data.frame(number.ll95, number.ul95, number.ll999, 
+                   number.ul999, number.seq, fit.mean)
+```
+
+Now, we can plot the funnel plot
+
+```{r}
+p <- ggplot(df, aes(x = Positive, y = rate)) +
+  geom_point(aes(label=`Sub-district`), 
+             alpha=0.4) +
+  geom_line(data = dfCI, 
+            aes(x = number.seq, 
+                y = number.ll95), 
+            size = 0.4, 
+            colour = "grey40", 
+            linetype = "dashed") +
+  geom_line(data = dfCI, 
+            aes(x = number.seq, 
+                y = number.ul95), 
+            size = 0.4, 
+            colour = "grey40", 
+            linetype = "dashed") +
+  geom_line(data = dfCI, 
+            aes(x = number.seq, 
+                y = number.ll999), 
+            size = 0.4, 
+            colour = "grey40") +
+  geom_line(data = dfCI, 
+            aes(x = number.seq, 
+                y = number.ul999), 
+            size = 0.4, 
+            colour = "grey40") +
+  geom_hline(data = dfCI, 
+             aes(yintercept = fit.mean), 
+             size = 0.4, 
+             colour = "grey40") +
+  coord_cartesian(ylim=c(0,0.05)) +
+  annotate("text", x = 1, y = -0.13, label = "95%", size = 3, colour = "grey40") + 
+  annotate("text", x = 4.5, y = -0.18, label = "99%", size = 3, colour = "grey40") + 
+  ggtitle("Cumulative Fatality Rate by Cumulative Number of COVID-19 Cases") +
+  xlab("Cumulative Number of COVID-19 Cases") + 
+  ylab("Cumulative Fatality Rate") +
+  theme_light() +
+  theme(plot.title = element_text(size=12),
+        legend.position = c(0.91,0.85), 
+        legend.title = element_text(size=7),
+        legend.text = element_text(size=7),
+        legend.background = element_rect(colour = "grey60", linetype = "dotted"),
+        legend.key.height = unit(0.3, "cm"))
+p
+```
+
+# Create Interactive Funnel Plot using plotly and ggplot2
+
+We can make the plot above interactive by using ggplotly()
+
+```{r}
+fp_ggplotly <- ggplotly(p,
+  tooltip = c("label", 
+              "x", 
+              "y"))
+fp_ggplotly
 ```
