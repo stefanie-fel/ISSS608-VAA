@@ -1,5 +1,5 @@
 ---
-title: "Take-home_Ex01"
+title: "Take-home Exercise 1"
 author: "Stefanie Felicia"
 date: "May, 3 2025"
 date-modified: "last-modified"
@@ -33,20 +33,21 @@ It comprised of 6 variables and 60K records. The dataset recorded the demographi
 ## 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(dplyr, tidyverse, scales, forcats, DT, knitr)
+pacman::p_load(dplyr, tidyverse, scales, forcats, knitr)
 ```
 
 the library used for this exercise are:
 
 ```{r, echo=FALSE}
-table_data <- matrix(c("dplyr", "Grammar of data mainpulation",
-  "tidyverse", "Provide key data transformation functions",
-                       "scales", "Provides internal scaling infrastructure used by ggplot2 to a general framework", 
-                       "forcats", "Tools for working with factors (categorical variable)",
-                       "DT", "Provides R interface to JavaScript library DataTables", 
-                       "knitr", "Provides a tool for dynamic report generation"), 
-                     nrow = 6, byrow = TRUE)
-
+table_data <- matrix(
+  c("dplyr",      "Grammar of data manipulation",
+    "tidyverse",  "Provide key data transformation functions",
+    "scales",     "Provides internal scaling infrastructure used by ggplot2 to a general framework", 
+    "forcats",    "Tools for working with factors (categorical variable)",
+    "knitr",      "Provides a tool for dynamic report generation"),
+  nrow = 5,
+  byrow = TRUE
+)
 
 kable(table_data, col.names = c("Package Name", "Description"))
 ```
@@ -141,9 +142,8 @@ pa_count <- population_data %>%
   distinct(PA, SZ) %>%              
   count(PA, name = "number_of_subzones") %>%
   arrange(desc(number_of_subzones))
-datatable(pa_count, 
-          options = list(pageLength = 10, autoWidth = TRUE),
-          caption = "Number of Subzones per Planning Area")
+
+kable(pa_count, caption = "Number of Subzones per Planning Area")
 ```
 
 # 3. Visualization
@@ -210,8 +210,6 @@ ggplot(agg_data, aes(x = age_group, y = Pop, fill = Sex)) +
 ## Population of Residents
 
 ```{r, eval=FALSE}
-
-
 pop_pa <- population_data %>%
   group_by(PA) %>%
   summarise(total_pop = sum(Pop))
@@ -260,10 +258,8 @@ population_binned <- population_data %>%
 population_binned_wide <- population_binned %>%
   pivot_wider(names_from = age_group, values_from = total_pop, values_fill = 0)
 population_binned_wide %>%
-  datatable(
-    caption = "Population by Planning Area and Age Group",
-    options = list(pageLength = 10)
-  )
+  kable(
+    caption = "Population by Planning Area and Age Group")
 ```
 
 ```{r, echo=FALSE, message=FALSE}
@@ -281,10 +277,8 @@ population_binned <- population_data %>%
 population_binned_wide <- population_binned %>%
   pivot_wider(names_from = age_group, values_from = total_pop, values_fill = 0)
 population_binned_wide %>%
-  datatable(
-    caption = "Population by Planning Area and Age Group",
-    options = list(pageLength = 10)
-  )
+  kable(
+    caption = "Population by Planning Area and Age Group")
 ```
 :::
 
@@ -302,23 +296,4 @@ population_binned_wide %>%
 
 1.  <a href=https://www.statology.org/r-count-duplicates/>How to Count Duplicates in R (With Examples)</a>
 
-# Phase 2: Peer Review Visualization
-
-Objective
-
-We are tasked with:
-
-1.  Review a classmate's work
-
-<https://isss608-visualanalytics.netlify.app/take-home_ex/take-home_ex01/take-home_ex01>
-
-what is good about the visualization:
-
-\- the graph is clearly labeled (x-axis, y-axis, title) - good explanation (legends) to help reader understand
-
-\- point 2: each visualization is connected and goes deeper to expound (?) on dependency ratios, instead of general overview of demographics and population structure
-
-\- good use of color -\> using bold colors to emphasize the dependency ratio of elderly and youth, whereas muted colors are used for working age
-
--   trend lines and reference line can be confusing as it isn't stated what they represent -\> the trend line and bar chart can be seperated into 2 graph because it might overwhelm reader
--   what is depth (in secodn graph), it's not clearly stated how we can see it in the graph
+# 

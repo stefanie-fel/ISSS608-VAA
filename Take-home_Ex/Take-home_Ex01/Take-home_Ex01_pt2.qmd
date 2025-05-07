@@ -1,0 +1,26 @@
+---
+title: "Take-home Exercise 1 (Phase 2)"
+format: html
+---
+
+# 1. Background
+
+Objective of this exercise:
+
+-   Review a classmate's Take-home Exercise 1 in which I chose to review `<a href="`{=html}https://isss608-visualanalytics.netlify.app/take-home_ex/take-home_ex01/take-home_ex01`">`{=html}Zhang JingHan</a>'s work
+
+-   Critique the good design principles used in their visualization
+
+-   Create makeover version of chosen visualization
+
+# Good Design Principles Used in Visualization
+
+-   the graph is clearly labeled (x-axis, y-axis, title) - good explanation (legends) to help reader understand
+
+-   point 2: each visualization is connected and goes deeper to expound (?) on dependency ratios, instead of general overview of demographics and population structure
+
+-   good use of color -\> using bold colors to emphasize the dependency ratio of elderly and youth, whereas muted colors are used for working age
+
+# Makeover Version of Chosen Visualization
+
+-   trend lines and reference line can be confusing as it isn’t stated what they represent -\> the trend line and bar chart can be seperated into 2 graph because it might overwhelm reader what is depth (in secodn graph), it’s not clearly stated how we can see it in the graph
