@@ -1,26 +1,162 @@
 ---
 title: "Take-home Exercise 1 (Phase 2)"
-format: html
+author: "Stefanie Felicia"
+date: "May, 8 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 # 1. Background
 
 Objective of this exercise:
 
--   Review a classmate's Take-home Exercise 1 in which I chose to review `<a href="`{=html}https://isss608-visualanalytics.netlify.app/take-home_ex/take-home_ex01/take-home_ex01`">`{=html}Zhang JingHan</a>'s work
+-   Review a classmate's Take-home Exercise 1 in which I chose to review `<a href="`{=html}<https://isss-608-yihao-yuan.netlify.app/take-home_ex/take-home_ex01/take-home_ex01>`">`{=html}Yuan Yihao</a>'s work
 
 -   Critique the good design principles used in their visualization
 
 -   Create makeover version of chosen visualization
 
+    ```{r, echo=FALSE}
+    pacman::p_load(ggiraph, plotly, 
+                   patchwork, DT, tidyverse) 
+    res_data <- read_csv("respopagesex2024.csv")
+    ```
+
 # Good Design Principles Used in Visualization
 
--   the graph is clearly labeled (x-axis, y-axis, title) - good explanation (legends) to help reader understand
+The 3 visualization he created are the following:
 
--   point 2: each visualization is connected and goes deeper to expound (?) on dependency ratios, instead of general overview of demographics and population structure
+Population by Age and Sex
 
--   good use of color -\> using bold colors to emphasize the dependency ratio of elderly and youth, whereas muted colors are used for working age
+```{r, echo=FALSE}
+res_data <- res_data %>%
+  mutate(Age = ifelse(Age == "90_and_Over", "90", Age),
+         Age = as.numeric(Age)) 
+res_data <- res_data %>%
+  mutate(
+    Age = as.numeric(Age),
+    Pop = as.numeric(Pop)
+  )
+
+library(dplyr)
+library(ggplot2)
+
+
+grouped_data <- res_data %>%
+  group_by(Age, Sex) %>%
+  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = "drop")
+
+
+wide_data <- grouped_data %>%
+  pivot_wider(names_from = Sex, values_from = Pop, values_fill = 0) %>%
+  mutate(
+    min_pop = pmin(Males, Females),
+    male_extra = ifelse(Males > Females, Males - Females, 0),
+    female_extra = ifelse(Females > Males, Females - Males, 0)
+  )
+
+
+ggplot() +
+
+  geom_col(data = wide_data, aes(x = Age, y = min_pop), 
+           fill = "gray70", width = 0.6) +
+
+
+  geom_col(data = wide_data, aes(x = Age, y = male_extra), 
+           fill = "steelblue", width = 0.6) +
+
+
+  geom_col(data = wide_data, aes(x = Age, y = female_extra), 
+           fill = "tomato", width = 0.6) +
+
+  labs(
+    title = "Population by Age and Sex",
+    x = "Age",
+    y = "Population"
+  ) +
+  theme_minimal()
+```
+
+Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)
+
+```{r, echo=FALSE}
+res_data_grouped <- res_data %>%
+  mutate(AgeGroup = case_when(
+    Age >= 0 & Age <= 20 ~ "Under Age",
+    Age >= 21 & Age <= 60 ~ "Adult",
+    Age >= 61 ~ "Aging"
+  )) %>%
+  group_by(PA, AgeGroup) %>%
+  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = "drop")
+
+res_data_grouped_filtered <- res_data_grouped %>%
+  filter(AgeGroup != "Adult")
+
+ggplot(res_data_grouped_filtered, aes(x = Pop, y = reorder(PA, Pop), fill = AgeGroup)) +
+  geom_col(position = position_dodge(width = 0.9), width = 0.4) +
+  labs(
+    title = "Population by Age Group and Planning Area",
+    x = "Population",
+    y = "Planning Area",
+    fill = "Age Group"
+  ) +
+  scale_y_discrete(expand = expansion(mult = c(0.4, 0.4))) + 
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 3, margin = margin(r = 5)), 
+    legend.position = "top"
+  )
+```
+
+Aging-to-Under-Age Population Ratio by Planning Area
+
+```{r, echo=FALSE}
+library(dplyr)
+
+
+age_summary <- res_data_grouped %>%
+  filter(AgeGroup %in% c("Under Age", "Aging")) %>%
+  group_by(PA, AgeGroup) %>%
+  summarise(Total = sum(Pop), .groups = "drop")
+
+age_ratio <- age_summary %>%
+  tidyr::pivot_wider(names_from = AgeGroup, values_from = Total) %>%
+  mutate(ratio = Aging / `Under Age`)
+
+```
+
+```{r}
+ggplot(age_ratio, aes(x = ratio, y = reorder(PA, ratio))) + geom_col(fill = "steelblue") + labs( title = "Aging-to-Under-Age Population Ratio by Planning Area", x = "Aging / Under Age Ratio", y = "Planning Area" ) + theme_minimal() + theme( axis.text.y = element_text(size = 5), plot.title = element_text(face = "bold"))
+```
+
+Design principles implemented:
+
+-   Each graph has good color schemes, the colors between genders contrast each other that it's easy to distinguish between genders
+
+-   The usage of muted color in the Population by Age and Sex chart is helpful to highlight distribution of sex within the population
+
+-   The graph is clearly labeled in the x-axis, y-axis, title and legend - good explanation (legends) to help reader understand the context of the graph
 
 # Makeover Version of Chosen Visualization
 
--   trend lines and reference line can be confusing as it isn’t stated what they represent -\> the trend line and bar chart can be seperated into 2 graph because it might overwhelm reader what is depth (in secodn graph), it’s not clearly stated how we can see it in the graph
+## Import Libraries for Makeover
+
+```{r}
+pacman::p_load(ggiraph, plotly, 
+               patchwork, DT, tidyverse) 
+```
+
+## Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)
+
+The graph is supposed to compare the number of population between genders and age (e.g. the number female is greater than male at the age 50, then the number of female population will be subtracted by the male population and a bar chart will be plotted). However, if we look at the graph at a glance, it might look like the distribution of the population between genders based on age instead.
+
+```{r}
+grouped_data <- res_data %>%
+  group_by(Age, Sex) %>%
+  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = "drop")
+grouped_data
+```

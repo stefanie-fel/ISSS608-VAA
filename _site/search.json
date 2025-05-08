@@ -544,5 +544,19 @@
     "title": "Take-home Exercise 1 (Phase 2)",
     "section": "",
     "text": "1. Background\nObjective of this exercise:\n\nReview a classmate’s Take-home Exercise 1 in which I chose to review Zhang JingHan’s work\nCritique the good design principles used in their visualization\nCreate makeover version of chosen visualization\n\n\n\nGood Design Principles Used in Visualization\n\nthe graph is clearly labeled (x-axis, y-axis, title) - good explanation (legends) to help reader understand\npoint 2: each visualization is connected and goes deeper to expound (?) on dependency ratios, instead of general overview of demographics and population structure\ngood use of color -&gt; using bold colors to emphasize the dependency ratio of elderly and youth, whereas muted colors are used for working age\n\n\n\nMakeover Version of Chosen Visualization\n\ntrend lines and reference line can be confusing as it isn’t stated what they represent -&gt; the trend line and bar chart can be seperated into 2 graph because it might overwhelm reader what is depth (in secodn graph), it’s not clearly stated how we can see it in the graph"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_pt2.html#import-libraries-for-makeover",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_pt2.html#import-libraries-for-makeover",
+    "title": "Take-home Exercise 1 (Phase 2)",
+    "section": "Import Libraries for Makeover",
+    "text": "Import Libraries for Makeover\n\npacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_pt2.html#makeover-version-of-population-by-age-group-and-planning-area-analyze-the-aging-population-in-each-region",
+    "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01_pt2.html#makeover-version-of-population-by-age-group-and-planning-area-analyze-the-aging-population-in-each-region",
+    "title": "Take-home Exercise 1 (Phase 2)",
+    "section": "Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)",
+    "text": "Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)\nThe graph is supposed to compare the number of population between genders and age (e.g. the number female is greater than male at the age 50, then the number of female population will be subtracted by the male population and a bar chart will be plotted). However, if we look at the graph at a glance, it might look like the distribution of the population between genders based on age instead.\n\ngrouped_data &lt;- res_data %&gt;%\n  group_by(Age, Sex) %&gt;%\n  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = \"drop\")\ngrouped_data\n\n# A tibble: 182 × 3\n     Age Sex       Pop\n   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;\n 1     0 Females 14370\n 2     0 Males   15090\n 3     1 Females 15580\n 4     1 Males   16700\n 5     2 Females 17190\n 6     2 Males   17980\n 7     3 Females 17340\n 8     3 Males   18200\n 9     4 Females 19070\n10     4 Males   19880\n# ℹ 172 more rows"
   }
 ]
