@@ -188,7 +188,7 @@ ggplot(grouped_data, aes(x = Age, y = Percent, fill = Sex, alpha = is_dominant, 
 
 ::: {.callout-note title="Inisght"}
 -   The population have roughly similar number of male and female population from age 0 - 27. However, the male population is still slightly higher in number than female.
--   Age 28 above, the population is dominated by female. The trend seems go higher as the age increases.
+-   From age 28 above, the population is dominated by female. The trend seems go higher as the age increases.
 :::
 
 ## 3.3 Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)
@@ -199,9 +199,9 @@ My approach to the makeover:
 
 -   Similar like the previous visualization, I would change the chart type from bar chart to **stacked bar chart**. Since we want to compare values from different groups (aging, adult and under age), it is easier to see compare the difference between groups with stacked bar chart.
 
--   Change the x-axis from count of population to **percentage**. Though we could see from the some planning area have high number of aging population, but it's difficult to see the name of the planning area due to it being zoomed out to accommodate the range of the number of population in the x-axis.
+-   Change the x-axis from count of population to **percentage**. Though we could see some planning area have high number of aging population, but it's difficult to see the name of the planning area due to it being zoomed out to accommodate the range of the number of population in the x-axis.
 
-```{r, fig.width=12}
+```{r}
   res_data_grouped <- res_data %>% # group population into age groups 
   mutate(AgeGroup = case_when(
         Age >= 0 & Age <= 20 ~ "Under Age",
@@ -222,7 +222,7 @@ My approach to the makeover:
   res_data_grouped$PA <- factor(res_data_grouped$PA, levels = aging_order) # convert PA into an ordered factor
 ```
 
-```{r}
+```{r, fig.width=12}
 # plot stacked bar chart
   ggplot(res_data_grouped, aes(x = PA, y = Percentage, fill = AgeGroup)) +
   geom_col(position = "stack") +
@@ -239,6 +239,6 @@ My approach to the makeover:
 ::: {.callout-note title="Insight"}
 -   The planning area with highest aging population are: Outram, Ang Mo Kio, Jurong East, Bukit Merah and Rochor
 -   Interestingly, there are planning area where there are no aging groups (i.e. Museum and Seletar)
--   There are also some planning area that no Singapore residents live in: Boon Lay, Central Water Catchment, Chnagi Bay, etc.
--   Overall, roughly about 50% of the population in each planning area are made up of adults or working people.
+-   There are also some planning area that no Singapore residents live in: Boon Lay, Central Water Catchment, Changi Bay, etc.
+-   Overall, roughly about 50% of the population in each planning area are made up of adults (working people).
 :::
