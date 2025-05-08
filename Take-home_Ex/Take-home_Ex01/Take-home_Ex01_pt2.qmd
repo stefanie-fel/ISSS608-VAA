@@ -10,11 +10,11 @@ execute:
   freeze: true
 ---
 
-# 1. Background
+## 1. Background
 
 Objective of this exercise:
 
--   Review a classmate's Take-home Exercise 1 in which I chose to review `<a href="`{=html}<https://isss-608-yihao-yuan.netlify.app/take-home_ex/take-home_ex01/take-home_ex01>`">`{=html}Yuan Yihao</a>'s work
+-   Review a classmate's Take-home Exercise 1 in which I chose to review <a href="https://isss-608-yihao-yuan.netlify.app/take-home_ex/take-home_ex01/take-home_ex01">Yuan Yihao</a>'s work
 
 -   Critique the good design principles used in their visualization
 
@@ -26,11 +26,11 @@ Objective of this exercise:
     res_data <- read_csv("respopagesex2024.csv")
     ```
 
-# Good Design Principles Used in Visualization
+## 2. Good Design Principles Used in Visualization
 
-The 3 visualization he created are the following:
+There are 3 visualization are created as the following:
 
-Population by Age and Sex
+**Population by Age and Sex**
 
 ```{r, echo=FALSE}
 res_data <- res_data %>%
@@ -81,7 +81,7 @@ ggplot() +
   theme_minimal()
 ```
 
-Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)
+**Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)**
 
 ```{r, echo=FALSE}
 res_data_grouped <- res_data %>%
@@ -112,7 +112,7 @@ ggplot(res_data_grouped_filtered, aes(x = Pop, y = reorder(PA, Pop), fill = AgeG
   )
 ```
 
-Aging-to-Under-Age Population Ratio by Planning Area
+**Aging-to-Under-Age Population Ratio by Planning Area**
 
 ```{r, echo=FALSE}
 library(dplyr)
@@ -129,7 +129,7 @@ age_ratio <- age_summary %>%
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 ggplot(age_ratio, aes(x = ratio, y = reorder(PA, ratio))) + geom_col(fill = "steelblue") + labs( title = "Aging-to-Under-Age Population Ratio by Planning Area", x = "Aging / Under Age Ratio", y = "Planning Area" ) + theme_minimal() + theme( axis.text.y = element_text(size = 5), plot.title = element_text(face = "bold"))
 ```
 
@@ -141,22 +141,104 @@ Design principles implemented:
 
 -   The graph is clearly labeled in the x-axis, y-axis, title and legend - good explanation (legends) to help reader understand the context of the graph
 
-# Makeover Version of Chosen Visualization
+-   Population by Age Group and Planning Area has uses ordering visualization principle to highlight the planning area that has the highest aging population to lowest.
 
-## Import Libraries for Makeover
+## 3. Makeover Version of Chosen Visualization
+
+## 3.1 Import Libraries for Makeover
 
 ```{r}
 pacman::p_load(ggiraph, plotly, 
                patchwork, DT, tidyverse) 
 ```
 
-## Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)
+## 3.2 Makeover Version of Population by Population by Age and Sex
 
-The graph is supposed to compare the number of population between genders and age (e.g. the number female is greater than male at the age 50, then the number of female population will be subtracted by the male population and a bar chart will be plotted). However, if we look at the graph at a glance, it might look like the distribution of the population between genders based on age instead.
+The graph is supposed to compare the number of population between genders and age (e.g. the number female is greater than male at the age 50, then the number of female population will be subtracted by the male population and a bar chart will be plotted). However, if we look at the graph at a glance, it might look like a distribution of the population between genders based on age chart instead.
+
+My approach to the makeover:
+
+-   Change the chart type from bar chart to **stacked bar chart**. Though we could easily understand the which gender population is much more prominent in each age, but it isn't straight-forward. Since we want to compare the number of population between gender and age and which gender is more dominant in each age, stacked bar chart might be a better approach to compare between gender.
+
+-   Change the y-axis from count of population to **percentage** since the focus of the graph is to compare and show difference between genders. Additionally, percentage makes the difference much more visible and easier to compare than raw values.
+
+-   Use similar idea of **"fading content that is not relevant"** by fading the gender that has lower percentage.
 
 ```{r}
-grouped_data <- res_data %>%
+grouped_data <- res_data %>% # group population based on age and sex
   group_by(Age, Sex) %>%
-  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = "drop")
-grouped_data
+  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = "drop") %>%
+  group_by(Age) %>%
+  mutate(Percent = Pop / sum(Pop) * 100, # convert count into percentage
+         is_dominant = Pop == max(Pop))  # flags if gender has higher number
+
 ```
+
+```{r}
+ggplot(grouped_data, aes(x = Age, y = Percent, fill = Sex, alpha = is_dominant, # transparency for gender that has lower percentage
+                         width=0.6)) +
+  geom_col(position = "stack") + # visualize stacked bar chart
+  scale_alpha_manual(values = c("TRUE" = 1, "FALSE" = 0.4), guide = "none") +  labs(
+    title = "Age-Sex Population Structure (in Percentage)",
+    x = "Age",
+    y = "Percentage (%)"
+  )  +
+  theme_minimal()
+```
+
+::: {.callout-note title="Inisght"}
+-   The population have roughly similar number of male and female population from age 0 - 27. However, the male population is still slightly higher in number than female.
+-   Age 28 above, the population is dominated by female. The trend seems go higher as the age increases.
+:::
+
+## 3.3 Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)
+
+This graph compares the number of population by its age group from each planning area. The age group is separated into 3: Under age (aged 0 - 20), Adult (aged 21 - 60) and Aging (aged 61 above). The main objective of the graph is to analyze the number of aging population in each region.
+
+My approach to the makeover:
+
+-   Similar like the previous visualization, I would change the chart type from bar chart to **stacked bar chart**. Since we want to compare values from different groups (aging, adult and under age), it is easier to see compare the difference between groups with stacked bar chart.
+
+-   Change the x-axis from count of population to **percentage**. Though we could see from the some planning area have high number of aging population, but it's difficult to see the name of the planning area due to it being zoomed out to accommodate the range of the number of population in the x-axis.
+
+```{r, fig.width=12}
+  res_data_grouped <- res_data %>% # group population into age groups 
+  mutate(AgeGroup = case_when(
+        Age >= 0 & Age <= 20 ~ "Under Age",
+        Age >= 21 & Age <= 60 ~ "Adult",
+        Age >= 61 ~ "Aging"
+  )) %>%
+  group_by(PA, AgeGroup) %>%
+  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = "drop") %>%
+  group_by(PA) %>%
+  mutate(Percentage = Pop / sum(Pop) * 100) # convert frequency into percentage
+```
+
+```{r}
+  aging_order <- res_data_grouped %>% # reorder PA by the highest aging population
+  filter(AgeGroup == "Aging") %>%
+  arrange(desc(Percentage)) %>%
+  pull(PA)
+  res_data_grouped$PA <- factor(res_data_grouped$PA, levels = aging_order) # convert PA into an ordered factor
+```
+
+```{r}
+# plot stacked bar chart
+  ggplot(res_data_grouped, aes(x = PA, y = Percentage, fill = AgeGroup)) +
+  geom_col(position = "stack") +
+  labs(
+        title = "Age Group Distribution by Planning Area (in Percentage)",
+        x = "Planning Area",
+        y = "Percentage (%)"
+      ) +
+  scale_fill_manual(values = c("Under Age" = "#e3dfde", "Adult" = "#ccc6c4", "Aging" = "#DB4437")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+::: {.callout-note title="Insight"}
+-   The planning area with highest aging population are: Outram, Ang Mo Kio, Jurong East, Bukit Merah and Rochor
+-   Interestingly, there are planning area where there are no aging groups (i.e. Museum and Seletar)
+-   There are also some planning area that no Singapore residents live in: Boon Lay, Central Water Catchment, Chnagi Bay, etc.
+-   Overall, roughly about 50% of the population in each planning area are made up of adults or working people.
+:::

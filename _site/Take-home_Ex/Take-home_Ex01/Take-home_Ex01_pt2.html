@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Stefanie Felicia">
+<meta name="dcterms.date" content="2025-05-08">
 
 <title>Take-home Exercise 1 (Phase 2) – ISSS608-VAA</title>
 <style>
@@ -19,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -177,8 +213,11 @@ ul.task-list li input[type="checkbox"] {
    
   <ul class="collapse">
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">1. Background</a></li>
-  <li><a href="#good-design-principles-used-in-visualization" id="toc-good-design-principles-used-in-visualization" class="nav-link" data-scroll-target="#good-design-principles-used-in-visualization">Good Design Principles Used in Visualization</a></li>
-  <li><a href="#makeover-version-of-chosen-visualization" id="toc-makeover-version-of-chosen-visualization" class="nav-link" data-scroll-target="#makeover-version-of-chosen-visualization">Makeover Version of Chosen Visualization</a></li>
+  <li><a href="#good-design-principles-used-in-visualization" id="toc-good-design-principles-used-in-visualization" class="nav-link" data-scroll-target="#good-design-principles-used-in-visualization">2. Good Design Principles Used in Visualization</a></li>
+  <li><a href="#makeover-version-of-chosen-visualization" id="toc-makeover-version-of-chosen-visualization" class="nav-link" data-scroll-target="#makeover-version-of-chosen-visualization">3. Makeover Version of Chosen Visualization</a></li>
+  <li><a href="#import-libraries-for-makeover" id="toc-import-libraries-for-makeover" class="nav-link" data-scroll-target="#import-libraries-for-makeover">3.1 Import Libraries for Makeover</a></li>
+  <li><a href="#makeover-version-of-population-by-population-by-age-and-sex" id="toc-makeover-version-of-population-by-population-by-age-and-sex" class="nav-link" data-scroll-target="#makeover-version-of-population-by-population-by-age-and-sex">3.2 Makeover Version of Population by Population by Age and Sex</a></li>
+  <li><a href="#makeover-version-of-population-by-age-group-and-planning-area-analyze-the-aging-population-in-each-region" id="toc-makeover-version-of-population-by-age-group-and-planning-area-analyze-the-aging-population-in-each-region" class="nav-link" data-scroll-target="#makeover-version-of-population-by-age-group-and-planning-area-analyze-the-aging-population-in-each-region">3.3 Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)</a></li>
   </ul>
 </nav>
     </div>
@@ -194,8 +233,26 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Stefanie Felicia </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 8, 2025</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">May 8, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -204,28 +261,183 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="background" class="level1">
-<h1>1. Background</h1>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">1. Background</h2>
 <p>Objective of this exercise:</p>
 <ul>
-<li><p>Review a classmate’s Take-home Exercise 1 in which I chose to review <a href="https://isss608-visualanalytics.netlify.app/take-home_ex/take-home_ex01/take-home_ex01">Zhang JingHan</a>’s work</p></li>
+<li><p>Review a classmate’s Take-home Exercise 1 in which I chose to review <a href="https://isss-608-yihao-yuan.netlify.app/take-home_ex/take-home_ex01/take-home_ex01">Yuan Yihao</a>’s work</p></li>
 <li><p>Critique the good design principles used in their visualization</p></li>
 <li><p>Create makeover version of chosen visualization</p></li>
 </ul>
 </section>
-<section id="good-design-principles-used-in-visualization" class="level1">
-<h1>Good Design Principles Used in Visualization</h1>
+<section id="good-design-principles-used-in-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="good-design-principles-used-in-visualization">2. Good Design Principles Used in Visualization</h2>
+<p>There are 3 visualization are created as the following:</p>
+<p><strong>Population by Age and Sex</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex01_pt2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex01_pt2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Aging-to-Under-Age Population Ratio by Planning Area</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex01_pt2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Design principles implemented:</p>
 <ul>
-<li><p>the graph is clearly labeled (x-axis, y-axis, title) - good explanation (legends) to help reader understand</p></li>
-<li><p>point 2: each visualization is connected and goes deeper to expound (?) on dependency ratios, instead of general overview of demographics and population structure</p></li>
-<li><p>good use of color -&gt; using bold colors to emphasize the dependency ratio of elderly and youth, whereas muted colors are used for working age</p></li>
+<li><p>Each graph has good color schemes, the colors between genders contrast each other that it’s easy to distinguish between genders</p></li>
+<li><p>The usage of muted color in the Population by Age and Sex chart is helpful to highlight distribution of sex within the population</p></li>
+<li><p>The graph is clearly labeled in the x-axis, y-axis, title and legend - good explanation (legends) to help reader understand the context of the graph</p></li>
+<li><p>Population by Age Group and Planning Area has uses ordering visualization principle to highlight the planning area that has the highest aging population to lowest.</p></li>
 </ul>
 </section>
-<section id="makeover-version-of-chosen-visualization" class="level1">
-<h1>Makeover Version of Chosen Visualization</h1>
+<section id="makeover-version-of-chosen-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="makeover-version-of-chosen-visualization">3. Makeover Version of Chosen Visualization</h2>
+</section>
+<section id="import-libraries-for-makeover" class="level2">
+<h2 class="anchored" data-anchor-id="import-libraries-for-makeover">3.1 Import Libraries for Makeover</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggiraph, plotly, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, DT, tidyverse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="makeover-version-of-population-by-population-by-age-and-sex" class="level2">
+<h2 class="anchored" data-anchor-id="makeover-version-of-population-by-population-by-age-and-sex">3.2 Makeover Version of Population by Population by Age and Sex</h2>
+<p>The graph is supposed to compare the number of population between genders and age (e.g.&nbsp;the number female is greater than male at the age 50, then the number of female population will be subtracted by the male population and a bar chart will be plotted). However, if we look at the graph at a glance, it might look like a distribution of the population between genders based on age chart instead.</p>
+<p>My approach to the makeover:</p>
 <ul>
-<li>trend lines and reference line can be confusing as it isn’t stated what they represent -&gt; the trend line and bar chart can be seperated into 2 graph because it might overwhelm reader what is depth (in secodn graph), it’s not clearly stated how we can see it in the graph</li>
+<li><p>Change the chart type from bar chart to <strong>stacked bar chart</strong>. Though we could easily understand the which gender population is much more prominent in each age, but it isn’t straight-forward. Since we want to compare the number of population between gender and age and which gender is more dominant in each age, stacked bar chart might be a better approach to compare between gender.</p></li>
+<li><p>Change the y-axis from count of population to <strong>percentage</strong> since the focus of the graph is to compare and show difference between genders. Additionally, percentage makes the difference much more visible and easier to compare than raw values.</p></li>
+<li><p>Use similar idea of <strong>“fading content that is not relevant”</strong> by fading the gender that has lower percentage.</p></li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>grouped_data <span class="ot">&lt;-</span> res_data <span class="sc">%&gt;%</span> <span class="co"># group population based on age and sex</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Age, Sex) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Pop =</span> <span class="fu">sum</span>(Pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Age) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percent =</span> Pop <span class="sc">/</span> <span class="fu">sum</span>(Pop) <span class="sc">*</span> <span class="dv">100</span>, <span class="co"># convert count into percentage</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_dominant =</span> Pop <span class="sc">==</span> <span class="fu">max</span>(Pop))  <span class="co"># flags if gender has higher number</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grouped_data, <span class="fu">aes</span>(<span class="at">x =</span> Age, <span class="at">y =</span> Percent, <span class="at">fill =</span> Sex, <span class="at">alpha =</span> is_dominant, <span class="co"># transparency for gender that has lower percentage</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">width=</span><span class="fl">0.6</span>)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span> <span class="co"># visualize stacked bar chart</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_alpha_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"TRUE"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"FALSE"</span> <span class="ot">=</span> <span class="fl">0.4</span>), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span>  <span class="fu">labs</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Age-Sex Population Structure (in Percentage)"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Age"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage (%)"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  )  <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex01_pt2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Inisght">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Inisght
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The population have roughly similar number of male and female population from age 0 - 27. However, the male population is still slightly higher in number than female.</li>
+<li>Age 28 above, the population is dominated by female. The trend seems go higher as the age increases.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="makeover-version-of-population-by-age-group-and-planning-area-analyze-the-aging-population-in-each-region" class="level2">
+<h2 class="anchored" data-anchor-id="makeover-version-of-population-by-age-group-and-planning-area-analyze-the-aging-population-in-each-region">3.3 Makeover Version of Population by Age Group and Planning Area (Analyze the Aging Population in Each Region)</h2>
+<p>This graph compares the number of population by its age group from each planning area. The age group is separated into 3: Under age (aged 0 - 20), Adult (aged 21 - 60) and Aging (aged 61 above). The main objective of the graph is to analyze the number of aging population in each region.</p>
+<p>My approach to the makeover:</p>
+<ul>
+<li><p>Similar like the previous visualization, I would change the chart type from bar chart to <strong>stacked bar chart</strong>. Since we want to compare values from different groups (aging, adult and under age), it is easier to see compare the difference between groups with stacked bar chart.</p></li>
+<li><p>Change the x-axis from count of population to <strong>percentage</strong>. Though we could see from the some planning area have high number of aging population, but it’s difficult to see the name of the planning area due to it being zoomed out to accommodate the range of the number of population in the x-axis.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  res_data_grouped <span class="ot">&lt;-</span> res_data <span class="sc">%&gt;%</span> <span class="co"># group population into age groups </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AgeGroup =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        Age <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"Under Age"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        Age <span class="sc">&gt;=</span> <span class="dv">21</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">60</span> <span class="sc">~</span> <span class="st">"Adult"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        Age <span class="sc">&gt;=</span> <span class="dv">61</span> <span class="sc">~</span> <span class="st">"Aging"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PA, AgeGroup) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Pop =</span> <span class="fu">sum</span>(Pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PA) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percentage =</span> Pop <span class="sc">/</span> <span class="fu">sum</span>(Pop) <span class="sc">*</span> <span class="dv">100</span>) <span class="co"># convert frequency into percentage</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  aging_order <span class="ot">&lt;-</span> res_data_grouped <span class="sc">%&gt;%</span> <span class="co"># reorder PA by the highest aging population</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(AgeGroup <span class="sc">==</span> <span class="st">"Aging"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Percentage)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(PA)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  res_data_grouped<span class="sc">$</span>PA <span class="ot">&lt;-</span> <span class="fu">factor</span>(res_data_grouped<span class="sc">$</span>PA, <span class="at">levels =</span> aging_order) <span class="co"># convert PA into an ordered factor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot stacked bar chart</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(res_data_grouped, <span class="fu">aes</span>(<span class="at">x =</span> PA, <span class="at">y =</span> Percentage, <span class="at">fill =</span> AgeGroup)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Age Group Distribution by Planning Area (in Percentage)"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Planning Area"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Percentage (%)"</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Under Age"</span> <span class="ot">=</span> <span class="st">"#e3dfde"</span>, <span class="st">"Adult"</span> <span class="ot">=</span> <span class="st">"#ccc6c4"</span>, <span class="st">"Aging"</span> <span class="ot">=</span> <span class="st">"#DB4437"</span>)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex01_pt2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insight
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The planning area with highest aging population are: Outram, Ang Mo Kio, Jurong East, Bukit Merah and Rochor</li>
+<li>Interestingly, there are planning area where there are no aging groups (i.e.&nbsp;Museum and Seletar)</li>
+<li>There are also some planning area that no Singapore residents live in: Boon Lay, Central Water Catchment, Chnagi Bay, etc.</li>
+<li>Overall, roughly about 50% of the population in each planning area are made up of adults or working people.</li>
+</ul>
+</div>
+</div>
 
 
 </section>
