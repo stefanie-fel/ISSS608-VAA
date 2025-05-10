@@ -69,7 +69,6 @@ FunnelPlotR uses ggplot to create funnel plot. The essential arguments are: `num
 -   Aesthetic component
 
 ::: {.callout-note title="What is a funnel plot ?"}
-
 -   When we visualize uncertainty, we’ll always be dealing with variation (dealing with multiple occurrences and determine what and how they differ)
 
 -   Two types of variation:
@@ -79,7 +78,6 @@ FunnelPlotR uses ggplot to create funnel plot. The essential arguments are: `num
     -   Signal: they are not totally random and can point to underlying causes that can be insightful (to improve)
 
 -   This is where funnel plot comes in! Funnel plot can help us to determine if a data point is noise or signal
-
 :::
 
 # Funnel Plot using FunnelPlotR
@@ -114,7 +112,6 @@ funnel_plot(
 ```
 
 ::: {.callout-note title="What does this code do"}
-
 -   `data_type = "PR"` : refers to plotting a proportion ratio plot (used to visualize proportion of percentage of events to compare how different groups perform compared o percentage fo events)
 
 -   `x_range` : sets range of value for x-axis
@@ -122,7 +119,6 @@ funnel_plot(
 -   y_range : sets range of value for y-axis
 
 -   `label = NA` : used to remove default label outliers feature
-
 :::
 
 # Funnel Plot using ggplot2

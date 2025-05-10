@@ -101,6 +101,7 @@ We can plot error bar by using `geom_errorbar()` which will compute the formula 
 
 ::: panel-tabset
 ## The graph
+
 ```{r, echo=FALSE}
 ggplot(my_sum) +
   geom_errorbar(
@@ -120,7 +121,9 @@ ggplot(my_sum) +
            alpha=1) +
   ggtitle("Standard error of mean maths score by race")
 ```
+
 ## The code
+
 ```{r, eval=FALSE}
 ggplot(my_sum) +
   geom_errorbar(
@@ -141,13 +144,14 @@ ggplot(my_sum) +
   ggtitle("Standard error of mean maths score by race")
 ```
 :::
+
 ## Plotting Confidence Interval of Point Estimates
 
 We can plot the confidence interval instead of standard error like below.
 
 ::: panel-tabset
-
 ## the graph
+
 ```{r, echo=FALSE}
 ggplot(my_sum) +
   geom_errorbar(
@@ -168,7 +172,9 @@ ggplot(my_sum) +
   labs(x = "Maths score",
        title = "95% confidence interval of mean maths score by race")
 ```
+
 ## The code
+
 ```{r, eval=FALSE}
 ggplot(my_sum) +
   geom_errorbar(
@@ -190,7 +196,6 @@ ggplot(my_sum) +
        title = "95% confidence interval of mean maths score by race")
 ```
 :::
-
 
 ::: callout-tip
 What's the difference between this code and the one before:
@@ -205,8 +210,8 @@ What's the difference between this code and the one before:
 In this example, we'll be plotting interactive error bar with 99% confidence interval of mean Maths score by race.
 
 ::: panel-tabset
-
 ## The graph
+
 ```{r, echo=FALSE}
 shared_df = SharedData$new(my_sum)
 
@@ -253,7 +258,9 @@ bscols(widths = c(4,8),
          formatRound(columns=c('mean', 'sd', 'se'),
                      digits=2))
 ```
+
 ## The code
+
 ```{r, eval=FALSE}
 shared_df = SharedData$new(my_sum)
 
@@ -301,7 +308,6 @@ bscols(widths = c(4,8),
                      digits=2))
 ```
 :::
-
 
 ::: {.callout-note title="Break down of the code"}
 -   `bscols()` lays out the interactive graph created by `plotly()` with the table created by `DT::datatable` side by side.
@@ -420,7 +426,7 @@ exam %>%
 ```
 :::
 
-## Customizing Style of ggdist visualization 
+## Customizing Style of ggdist visualization
 
 We can change the style fo visualization by using `stat_gradientinterval()` like below
 
@@ -460,8 +466,11 @@ exam %>%
 
 ### Install and launch package
 
-```{r, message=FALSE}
+```{r, message=FALSE, eval=FALSE}
 devtools::install_github("wilkelab/ungeviz")
+```
+
+```{r}
 library(ungeviz)
 ```
 
