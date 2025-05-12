@@ -1,0 +1,95 @@
+---
+title: "Hands-on Exercise 5"
+author: "Stefanie Felicia"
+date: "May, 12 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## Getting Started
+
+Objective of this exercise:
+
+-   How to model, analyze and visualize network
+
+-   create graph object data frame, manipulate them using dplyr, lubridate and tidygraph
+
+-   build network graph visualization using appropriate function of ggraph
+
+-   compute network geometrics using tidygraph
+
+-   build advanced graph visualization by adding network geometrics
+
+-   Build interactive network visualization using visNetwork
+
+## Import Libraries
+
+```{r}
+pacman::p_load(igraph, tidygraph, ggraph, 
+               visNetwork, lubridate, clock,
+               tidyverse, graphlayouts, 
+               concaveman, ggforce)
+```
+
+The libraries used in this exercise would be:
+
+-   igraph: provides function for generating random and regular graphs, graph visualization, centrality methods, etc
+
+-   tidygraph: an entry unto the tidyverse that provides a tidy framework for all things relational (network, graph, trees, etc)
+
+-   ggraph
+
+-   visNetwork: package for network visualization using vis.js (a JS library)
+
+-   lubridate: makes it easier working with dates and times
+
+-   clock: R package to work with date-times
+
+-   tidyverse
+
+-   graphlayouts: additional layout algorithm for network visualization
+
+-   concaveman: the *concavemean* function ports *concaveman* library from *mapbox* and computes the concave polygon for one or several set of points.
+
+-   ggforce: provide missing functionality *ggplot2* through extension introduced with *ggplotv2*
+
+## Import Data
+
+In thsi exercise, we'll be using two dataset, the node data and the link data. The datasets are from oil exploration and extraction company. The edge dataset contain two weeks of 9063 emails correspondence between 55 employees, whereas the nodes dataset consist of names, department and title of employees.
+
+```{r}
+GAStech_nodes <- read_csv("GAStech_email_node.csv")
+GAStech_edges <- read_csv("GAStech_email_edge-v2.csv")
+```
+
+## Review Data
+
+Next, we checl for the structure of the data frame using glimpse() to show us a snippet of the values in each columns.
+
+```{r}
+glimpse(GAStech_edges)
+```
+
+## Data Wrangling
+
+As seen above, the sentDate variable is in character data type instead of date data type. So we want to change the data type.
+
+```{r}
+GAStech_edges <- GAStech_edges %>%
+  mutate(SendDate = dmy(SentDate)) %>%
+  mutate(Weekday = wday(SentDate,
+                        label = TRUE,
+                        abbr = FALSE))
+```
+
+::: {.callout-note}
+-   `dmy` and `wday` functions are from the lubidate package
+
+-   `dmy` transform SentDate to date data type
+
+-   `wday` the day of the week as decimal number if label is TRUE, but returns name of the day if label is FALSE. This function create a new column in the data frame.
+:::

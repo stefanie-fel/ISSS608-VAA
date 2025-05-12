@@ -586,5 +586,47 @@
     "title": "Take-home Exercise 1 (Phase 2)",
     "section": "3.2 Makeover Version of Population by Population by Age and Sex",
     "text": "3.2 Makeover Version of Population by Population by Age and Sex\nThe graph is supposed to compare the number of population between genders and age (e.g. the number female is greater than male at the age 50, then the number of female population will be subtracted by the male population and a bar chart will be plotted). However, if we look at the graph at a glance, it might look like a distribution of the population between genders based on age chart instead.\nMy approach to the makeover:\n\nChange the chart type from bar chart to stacked bar chart. Though we could easily understand the which gender population is much more prominent in each age, but it isn’t straight-forward. Since we want to compare the number of population between gender and age and which gender is more dominant in each age, stacked bar chart might be a better approach to compare between gender.\nChange the y-axis from count of population to percentage since the focus of the graph is to compare and show difference between genders. Additionally, percentage makes the difference much more visible and easier to compare than raw values.\nUse similar idea of “fading content that is not relevant” by fading the gender that has lower percentage.\n\n\ngrouped_data &lt;- res_data %&gt;% # group population based on age and sex\n  group_by(Age, Sex) %&gt;%\n  summarise(Pop = sum(Pop, na.rm = TRUE), .groups = \"drop\") %&gt;%\n  group_by(Age) %&gt;%\n  mutate(Percent = Pop / sum(Pop) * 100, # convert count into percentage\n         is_dominant = Pop == max(Pop))  # flags if gender has higher number\n\n\nggplot(grouped_data, aes(x = Age, y = Percent, fill = Sex, alpha = is_dominant, # transparency for gender that has lower percentage\n                         width=0.6)) +\n  geom_col(position = \"stack\") + # visualize stacked bar chart\n  scale_alpha_manual(values = c(\"TRUE\" = 1, \"FALSE\" = 0.4), guide = \"none\") +  labs(\n    title = \"Age-Sex Population Structure (in Percentage)\",\n    x = \"Age\",\n    y = \"Percentage (%)\"\n  )  +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInisght\n\n\n\n\nThe population have roughly similar number of male and female population from age 0 - 27. However, the male population is still slightly higher in number than female.\nFrom age 28 above, the population is dominated by female. The trend seems go higher as the age increases."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html",
+    "title": "Hands-on Exercise 5",
+    "section": "",
+    "text": "Objective of this exercise:\n\nHow to model, analyze and visualize network\ncreate graph object data frame, manipulate them using dplyr, lubridate and tidygraph\nbuild network graph visualization using appropriate function of ggraph\ncompute network geometrics using tidygraph\nbuild advanced graph visualization by adding network geometrics\nBuild interactive network visualization using visNetwork"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#getting-started",
+    "title": "Hands-on Exercise 5",
+    "section": "",
+    "text": "Objective of this exercise:\n\nHow to model, analyze and visualize network\ncreate graph object data frame, manipulate them using dplyr, lubridate and tidygraph\nbuild network graph visualization using appropriate function of ggraph\ncompute network geometrics using tidygraph\nbuild advanced graph visualization by adding network geometrics\nBuild interactive network visualization using visNetwork"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#import-libraries",
+    "title": "Hands-on Exercise 5",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(igraph, tidygraph, ggraph, \n               visNetwork, lubridate, clock,\n               tidyverse, graphlayouts, \n               concaveman, ggforce)\n\nThe libraries used in this exercise would be:\n\nigraph: provides function for generating random and regular graphs, graph visualization, centrality methods, etc\ntidygraph: an entry unto the tidyverse that provides a tidy framework for all things relational (network, graph, trees, etc)\nggraph\nvisNetwork: package for network visualization using vis.js (a JS library)\nlubridate: makes it easier working with dates and times\nclock: R package to work with date-times\ntidyverse\ngraphlayouts: additional layout algorithm for network visualization\nconcaveman: the concavemean function ports concaveman library from mapbox and computes the concave polygon for one or several set of points.\nggforce: provide missing functionality ggplot2 through extension introduced with ggplotv2"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#import-data",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#import-data",
+    "title": "Hands-on Exercise 5",
+    "section": "Import Data",
+    "text": "Import Data\nIn thsi exercise, we’ll be using two dataset, the node data and the link data. The datasets are from oil exploration and extraction company. The edge dataset contain two weeks of 9063 emails correspondence between 55 employees, whereas the nodes dataset consist of names, department and title of employees.\n\nGAStech_nodes &lt;- read_csv(\"GAStech_email_node.csv\")\nGAStech_edges &lt;- read_csv(\"GAStech_email_edge-v2.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#review-data",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#review-data",
+    "title": "Hands-on Exercise 5",
+    "section": "Review Data",
+    "text": "Review Data\nNext, we checl for the structure of the data frame using glimpse() to show us a snippet of the values in each columns.\n\nglimpse(GAStech_edges)\n\nRows: 9,063\nColumns: 8\n$ source      &lt;dbl&gt; 43, 43, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 26, 26, 26…\n$ target      &lt;dbl&gt; 41, 40, 51, 52, 53, 45, 44, 46, 48, 49, 47, 54, 27, 28, 29…\n$ SentDate    &lt;chr&gt; \"6/1/2014\", \"6/1/2014\", \"6/1/2014\", \"6/1/2014\", \"6/1/2014\"…\n$ SentTime    &lt;time&gt; 08:39:00, 08:39:00, 08:58:00, 08:58:00, 08:58:00, 08:58:0…\n$ Subject     &lt;chr&gt; \"GT-SeismicProcessorPro Bug Report\", \"GT-SeismicProcessorP…\n$ MainSubject &lt;chr&gt; \"Work related\", \"Work related\", \"Work related\", \"Work rela…\n$ sourceLabel &lt;chr&gt; \"Sven.Flecha\", \"Sven.Flecha\", \"Kanon.Herrero\", \"Kanon.Herr…\n$ targetLabel &lt;chr&gt; \"Isak.Baza\", \"Lucas.Alcazar\", \"Felix.Resumir\", \"Hideki.Coc…"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-wrangling",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-wrangling",
+    "title": "Hands-on Exercise 5",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nAs seen above, the sentDate variable is in character data type instead of date data type. So we want to change the data type.\n\nGAStech_edges &lt;- GAStech_edges %&gt;%\n  mutate(SendDate = dmy(SentDate)) %&gt;%\n  mutate(Weekday = wday(SentDate,\n                        label = TRUE,\n                        abbr = FALSE))\n\n\n\n\n\n\n\nNote\n\n\n\n\ndmy and wday functions are from the lubidate package\ndmy transform SentDate to date data type\nwday the day of the week as decimal number if label is TRUE, but returns name of the day if label is FALSE. This function create a new column in the data frame."
   }
 ]
