@@ -112,12 +112,12 @@ GAStech_edges_aggregated <- GAStech_edges %>%
   ungroup()
 ```
 
-::: {.callout-note}
+::: callout-note
 -   `filter(MainSubject == "Work related")` filters and keep rows that is work related and group them by `source`, `target` and `weekday`
 
 -   `summarise(Weight = n())` takes each unique group and count number of rows there is and assign them to `Weight`
 
--    `filter(source != target)` removes rows where source and target are the same person, while `filter(Weight > 1)` only keeps interaction that happened more than once on the same weekday
+-   `filter(source != target)` removes rows where source and target are the same person, while `filter(Weight > 1)` only keeps interaction that happened more than once on the same weekday
 
 -   `ungroup()` removes the grouping
 :::
@@ -166,7 +166,7 @@ GAStech_graph <- tbl_graph(nodes = GAStech_nodes,
 GAStech_graph
 ```
 
-::: {.callout-note}
+::: callout-note
 -   The tbl_graph consist of 54 nodes and 1372 edges
 
 -   The Node data is active, this means that it's possible to manipulate the data in one tibble at a time
@@ -200,7 +200,7 @@ ggraph(GAStech_graph) +
   geom_node_point()
 ```
 
-## Customize the Style of Graph 
+## Customize the Style of Graph
 
 ### Using Theme
 
@@ -260,7 +260,7 @@ g <- ggraph(GAStech_graph,
 g + theme_graph()
 ```
 
-::: .callout-tip
+::: callout-tip
 -   We added `colour = Department` in`geom_node_point(aes())`
 :::
 
@@ -280,7 +280,7 @@ g <- ggraph(GAStech_graph,
 g + theme_graph()
 ```
 
-::: .callout-tip
+::: callout-tip
 -   Similar to modifying the network node, we can add arguments into the `geom_edge_link()` to add weights to the edges.
 :::
 
@@ -412,6 +412,8 @@ g + theme_graph()
 
 ## Visualizing Community
 
+tidygraph package inherit many community detection algorithms imbedded into igraph and it is made available to us, incl. *edge-betweenness (group_edge_betweenness)*, *Leading eigenvector (group_leading_eigen)*, *Fast-greedy (group_fast_greedy)*, *Louvain (group_louvain)*, *Walktrap (group_walktrap)*, *Label propagation (group_label_prop)*, *InfoMAP (group_infomap)*, *Spinglass (group_spinglass)*, and *Optimal (group_optimal)*. In this example, the group_edge_betweenness().
+
 ```{r}
 g <- GAStech_graph %>%
   mutate(community = as.factor(
@@ -430,3 +432,137 @@ g <- GAStech_graph %>%
 
 g + theme_graph()
 ```
+
+To support effective visual investigation the community network has been revised by using `geom_mark_hull()` of ggforce.
+
+```{r}
+g <- GAStech_graph %>%
+  activate(nodes) %>%
+  mutate(community = as.factor(
+    group_optimal(weights = Weight)),
+         betweenness_measure = centrality_betweenness()) %>%
+  ggraph(layout = "fr") +
+  geom_mark_hull(
+    aes(x, y, 
+        group = community, 
+        fill = community),  
+    alpha = 0.2,  
+    expand = unit(0.3, "cm"),  # Expand
+    radius = unit(0.3, "cm")  # Smoothness
+  ) + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(fill = Department,
+                      size = betweenness_measure),
+                      color = "black",
+                      shape = 21)
+  
+g + theme_graph()
+```
+
+## Build Interactive Network Graph using visNetwork
+
+visNetwork() function uses a nodes list and edges list and create interactive graph. But nodes list must include an "id" column and the edge list must have "from" and "to" column. The function also pots the label for the nodes, using the names of the actors from "label" column.
+
+### Data Prep Steps
+
+```{r}
+GAStech_edges_aggregated <- GAStech_edges %>%
+  left_join(GAStech_nodes, by = c("sourceLabel" = "label")) %>%
+  rename(from = id) %>%
+  left_join(GAStech_nodes, by = c("targetLabel" = "label")) %>%
+  rename(to = id) %>%
+  filter(MainSubject == "Work related") %>%
+  group_by(from, to) %>%
+    summarise(weight = n()) %>%
+  filter(from!=to) %>%
+  filter(weight > 1) %>%
+  ungroup()
+```
+
+::: callout-note
+-   `left_join(GAStech_nodes, by = c("sourceLabel" = "label"))`match email's sender to their id in the node table and `rename(from = id)` add column id and renamed it to from
+
+-   `filter(MainSubject == "Work related")` filters out emails that are not work-related
+
+-   `group_by(from, to) %>% summarise(weight = n())` count how many emails were sent fro each sender-reciever
+
+-   `filter(weight > 1)` keeps only relationship of people who emailed each other more than once
+:::
+
+### Create Interactive Network Graph
+
+Now, we plot the graph.
+
+```{r}
+visNetwork(GAStech_nodes, 
+ GAStech_edges_aggregated)
+```
+
+In this example, we'll use Fruchterman and Reingold layout.
+
+```{r}
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") 
+```
+
+## Working with Visual Attributes (Nodes)
+
+In this example, we want to group the data based on department, wich visNetwork looks for "field" in node object and color the node according to the value in the group field. In this example, we'll change the Department field to group.
+
+```{r}
+GAStech_nodes <- GAStech_nodes %>%
+  rename(group = Department) 
+```
+
+Then visNetwork shades teh node by assigning unique color to each category in group field.
+
+```{r}
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
+
+## Working with Visual Attributes (Edges)
+
+```{r}
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visEdges(arrows = "to", 
+           smooth = list(enabled = TRUE, 
+                         type = "curvedCW")) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
+
+::: {.callout-note title="What the code does"}
+-   `visEdges()` is used to symbolize the edges
+
+-   `arrows` is used to define where to place the arrow
+
+-   `smooth` is used to plot the edges using a smooth curve
+:::
+
+Interactivity
+
+```{r}
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visOptions(highlightNearest = TRUE,
+             nodesIdSelection = TRUE) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
+::: {.callout-note title="What the code does"}
+-   `visoptions()` is used to symbolize the edges
+
+-   `highlightNearest` highlight nearest when clicking a node
+
+-   `nodesIdSelection` adds an id node selection by creating HTML select element
+:::

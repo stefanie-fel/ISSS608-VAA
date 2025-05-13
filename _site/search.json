@@ -648,14 +648,14 @@
     "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#modify-network-node",
     "title": "Hands-on Exercise 5",
     "section": "Modify Network Node",
-    "text": "Modify Network Node\nIn this example, we’ll color the node by their departments.\n\ng &lt;- ggraph(GAStech_graph, \n            layout = \"nicely\") + \n  geom_edge_link(aes()) +\n  geom_node_point(aes(colour = Department, \n                      size = 3))\n\ng + theme_graph()\n\n\n\n\n\n\n\n\n\n\nWe added colour = Department ingeom_node_point(aes())"
+    "text": "Modify Network Node\nIn this example, we’ll color the node by their departments.\n\ng &lt;- ggraph(GAStech_graph, \n            layout = \"nicely\") + \n  geom_edge_link(aes()) +\n  geom_node_point(aes(colour = Department, \n                      size = 3))\n\ng + theme_graph()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\n\nWe added colour = Department ingeom_node_point(aes())"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#modify-network-edges",
     "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#modify-network-edges",
     "title": "Hands-on Exercise 5",
     "section": "Modify Network Edges",
-    "text": "Modify Network Edges\nIn this example, we’ll change the thickness of the edges by adding Weights.\n\ng &lt;- ggraph(GAStech_graph, \n            layout = \"nicely\") +\n  geom_edge_link(aes(width=Weight), \n                 alpha=0.2) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(colour = Department), \n                  size = 3)\n\ng + theme_graph()\n\n\n\n\n\n\n\n\n\n\nSimilar to modifying the network node, we can add arguments into the geom_edge_link() to add weights to the edges."
+    "text": "Modify Network Edges\nIn this example, we’ll change the thickness of the edges by adding Weights.\n\ng &lt;- ggraph(GAStech_graph, \n            layout = \"nicely\") +\n  geom_edge_link(aes(width=Weight), \n                 alpha=0.2) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(colour = Department), \n                  size = 3)\n\ng + theme_graph()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\n\nSimilar to modifying the network node, we can add arguments into the geom_edge_link() to add weights to the edges."
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#creating-facet-graphs",
@@ -690,6 +690,34 @@
     "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#visualizing-community",
     "title": "Hands-on Exercise 5",
     "section": "Visualizing Community",
-    "text": "Visualizing Community\n\ng &lt;- GAStech_graph %&gt;%\n  mutate(community = as.factor(\n    group_edge_betweenness(\n      weights = Weight, \n      directed = TRUE))) %&gt;%\n  ggraph(layout = \"fr\") + \n  geom_edge_link(\n    aes(\n      width=Weight), \n    alpha=0.2) +\n  scale_edge_width(\n    range = c(0.1, 5)) +\n  geom_node_point(\n    aes(colour = community))  \n\ng + theme_graph()"
+    "text": "Visualizing Community\ntidygraph package inherit many community detection algorithms imbedded into igraph and it is made available to us, incl. edge-betweenness (group_edge_betweenness), Leading eigenvector (group_leading_eigen), Fast-greedy (group_fast_greedy), Louvain (group_louvain), Walktrap (group_walktrap), Label propagation (group_label_prop), InfoMAP (group_infomap), Spinglass (group_spinglass), and Optimal (group_optimal). In this example, the group_edge_betweenness().\n\ng &lt;- GAStech_graph %&gt;%\n  mutate(community = as.factor(\n    group_edge_betweenness(\n      weights = Weight, \n      directed = TRUE))) %&gt;%\n  ggraph(layout = \"fr\") + \n  geom_edge_link(\n    aes(\n      width=Weight), \n    alpha=0.2) +\n  scale_edge_width(\n    range = c(0.1, 5)) +\n  geom_node_point(\n    aes(colour = community))  \n\ng + theme_graph()\n\n\n\n\n\n\n\n\nTo support effective visual investigation the community network has been revised by using geom_mark_hull() of ggforce.\n\ng &lt;- GAStech_graph %&gt;%\n  activate(nodes) %&gt;%\n  mutate(community = as.factor(\n    group_optimal(weights = Weight)),\n         betweenness_measure = centrality_betweenness()) %&gt;%\n  ggraph(layout = \"fr\") +\n  geom_mark_hull(\n    aes(x, y, \n        group = community, \n        fill = community),  \n    alpha = 0.2,  \n    expand = unit(0.3, \"cm\"),  # Expand\n    radius = unit(0.3, \"cm\")  # Smoothness\n  ) + \n  geom_edge_link(aes(width=Weight), \n                 alpha=0.2) +\n  scale_edge_width(range = c(0.1, 5)) +\n  geom_node_point(aes(fill = Department,\n                      size = betweenness_measure),\n                      color = \"black\",\n                      shape = 21)\n  \ng + theme_graph()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#build-interactive-network-graph-using-visnetwork",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#build-interactive-network-graph-using-visnetwork",
+    "title": "Hands-on Exercise 5",
+    "section": "Build Interactive Network Graph using visNetwork",
+    "text": "Build Interactive Network Graph using visNetwork\nvisNetwork() function uses a nodes list and edges list and create interactive graph. But nodes list must include an “id” column and the edge list must have “from” and “to” column. The function also pots the label for the nodes, using the names of the actors from “label” column.\n\nData Prep Steps\n\nGAStech_edges_aggregated &lt;- GAStech_edges %&gt;%\n  left_join(GAStech_nodes, by = c(\"sourceLabel\" = \"label\")) %&gt;%\n  rename(from = id) %&gt;%\n  left_join(GAStech_nodes, by = c(\"targetLabel\" = \"label\")) %&gt;%\n  rename(to = id) %&gt;%\n  filter(MainSubject == \"Work related\") %&gt;%\n  group_by(from, to) %&gt;%\n    summarise(weight = n()) %&gt;%\n  filter(from!=to) %&gt;%\n  filter(weight &gt; 1) %&gt;%\n  ungroup()\n\n\n\n\n\n\n\nNote\n\n\n\n\nleft_join(GAStech_nodes, by = c(\"sourceLabel\" = \"label\"))match email’s sender to their id in the node table and rename(from = id) add column id and renamed it to from\nfilter(MainSubject == \"Work related\") filters out emails that are not work-related\ngroup_by(from, to) %&gt;% summarise(weight = n()) count how many emails were sent fro each sender-reciever\nfilter(weight &gt; 1) keeps only relationship of people who emailed each other more than once\n\n\n\n\n\nCreate Interactive Network Graph\nNow, we plot the graph.\n\nvisNetwork(GAStech_nodes, \n GAStech_edges_aggregated)\n\n\n\n\n\nIn this example, we’ll use Fruchterman and Reingold layout.\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-visual-attributes-nodes",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-visual-attributes-nodes",
+    "title": "Hands-on Exercise 5",
+    "section": "Working with Visual Attributes (Nodes)",
+    "text": "Working with Visual Attributes (Nodes)\nIn this example, we want to group the data based on department, wich visNetwork looks for “field” in node object and color the node according to the value in the group field. In this example, we’ll change the Department field to group.\n\nGAStech_nodes &lt;- GAStech_nodes %&gt;%\n  rename(group = Department) \n\nThen visNetwork shades the node by assigning unique color to each category in group field.\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-visual-attributes-edges",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-visual-attributes-edges",
+    "title": "Hands-on Exercise 5",
+    "section": "Working with Visual Attributes (Edges)",
+    "text": "Working with Visual Attributes (Edges)\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visEdges(arrows = \"to\", \n           smooth = list(enabled = TRUE, \n                         type = \"curvedCW\")) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)\n\n\n\n\n\n\n\n\n\n\n\nWhat the code does\n\n\n\n\nvisEdges() is used to symbolize the edges\narrows is used to define where to place the arrow\nsmooth is used to plot the edges using a smooth curve"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#interactivity",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#interactivity",
+    "title": "Hands-on Exercise 5",
+    "section": "Interactivity",
+    "text": "Interactivity\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visOptions(highlightNearest = TRUE,\n             nodesIdSelection = TRUE) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)\n\n\n\n\n\n\n\n\n\n\n\nWhat the code does\n\n\n\n\nvisoptions() is used to symbolize the edges\nhighlightNearest highlight nearest when clicking a node\nnodesIdSelection adds an id node selection by creating HTML select element"
   }
 ]
