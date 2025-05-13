@@ -704,7 +704,7 @@
     "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-visual-attributes-nodes",
     "title": "Hands-on Exercise 5",
     "section": "Working with Visual Attributes (Nodes)",
-    "text": "Working with Visual Attributes (Nodes)\nIn this example, we want to group the data based on department, wich visNetwork looks for “field” in node object and color the node according to the value in the group field. In this example, we’ll change the Department field to group.\n\nGAStech_nodes &lt;- GAStech_nodes %&gt;%\n  rename(group = Department) \n\nThen visNetwork shades the node by assigning unique color to each category in group field.\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)"
+    "text": "Working with Visual Attributes (Nodes)\nIn this example, we want to group the data based on department, wich visNetwork looks for “field” in node object and color the node according to the value in the group field. In this example, we’ll change the Department field to group.\nThen visNetwork shades the node by assigning unique color to each category in group field.\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-visual-attributes-edges",

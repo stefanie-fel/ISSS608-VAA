@@ -512,11 +512,6 @@ visNetwork(GAStech_nodes,
 
 In this example, we want to group the data based on department, wich visNetwork looks for "field" in node object and color the node according to the value in the group field. In this example, we'll change the Department field to group.
 
-```{r}
-GAStech_nodes <- GAStech_nodes %>%
-  rename(group = Department) 
-```
-
 Then visNetwork shades the node by assigning unique color to each category in group field.
 
 ```{r}
