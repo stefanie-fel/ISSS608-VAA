@@ -719,5 +719,19 @@
     "title": "Hands-on Exercise 5",
     "section": "Interactivity",
     "text": "Interactivity\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visOptions(highlightNearest = TRUE,\n             nodesIdSelection = TRUE) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)\n\n\n\n\n\n\n\n\n\n\n\nWhat the code does\n\n\n\n\nvisoptions() is used to symbolize the edges\nhighlightNearest highlight nearest when clicking a node\nnodesIdSelection adds an id node selection by creating HTML select element"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html",
+    "href": "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html",
+    "title": "Take-home Exercise 2",
+    "section": "",
+    "text": "Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. (there used to be illegal fishing but now these ppl has shifting on to another investment e.g. ocean tourism industry which makes a growing tension.) with teh growing tourism, it attracted interntaional pop star Sailor Shift (who wanted to shoot his/her new mv in the island).\n\nClepper Jensen is a former analyst at FishEye company who is new a seasoned journalist for Hecklee Herald, is observing the tension and recently looking at temporary closure of Nemo Reef. By using investigative tools and radio communication, he uncovered a complex web of expedited approvals and secretive logistics -&gt; this reveals story involving high-level Oceanus officials, Sailor Shift’s team, local influential families adn local conservationist group (the Green Guardians) - this is a story of corruption and manipulation.\nYour task is to develop new and novel visualizations and visual analytics approaches to help Clepper get to the bottom of this story.\n\n\nObjective of this exercise:\n\n\n\n\n\n\n\n\n\nhow many variable (details of the dataset)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html#background",
+    "href": "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html#background",
+    "title": "Take-home Exercise 2",
+    "section": "",
+    "text": "Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. (there used to be illegal fishing but now these ppl has shifting on to another investment e.g. ocean tourism industry which makes a growing tension.) with teh growing tourism, it attracted interntaional pop star Sailor Shift (who wanted to shoot his/her new mv in the island).\n\nClepper Jensen is a former analyst at FishEye company who is new a seasoned journalist for Hecklee Herald, is observing the tension and recently looking at temporary closure of Nemo Reef. By using investigative tools and radio communication, he uncovered a complex web of expedited approvals and secretive logistics -&gt; this reveals story involving high-level Oceanus officials, Sailor Shift’s team, local influential families adn local conservationist group (the Green Guardians) - this is a story of corruption and manipulation.\nYour task is to develop new and novel visualizations and visual analytics approaches to help Clepper get to the bottom of this story.\n\n\nObjective of this exercise:\n\n\n\n\n\n\n\n\n\nhow many variable (details of the dataset)"
   }
 ]
