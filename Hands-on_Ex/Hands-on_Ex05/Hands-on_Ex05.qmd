@@ -86,10 +86,347 @@ GAStech_edges <- GAStech_edges %>%
                         abbr = FALSE))
 ```
 
-::: {.callout-note}
+::: callout-note
 -   `dmy` and `wday` functions are from the lubidate package
 
 -   `dmy` transform SentDate to date data type
 
 -   `wday` the day of the week as decimal number if label is TRUE, but returns name of the day if label is FALSE. This function create a new column in the data frame.
 :::
+
+Next, we will check the make sure the created variable has the right data type and data.
+
+```{r}
+glimpse(GAStech_edges)
+```
+
+However, since the data frame reveals that it consist of individual e-mail flow record, it may not be useful for visualization. So we want to aggregate the individual by date sent, senders, receiver, main subject and day of the week.
+
+```{r}
+GAStech_edges_aggregated <- GAStech_edges %>%
+  filter(MainSubject == "Work related") %>%
+  group_by(source, target, Weekday) %>%
+    summarise(Weight = n()) %>%
+  filter(source!=target) %>%
+  filter(Weight > 1) %>%
+  ungroup()
+```
+
+::: {.callout-note}
+-   `filter(MainSubject == "Work related")` filters and keep rows that is work related and group them by `source`, `target` and `weekday`
+
+-   `summarise(Weight = n())` takes each unique group and count number of rows there is and assign them to `Weight`
+
+-    `filter(source != target)` removes rows where source and target are the same person, while `filter(Weight > 1)` only keeps interaction that happened more than once on the same weekday
+
+-   `ungroup()` removes the grouping
+:::
+
+Time to check the `GAStech_edges_aggregated` dataframe.
+
+```{r}
+glimpse(GAStech_edges_aggregated)
+```
+
+## Create network object with tidygraph
+
+tidygraph package can be used to create network objects, such as:
+
+-   `tbl_graph` : creates a tbl_graph network from nodes and edges data
+
+-   `as_tbl_graph()` : convert network data and object into tbl_graph network. The following are the network data and object supported by this function:
+
+    -   a **node** **data.frame** and an **edge** data.frame
+
+    -   **data.frame, list, matrix** from base
+
+    -   **igraph** from igraph
+
+    -   **network** from network
+
+    -   **dendrogram** and **hclust** from **stats**
+
+    -   **Node** from data.tree
+
+    -   **phylo** and **evonet** from ape
+
+    -   **graphNEL, graphAM, graphBAM** from graph (in Bioconductor)
+
+### Using tbl_graph() to build data model
+
+Create `tbl_graph` of tinygraph to build tidygraph's network graph datafarme
+
+```{r}
+GAStech_graph <- tbl_graph(nodes = GAStech_nodes,
+                           edges = GAStech_edges_aggregated, 
+                           directed = TRUE)
+```
+
+```{r}
+GAStech_graph
+```
+
+::: {.callout-note}
+-   The tbl_graph consist of 54 nodes and 1372 edges
+
+-   The Node data is active, this means that it's possible to manipulate the data in one tibble at a time
+:::
+
+Change the active object
+
+The nodes in the tibble data frame is active by default, but we can **change which tibble data frame is active** with the **activate() function.** If we wanted to rearrange the rows in the edges tibble to list with highest weight, we can use **activate()** and **arrange()**.
+
+```{r}
+GAStech_graph %>%
+  activate(edges) %>%
+  arrange(desc(Weight))
+```
+
+Plot Static Network Graph with ggraph
+
+There are 3 main ascept to ggrpah's network graph, such as:
+
+-   nodes
+
+-   edges
+
+-   layouts: vertical and horizontal placement fo nodes when plotting particular graph structure
+
+    In this example, we'll use geom-edge_link() and geom_node_point() to plot a network using GAStech_graph
+
+```{r}
+ggraph(GAStech_graph) +
+  geom_edge_link() +
+  geom_node_point()
+```
+
+## Customize the Style of Graph 
+
+### Using Theme
+
+In this example, we can use theme to remove x and y-axes by using `theme_graph()` .
+
+```{r}
+g <- ggraph(GAStech_graph) + 
+  geom_edge_link(aes()) +
+  geom_node_point(aes())
+
+g + theme_graph()
+```
+
+But apart from that, we can also use `theme_graph()` to remove grids, border or font. Additionally, we can also change the color of the plot by adding `colour =` argument like below:
+
+```{r}
+g <- ggraph(GAStech_graph) + 
+  geom_edge_link(aes(colour = 'grey50')) +
+  geom_node_point(aes(colour = 'grey40'))
+
+g + theme_graph(background = 'grey10',
+                text_colour = 'white')
+```
+
+### ggraph Layout
+
+ggraph supports different standard layouts such as star, circle, nicelt (default), dh, gem, graphopt, grid, mds, spahere, randomly, fr, kk, drl and lgl. The below shows layouts supported by ggraph.
+
+![](images/ggraph_layout1.png)
+
+![](images/ggraph_layout3.png)
+
+Fruchterman and Reingold Layout
+
+In this example, we'll be creating network graph using Fruchterman and Reingold layout (done by adding `layout = "fr"` in argument in ggraph)
+
+```{r}
+g <- ggraph(GAStech_graph, 
+            layout = "fr") +
+  geom_edge_link(aes()) +
+  geom_node_point(aes())
+
+g + theme_graph()
+```
+
+## Modify Network Node
+
+In this example, we'll color the node by their departments.
+
+```{r}
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes()) +
+  geom_node_point(aes(colour = Department, 
+                      size = 3))
+
+g + theme_graph()
+```
+
+::: .callout-tip
+-   We added `colour = Department` in`geom_node_point(aes())`
+:::
+
+## Modify Network Edges
+
+In this example, we'll change the thickness of the edges by adding Weights.
+
+```{r}
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") +
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 3)
+
+g + theme_graph()
+```
+
+::: .callout-tip
+-   Similar to modifying the network node, we can add arguments into the `geom_edge_link()` to add weights to the edges.
+:::
+
+## Creating facet graphs
+
+In data visualization, facet is used to reduce edge over-plotting by **spreading nodes** **and edges** out **based on their attributes**. There are three functions in ggraph to implement faceting:
+
+-   `facet_nodes()`: edges are only drawn in panel if **both terminal are present**
+
+-   `facet_edges()`: nodes are always drawn in all panels even if node data contains an attribute named the same as the one used for edge facetting
+
+-   `facet_graph()`: faceting on two variables **simultaneously**
+
+### Working with facet_edges()
+
+```{r}
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+
+g + facet_edges(~Weekday)
+```
+
+We also can change the position of the legend like below:
+
+```{r}
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2) +
+  theme(legend.position = 'bottom')
+  
+g + facet_edges(~Weekday)
+```
+
+Additionally, we can also frame each graph like below:
+
+```{r}
+set_graph_style() 
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+  
+g + facet_edges(~Weekday) +
+  th_foreground(foreground = "grey80",  
+                border = TRUE) +
+  theme(legend.position = 'bottom')
+```
+
+## Working with facet_nodes()
+
+In this example, we used facet_nodes()
+
+```{r}
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+  
+g + facet_nodes(~Department)+
+  th_foreground(foreground = "grey80",  
+                border = TRUE) +
+  theme(legend.position = 'bottom')
+```
+
+## Network Metric Analysis
+
+### Computing Centrality Indices
+
+Centrality measures are collection of statistical indices used to describe relative importance of the actors are to a network. There are 4 types of cenrality measures:
+
+-   Degree: how many connection a node has
+
+-   Betweenness: centrality measure of vertex within a graph (high betweenness = bridge or bottleneck in a network or have shortest path to reach the other node)
+
+-   Closeness: vertices that have shorter distance to other vertices have higher closeness (shortest path has higher centrality)
+
+-   Eigenvector: measure of the importance of a node in a network (the value of your connection affects your own value)
+
+    In this example, we'll be usig the betweeness centrality.
+
+    ```{r}
+    g <- GAStech_graph %>%
+      mutate(betweenness_centrality = centrality_betweenness()) %>%
+      ggraph(layout = "fr") + 
+      geom_edge_link(aes(width=Weight), 
+                     alpha=0.2) +
+      scale_edge_width(range = c(0.1, 5)) +
+      geom_node_point(aes(colour = Department,
+                size=betweenness_centrality))
+    g + theme_graph()
+    ```
+
+## Visualizing Network Metrics
+
+From **ggraph v2.0** onward tidygraph algorithms, such as centrality measures can be accessed directly in ggraph calls, so it's no longer necessary to precompute and store derived node and edge centrality measures.
+
+```{r}
+g <- GAStech_graph %>%
+  ggraph(layout = "fr") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department, 
+                      size = centrality_betweenness()))
+g + theme_graph()
+```
+
+## Visualizing Community
+
+```{r}
+g <- GAStech_graph %>%
+  mutate(community = as.factor(
+    group_edge_betweenness(
+      weights = Weight, 
+      directed = TRUE))) %>%
+  ggraph(layout = "fr") + 
+  geom_edge_link(
+    aes(
+      width=Weight), 
+    alpha=0.2) +
+  scale_edge_width(
+    range = c(0.1, 5)) +
+  geom_node_point(
+    aes(colour = community))  
+
+g + theme_graph()
+```
