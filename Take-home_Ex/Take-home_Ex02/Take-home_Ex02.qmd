@@ -19,7 +19,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 
 **Your task is to develop new and novel visualizations and visual analytics approaches to help Clepper get to the bottom of this story.**
 
-### 1.2 Objective 
+### 1.2 Objective
 
 Objective of this exercise:
 
@@ -63,6 +63,20 @@ Clepper diligently recorded all intercepted radio communications over the last t
 
 ### 1.4 Load Required Libraries
 
+```{r}
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph)
+```
+
 ### 1.5 Import Data
+
+```{r}
+kg <- fromJSON("data/MC3_graph.json")
+```
+
+uncoect structure
+
+```{r}
+str(kg, max.level=1)
+```
 
 how many variable (details of the dataset)
