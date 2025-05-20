@@ -320,9 +320,9 @@ rice <- read_csv("data/rice.csv")
 kable(head(rice))
 ```
 
-Plotting a slopegraph
+### Plotting a slopegraph
 
-Slopegraph is **compare changes** over time for list of nouns (**categories**) located on **ordinal** or **interval** scale. In this example, we'll plot a slopegraph to compare two different years, 1961 and 1980.
+Slopegraph is **compare changes** over time for list of nouns (**categories**) located on **ordinal** or **interval** scale. In this example, we'll plot a slopegraph to compare two different years, 1961 and 1980 using `newggslopegraph()`.
 
 ```{r}
 rice %>% 

@@ -1048,8 +1048,10 @@ Important points of this code
 </table>
 </div>
 </div>
-<p>Plotting a slopegraph</p>
-<p>Slopegraph is <strong>compare changes</strong> over time for list of nouns (<strong>categories</strong>) located on <strong>ordinal</strong> or <strong>interval</strong> scale. In this example, we’ll plot a slopegraph to compare two different years, 1961 and 1980.</p>
+</section>
+<section id="plotting-a-slopegraph" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-a-slopegraph">Plotting a slopegraph</h3>
+<p>Slopegraph is <strong>compare changes</strong> over time for list of nouns (<strong>categories</strong>) located on <strong>ordinal</strong> or <strong>interval</strong> scale. In this example, we’ll plot a slopegraph to compare two different years, 1961 and 1980 using <code>newggslopegraph()</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>rice <span class="sc">%&gt;%</span> </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">factor</span>(Year)) <span class="sc">%&gt;%</span></span>
