@@ -70,7 +70,11 @@ ggraph(graph, layout="fr") +
 
 
 
+
+
 ### Step 1: filter edges to only "Memberof"
+
+
 
 
 
@@ -82,11 +86,15 @@ graph_memberof <- graph %>%
 
 
 
+
+
 ### Step 2: Extract only connected nodes (i.e. used in these edges)
 
 
 
-```{r}
+
+
+```{r, eval=FALSE}
 used_node_indices <- graph_memberof %>%
   activate(edges) %>%
   as_tibble(from, to) %>%
@@ -97,11 +105,15 @@ used_node_indices <- graph_memberof %>%
 
 
 
+
+
 ### Step 3: Keep only those nodes
 
 
 
-```{r}
+
+
+```{r, eval=FALSE}
 graph_memberof <- graph_memberof %>%
   activate(row_id) %>%
   mutate(row_id = row_number()) %>%
@@ -111,11 +123,15 @@ graph_memberof <- graph_memberof %>%
 
 
 
+
+
 ### Plot the sub-graph
 
 
 
-```{r}
+
+
+```{r, eval=FALSE}
 ggraph()
 ```
 

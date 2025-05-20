@@ -1,0 +1,109 @@
+---
+title: "Hands-on_Ex06"
+author: "Stefanie Felicia"
+date: "May, 20 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## Getting Started
+
+Objective of this exercise:
+
+-   Plot calender heatmap using ggplot2
+
+-   Plot cycle plot using ggplot2
+
+-   Plot slopegraph
+
+-   Plot horizon chart
+
+## Import Libraries
+
+```{r}
+pacman::p_load(scales, viridis, lubridate, ggthemes,
+               gridExtra, readxl, knitr, data.table,
+               CGPfunctions, ggHoriPlot, tidyverse)
+```
+
+The libraries used in this exercise would be:
+
+-   scales
+
+-   viridis: color maps that are designed to improve graph readability
+
+-   lubridate
+
+-   ggthemes
+
+-   gridExtra: provide user-level functions to work with "grid" graphics and arrange multiple grid-based plots ona page
+
+-   readxl: read Excel files
+
+-   knitr
+
+-   data.table: extension of data.frame, which can aggregate large data (100 GB in RAM), orderd joins, add or modify or delete columns
+
+-   CGPFunctions
+
+-   ggHoriPlot: allows user to build horisonplot
+
+-   tidyverse
+
+## Import Data
+
+In this exercise, we'll be using data file that consist of 199K rows of time-series cyber attack records by country.
+
+```{r}
+attacks <- read_csv("data/eventlog.csv")
+```
+
+Data Structure of Dataset
+
+First, we'll check the structure of data frame before analysis using kable.
+
+```{r}
+kable(head(attacks))
+```
+
+The data frame consist of 3 columns:
+
+-   timestamp: contain the date-time value in POSIXct format
+
+-   source_country: contain country source of attack
+
+-   tz: contain the timezone fo the source of IP address
+
+## Data Preparation
+
+We'll be deriving *weekday* and *hour of day* columns.
+
+```{r}
+make_hr_wkday <- function(ts, sc, tz) {
+  real_times <- ymd_hms(ts, 
+                        tz = tz[1], 
+                        quiet = TRUE)
+  dt <- data.table(source_country = sc,
+                   wkday = weekdays(real_times),
+                   hour = hour(real_times))
+  return(dt)
+  }
+```
+
+::: {.callout-note}
+-   `...function(ts, sc, tz)` : uses ts, sc and tz as inputs to the function
+
+-   `ymd_hms(ts,tz = tz[1], quiet = TRUE)` : convert ts into proper datetime object using ymd_hms() from lubridate library
+
+-   `tz =tz[1]` : set timezone
+
+-   `quiet = TRUE` : suppress warning for parsing failure
+
+-   dt table is then created using data.table library with transformed columns
+:::
+
+Plot Calendar Heatmap
