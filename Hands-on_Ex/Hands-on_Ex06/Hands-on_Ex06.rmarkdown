@@ -10,6 +10,8 @@ execute:
   freeze: true
 ---
 
+
+
 ## Getting Started
 
 Objective of this exercise:
@@ -24,11 +26,15 @@ Objective of this exercise:
 
 ## Import Libraries
 
+
+
 ```{r}
 pacman::p_load(scales, viridis, lubridate, ggthemes,
                gridExtra, readxl, knitr, data.table,
                CGPfunctions, ggHoriPlot, tidyverse)
 ```
+
+
 
 The libraries used in this exercise would be:
 
@@ -60,17 +66,25 @@ The libraries used in this exercise would be:
 
 In this exercise, we'll be using data file that consist of 199K rows of time-series cyber attack records by country.
 
+
+
 ```{r}
 attacks <- read_csv("data/eventlog.csv")
 ```
+
+
 
 ### Data Structure of Dataset
 
 First, we'll check the structure of data frame before analysis using kable.
 
+
+
 ```{r}
 kable(head(attacks))
 ```
+
+
 
 The data frame consist of 3 columns:
 
@@ -84,6 +98,8 @@ The data frame consist of 3 columns:
 
 We'll be deriving *weekday* and *hour of day* columns.
 
+
+
 ```{r}
 make_hr_wkday <- function(ts, sc, tz) {
   real_times <- ymd_hms(ts, 
@@ -95,6 +111,8 @@ make_hr_wkday <- function(ts, sc, tz) {
   return(dt)
   }
 ```
+
+
 
 ::: {.callout-note title="What does this code do"}
 -   `...function(ts, sc, tz)` : defines function using ts, sc and tz as inputs to the function
@@ -109,6 +127,8 @@ make_hr_wkday <- function(ts, sc, tz) {
 :::
 
 Next, we'll be creating attacks tibble data
+
+
 
 ```{r}
 wkday_levels <- c('Saturday', 'Friday', 
@@ -128,6 +148,8 @@ attacks <- attacks %>%
       hour, levels = 0:23))
 ```
 
+
+
 ::: {.callout-note title="What does the code do"}
 -   `weekday_levels` : define custom order for weekdays
 
@@ -138,13 +160,19 @@ attacks <- attacks %>%
 
 This is the table after processing
 
+
+
 ```{r}
 kable(head(attacks))
 ```
 
+
+
 ### Build Calendar Heatmap
 
 Calendar heatmap is used to display time based data using calendar layout, every day represent a day and color based on the value. In this example, we'll be building calender heatmap to visualize the cyber attacks occurred in each hour of the day.
+
+
 
 ```{r}
 grouped <- attacks %>% 
@@ -172,6 +200,8 @@ theme(axis.ticks = element_blank(),
       legend.text = element_text(size = 6) )
 ```
 
+
+
 ::: {.callout-note title="Important points of this code"}
 -   grouped variable counts the number of rows with different combination of weekday and hour and remove the grouping and remove missing values (using `na.omit()`)
 
@@ -188,6 +218,8 @@ In this example, we'll be visualizing calendar heatmaps for top 4 countries with
 
 -   Sort the records by descending order by highest number of attacks
 
+
+
 ```{r}
 attacks_by_country <- count(
   attacks, source_country) %>%
@@ -195,7 +227,11 @@ attacks_by_country <- count(
   arrange(desc(n))
 ```
 
+
+
 Next, we'll prepare the tidy data frame and extract attack records of the top 4 countries from attacks data frame and save it in a tibble data frame called top4_attacks.
+
+
 
 ```{r}
 top4 <- attacks_by_country$source_country[1:4]
@@ -208,7 +244,11 @@ top4_attacks <- attacks %>%
   na.omit()
 ```
 
+
+
 Lastly, we'll be plotting the heatmaps side by side by using `facet_wrap()` .
+
+
 
 ```{r}
 ggplot(top4_attacks, 
@@ -232,27 +272,39 @@ ggplot(top4_attacks,
         legend.text = element_text(size = 6) )
 ```
 
+
+
 ## Plotting Cycle Plot
 
 ### Import Data
 
 In this example, we'll be using dataset of arrival by air.
 
+
+
 ```{r}
 air <- read_excel("data/arrivals_by_air.xlsx")
 ```
+
+
 
 ### Data Structure of Dataset
 
 First, we'll check the structure of data frame before analysis using kable.
 
+
+
 ```{r}
 kable(head(air))
 ```
 
+
+
 ### Data Preparation
 
 We'll create two new columns called month and year which are derived from Month-year column
+
+
 
 ```{r}
 air$month <- factor(month(air$`Month-Year`), 
@@ -262,7 +314,11 @@ air$month <- factor(month(air$`Month-Year`),
 air$year <- year(ymd(air$`Month-Year`))
 ```
 
+
+
 Next, we'll extract data for the target country we want.
+
+
 
 ```{r}
 Vietnam <- air %>% 
@@ -272,7 +328,11 @@ Vietnam <- air %>%
   filter(year >= 2010)
 ```
 
+
+
 Then, we'll compute year average arrivals using `group_by()` and `summarise()` .
+
+
 
 ```{r}
 hline.data <- Vietnam %>% 
@@ -280,9 +340,13 @@ hline.data <- Vietnam %>%
   summarise(avgvalue = mean(`Vietnam`))
 ```
 
+
+
 ### Plotting the cycle plot
 
 Next, we'll be plotting the cycle plot
+
+
 
 ```{r}
 ggplot() + 
@@ -304,25 +368,37 @@ ggplot() +
   theme_tufte(base_family = "Helvetica")
 ```
 
+
+
 ## Plotting Slopegraph
 
 ### Import Data
 
 In this example, we'll be using a dataset on rice data.
 
+
+
 ```{r}
 rice <- read_csv("data/rice.csv")
 ```
 
+
+
 ### Data Structure of Dataset
+
+
 
 ```{r}
 kable(head(rice))
 ```
 
+
+
 Plotting a slopegraph
 
 Slopegraph is **compare changes** over time for list of nouns (**categories**) located on **ordinal** or **interval** scale. In this example, we'll plot a slopegraph to compare two different years, 1961 and 1980.
+
+
 
 ```{r}
 rice %>% 
@@ -332,3 +408,4 @@ rice %>%
                 Title = "Rice Yield of Top 11 Asian Counties",
                 SubTitle = "1961-1980")
 ```
+
