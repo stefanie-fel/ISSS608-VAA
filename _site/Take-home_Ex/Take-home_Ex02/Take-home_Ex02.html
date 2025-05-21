@@ -284,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 21, 2025</p>
+      <p class="date-modified">May 22, 2025</p>
     </div>
   </div>
     
@@ -348,8 +348,8 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <p>The libraries used in this exercise are the following:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-f2d6daab2de130d4dd9d" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f2d6daab2de130d4dd9d">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["jsonlite","tidyverse","SmartEDA","tidygraph","ggraph","knitr","kable"],["Convert JSON data to R objects","Provide key data transformation functions","Help in getting the complete exploratory data analysis by running the function instead of writing long R codes","Provides tidy API for network or graph manipulation","Extension of the ggplot2 API tailored to graph visualizations","Provides a tool for dynamic report generation","Creates simple table"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Package Name<\/th>\n      <th>Description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Package Name","targets":1},{"name":"Description","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-293db76efe0c8ca4d966" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-293db76efe0c8ca4d966">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["jsonlite","tidyverse","SmartEDA","tidygraph","ggraph","knitr","kable"],["Convert JSON data to R objects","Provide key data transformation functions","Help in getting the complete exploratory data analysis by running the function instead of writing long R codes","Provides tidy API for network or graph manipulation","Extension of the ggplot2 API tailored to graph visualizations","Provides a tool for dynamic report generation","Creates simple table"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Package Name<\/th>\n      <th>Description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Package Name","targets":1},{"name":"Description","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <ul>
@@ -598,6 +598,13 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 </section>
 <section id="data-cleaning-and-wrangling" class="level2">
 <h2 class="anchored" data-anchor-id="data-cleaning-and-wrangling">Data Cleaning and Wrangling</h2>
+<p>The following steps are taken to clean the <strong>nodes</strong>:</p>
+<ul>
+<li><p>Convert values in id into character data type</p></li>
+<li><p>Exclude record with id that are missing</p></li>
+<li><p>Exclude records with similar id values</p></li>
+<li><p>Exclude <em>thing_collected</em> field</p></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mc3_nodes_cleaned <span class="ot">&lt;-</span> mc3_nodes <span class="sc">%&gt;%</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">as.character</span>(id)) <span class="sc">%&gt;%</span></span>
@@ -605,6 +612,72 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(id, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>thing_collected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Next, the following steps are taken to clean the <strong>edges</strong>:</p>
+<ul>
+<li><p>Rename source <em>column</em> into <em>from_id</em> and <em>target</em> column into <em>to_id</em></p></li>
+<li><p>Convert values in <em>from_id</em> and <em>to_id</em> column into character data type</p></li>
+<li><p>Exclude values in from_id and to_id that’s not found in the id column from <em>mc3_nodes_cleaned</em></p></li>
+<li><p>Exclude records where <em>from_id</em> and <em>to_id</em>, or <em>from_id</em> or <em>to_id</em> is missing</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>    mc3_edges_cleaned <span class="ot">&lt;-</span> mc3_edges <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">from_id =</span> source, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">to_id =</span> target) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(from_id, to_id), </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                    as.character)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(from_id <span class="sc">%in%</span> mc3_nodes_cleaned<span class="sc">$</span>id, </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>             to_id <span class="sc">%in%</span> mc3_nodes_cleaned<span class="sc">$</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(from_id), <span class="sc">!</span><span class="fu">is.na</span>(to_id))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A new dataframe from the existing data frame (<em>mc3_nodes_cleaned</em>) and <em>.row_id</em> column is added which assigns unique row number to each row number (works like row index). Then we select <em>id</em> and .<em>row_id</em> columns whereas other columns are dropped.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>node_index_lookup <span class="ot">&lt;-</span> mc3_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.row_id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, .row_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then from_id and to_id columns in mc_edges_indexed are converted ito integer indices. The rows with unmatched nodes are also dropped.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mc3_edges_indexed <span class="ot">&lt;-</span> mc3_edges_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(node_index_lookup, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"from_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">from =</span> .row_id) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(node_index_lookup, </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"to_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">to =</span> .row_id) <span class="sc">%&gt;%</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(from, to, is_inferred, type) <span class="sc">%&gt;%</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(from) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(to))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, the node list will only include nodes that are used in the edge list and new indices are assigned</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>used_node_indices <span class="ot">&lt;-</span> <span class="fu">sort</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>(<span class="fu">c</span>(mc3_edges_indexed<span class="sc">$</span>from, </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>           mc3_edges_indexed<span class="sc">$</span>to)))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>mc3_nodes_final <span class="ot">&lt;-</span> mc3_nodes_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(used_node_indices) <span class="sc">%&gt;%</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_index =</span> <span class="fu">row_number</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The lookup is rebuild from old index to new index.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>old_to_new_index <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">old_index =</span> used_node_indices,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">new_index =</span> <span class="fu">seq_along</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    used_node_indices))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then, we’ll update edge indices to match new node table</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mc3_edges_final <span class="ot">&lt;-</span> mc3_edges_indexed <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(old_to_new_index, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"from"</span> <span class="ot">=</span> <span class="st">"old_index"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">from_new =</span> new_index) <span class="sc">%&gt;%</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(old_to_new_index, </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"to"</span> <span class="ot">=</span> <span class="st">"old_index"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">to_new =</span> new_index) <span class="sc">%&gt;%</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">from =</span> from_new, <span class="at">to =</span> to_new, </span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>         is_inferred, type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Build tidygraph Object</p>
+<p>Visualize Knowledge Graph</p>
 
 
 </section>
