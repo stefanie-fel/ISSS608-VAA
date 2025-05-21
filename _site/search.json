@@ -803,5 +803,40 @@
     "title": "Hands-on_Ex06",
     "section": "Plotting Slopegraph",
     "text": "Plotting Slopegraph\n\nImport Data\nIn this example, we’ll be using a dataset on rice data.\n\nrice &lt;- read_csv(\"data/rice.csv\")\n\n\n\nData Structure of Dataset\n\nkable(head(rice))\n\n\n\n\nCountry\nYear\nYield\nProduction\n\n\n\n\nChina\n1961\n20787\n56217601\n\n\nChina\n1962\n23700\n65675288\n\n\nChina\n1963\n26833\n76439280\n\n\nChina\n1964\n28289\n85853780\n\n\nChina\n1965\n29667\n90705630\n\n\nChina\n1966\n31445\n98403990\n\n\n\n\n\n\n\nPlotting a slopegraph\nSlopegraph is compare changes over time for list of nouns (categories) located on ordinal or interval scale. In this example, we’ll plot a slopegraph to compare two different years, 1961 and 1980 using newggslopegraph().\n\nrice %&gt;% \n  mutate(Year = factor(Year)) %&gt;%\n  filter(Year %in% c(1961, 1980)) %&gt;%\n  newggslopegraph(Year, Yield, Country,\n                Title = \"Rice Yield of Top 11 Asian Counties\",\n                SubTitle = \"1961-1980\")"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex01/In-class_Ex01.html",
+    "href": "In-class_Ex/In-class_Ex01/In-class_Ex01.html",
+    "title": "In-class_Ex01",
+    "section": "",
+    "text": "Objective of this exercise:\n\nSplit knowledge graph of mini case 1 into nodes and edges tibble data frame\nTidy nodes and edges tibble data frame for conforming into tidygraph’s requirements\nCreate tidygraph object using tidied nodes and edges, and visualize them"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#getting-started",
+    "href": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#getting-started",
+    "title": "In-class_Ex01",
+    "section": "",
+    "text": "Objective of this exercise:\n\nSplit knowledge graph of mini case 1 into nodes and edges tibble data frame\nTidy nodes and edges tibble data frame for conforming into tidygraph’s requirements\nCreate tidygraph object using tidied nodes and edges, and visualize them"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#import-libraries",
+    "href": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#import-libraries",
+    "title": "In-class_Ex01",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph)\n\nThe libraries used in this exercise:\n\ntidyverse\njsonlite: convert JSON data to R objects\nSmartEDA: help in getting the complete exploratory data analysis by running the function instead of writing long R codes.\ntidygraph\nggraph"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#import-data",
+    "href": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#import-data",
+    "title": "In-class_Ex01",
+    "section": "Import Data",
+    "text": "Import Data\nIn this example, we’ll be using the dataset posted by VAST Challenge (Mini Case 1) and use jsonlite to extract the data.\n\nkg &lt;- fromJSON(\"data/MC1_graph.json\")"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#inspect-structure",
+    "href": "In-class_Ex/In-class_Ex01/In-class_Ex01.html#inspect-structure",
+    "title": "In-class_Ex01",
+    "section": "Inspect Structure",
+    "text": "Inspect Structure\nWe’ll inspect the structure of the object using str() function\n\nstr(kg, max.level=1)\n\nList of 5\n $ directed  : logi TRUE\n $ multigraph: logi TRUE\n $ graph     :List of 2\n $ nodes     :'data.frame': 17412 obs. of  10 variables:\n $ links     :'data.frame': 37857 obs. of  4 variables:\n\n\n\nnodes_tbl &lt;- as_tibble(kg$nodes)\nedges_tbl &lt;- as_tibble(kg$links)\n\n\nggplot(data=edges_tbl, aes(y=`Edge Type`)) + geom_bar()\n\n\n\n\n\n\n\n\n\nid_map &lt;- tibble(id=nodes_tbl$id, index=seq_len(nrow(nodes_tbl)))\n\n\nedges_tbl &lt;- edges_tbl %&gt;%\n  left_join(id_map, by=c(\"source\" = \"id\")) %&gt;%\n  rename(from=index) %&gt;%\n  left_join(id_map, by=c(\"target\" = \"id\")) %&gt;%\n  rename(to=index)\n\n\nedges_tbl&lt;- edges_tbl %&gt;% \n  filter (!is.na(from), !is.na(to))\n\n\ngraph &lt;- tbl_graph(nodes = nodes_tbl, edges= edges_tbl, directed = kg$directed)\n\n\nset.seed(42)\n\n\nggraph(graph, layout=\"fr\") + \n  geom_edge_link(alpha=0.3,\n                 colour=\"grey\") +\n  geom_node_point(aes(color='Node Type'), \n                  size=4) +\n  geom_node_text(aes(label=name), \n                 repel=TRUE, \n                 size=2.5) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nStep 1: filter edges to only “Memberof”\n\ngraph_memberof &lt;- graph %&gt;%\n  activate(edges) %&gt;%\n  filter(`Edge Type` == \"Memberof\")\n\n\n\nStep 2: Extract only connected nodes (i.e. used in these edges)\n\nused_node_indices &lt;- graph_memberof %&gt;%\n  activate(edges) %&gt;%\n  as_tibble(from, to) %&gt;%\n  unlist() %&gt;%\n  unique()\n\n\n\nStep 3: Keep only those nodes\n\ngraph_memberof &lt;- graph_memberof %&gt;%\n  activate(row_id) %&gt;%\n  mutate(row_id = row_number()) %&gt;%\n  filter(row_id %in% used_node_indices) %&gt;%\n  select(~row_id)\n\n\n\nPlot the sub-graph\n\nggraph()"
   }
 ]

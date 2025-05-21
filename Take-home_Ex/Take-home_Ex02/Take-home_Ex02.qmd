@@ -64,77 +64,83 @@ Clepper diligently recorded all intercepted radio communications over the last t
 ### 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph)
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, DT)
 ```
+
+The libraries used in this exercise are the following:
+
+```{r, echo=FALSE}
+table_data <- matrix(
+  c("jsonlite",      "Convert JSON data to R objects",
+    "tidyverse",  "Provide key data transformation functions",
+    "SmartEDA",     "Help in getting the complete exploratory data analysis by running the function instead of writing long R codes", 
+    "tidygraph",    "Provides tidy API for network or graph manipulation",
+    "ggraph", "Extension of the ggplot2 API tailored to graph visualizations", 
+    "knitr",  "Provides a tool for dynamic report generation", 
+    "kable", "Creates simple table"),
+  nrow = 7,
+  byrow = TRUE
+)
+
+df <- as.data.frame(table_data, stringsAsFactors = FALSE)
+colnames(df) <- c("Package Name", "Description")
+
+datatable(df, colnames = c("Package Name", "Description"))
+```
+
+-   tidyverse
+
+-   jsonlite: convert JSON data to R objects
+
+-   SmartEDA: help in getting the complete exploratory data analysis by running the function instead of writing long R codes.
+
+-   tidygraph
+
+-   ggraph
 
 ### 1.5 Import Data
 
-```{r}
-kg <- fromJSON("data/MC3_graph.json")
-```
-
-uncoect structure
+In this exercise, we'll be using the mc3.json file and extract data using the jsonlite library.
 
 ```{r}
-str(kg, max.level=1)
+MC3 <- fromJSON("data/MC3_graph.json")
+MC3_schema <- fromJSON("data/MC3_schema.json")
 ```
 
-extracta dn inspect
+## Inspect Knowledge Graph Structure
+
+Before preparing the data, we'll check the structure of the knowledge graph.
 
 ```{r}
-nodes_tbl <- as_tibble(kg$nodes)
-edges_tbl <- as_tibble(kg$edges)
+glimpse(MC3)
 ```
 
-initial EDA
+Since the industry column is in list data type, we'' exclude the column since list data type isn't acceptable by `tbl_graph()`.
+
+## Extract Edges and Nodes Tables
+
+The `as_tibble()` function is used to extract nodes and links tibble data frame from MC3 tibble data frame.
 
 ```{r}
-ggplot(data=edges_tbl, aes(y=type)) + geom_bar()
+mc3_nodes <- as_tibble(MC3$nodes)
+mc3_edges <- as_tibble(MC3$edges)
 ```
 
-mapping from node id to tow index
+## Initial EDA
+
+We'll use `ExpCatViz()` from SmartEDA library to reveal frequency distribution of all categorical fields from mc3_nodes.
 
 ```{r}
-id_map <- tibble(id=nodes_tbl$id, index=seq_len(nrow(nodes_tbl)))
+ExpCatViz(data=mc3_nodes,
+          col="lightblue")
 ```
 
-map source and target ID to row indices
+## Data Cleaning and Wrangling
 
 ```{r}
-edges_tbl <- edges_tbl %>%
-  left_join(id_map, by=c("source" = "id")) %>%
-  rename(from=index) %>%
-  left_join(id_map, by=c("target" = "id")) %>%
-  rename(to=index)
+mc3_nodes_cleaned <- mc3_nodes %>%
+  mutate(id = as.character(id)) %>%
+  filter(!is.na(id)) %>%
+  distinct(id, .keep_all = TRUE) %>%
+  select(-thing_collected)
 ```
-
-filter out any unmatched (invalid) edges
-
-```{r}
-edges_tbl<- edges_tbl %>% 
-  filter (!is.na(from), !is.na(to))
-```
-
-create graph
-
-```{r}
-graph <- tbl_graph(nodes = nodes_tbl, edges= edges_tbl, directed = kg$directed)
-```
-
-```{r}
-set.seed(42)
-```
-
-```{r}
-ggraph(graph, layout="fr") + 
-  geom_edge_link(alpha=0.3,
-                 colour="grey") +
-  geom_node_point(aes(color='Node Type'), 
-                  size=4) +
-  geom_node_text(aes(label=name), 
-                 repel=TRUE, 
-                 size=2.5) +
-  theme_void()
-```
-
-how many variable (details of the dataset)
