@@ -44,7 +44,7 @@ Clepper diligently recorded all intercepted radio communications over the last t
 ### 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, DT)
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr)
 ```
 
 The libraries used in this exercise are the following:
@@ -56,16 +56,12 @@ table_data <- matrix(
     "SmartEDA",     "Help in getting the complete exploratory data analysis by running the function instead of writing long R codes", 
     "tidygraph",    "Provides tidy API for network or graph manipulation",
     "ggraph", "Extension of the ggplot2 API tailored to graph visualizations", 
-    "knitr",  "Provides a tool for dynamic report generation", 
-    "kable", "Creates simple table"),
-  nrow = 7,
+    "knitr",  "Provides a tool for dynamic report generation"), 
+  nrow = 6,
   byrow = TRUE
 )
 
-df <- as.data.frame(table_data, stringsAsFactors = FALSE)
-colnames(df) <- c("Package Name", "Description")
-
-datatable(df, colnames = c("Package Name", "Description"))
+kable(table_data, col.names = c("Package Name", "Description"))
 ```
 
 -   tidyverse
