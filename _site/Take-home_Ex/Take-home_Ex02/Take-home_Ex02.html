@@ -102,26 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
-
-<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-
-<link href="../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-
-<script src="../../site_libs/datatables-binding-0.33/datatables.js"></script>
-
-<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-
-<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-
-<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-
-<script src="../../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-
-<link href="../../site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-
-<script src="../../site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -328,13 +308,49 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <section id="load-required-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="load-required-libraries">1.4 Load Required Libraries</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, DT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The libraries used in this exercise are the following:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-46f4735f574b58f33aa2" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-46f4735f574b58f33aa2">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["jsonlite","tidyverse","SmartEDA","tidygraph","ggraph","knitr","kable"],["Convert JSON data to R objects","Provide key data transformation functions","Help in getting the complete exploratory data analysis by running the function instead of writing long R codes","Provides tidy API for network or graph manipulation","Extension of the ggplot2 API tailored to graph visualizations","Provides a tool for dynamic report generation","Creates simple table"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Package Name<\/th>\n      <th>Description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Package Name","targets":1},{"name":"Description","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 89%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">jsonlite</td>
+<td style="text-align: left;">Convert JSON data to R objects</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tidyverse</td>
+<td style="text-align: left;">Provide key data transformation functions</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SmartEDA</td>
+<td style="text-align: left;">Help in getting the complete exploratory data analysis by running the function instead of writing long R codes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tidygraph</td>
+<td style="text-align: left;">Provides tidy API for network or graph manipulation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ggraph</td>
+<td style="text-align: left;">Extension of the ggplot2 API tailored to graph visualizations</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">knitr</td>
+<td style="text-align: left;">Provides a tool for dynamic report generation</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <ul>
@@ -722,7 +738,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x00000271b0c86fc8&gt; 
+ $ :&lt;environment: 0x000002033247bf90&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
