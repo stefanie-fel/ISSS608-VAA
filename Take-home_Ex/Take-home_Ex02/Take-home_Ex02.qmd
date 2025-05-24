@@ -233,6 +233,37 @@ mc3_edges_final <- mc3_edges_indexed %>%
          is_inferred, type)
 ```
 
-Build tidygraph Object
+## Build tidygraph Object
+
+We'll build the tidygraph object
+
+```{r}
+mc3_graph <- tbl_graph(
+  nodes = mc3_nodes_final,
+  edges = mc3_edges_final,
+  directed = TRUE
+)
+```
+
+```{r}
+str(mc3_graph)
+```
 
 Visualize Knowledge Graph
+
+```{r}
+set.seed(1234)
+```
+
+```{r}
+ggraph(mc3_graph, 
+       layout = "fr") +
+  geom_edge_link(alpha = 0.3, 
+                 colour = "gray") +
+  geom_node_point(aes(color = `type`), 
+                  size = 4) +
+  geom_node_text(aes(label = type), 
+                 repel = TRUE, 
+                 size = 2.5) +
+  theme_void()
+```
