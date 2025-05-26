@@ -64,16 +64,6 @@ table_data <- matrix(
 kable(table_data, col.names = c("Package Name", "Description"))
 ```
 
--   tidyverse
-
--   jsonlite: convert JSON data to R objects
-
--   SmartEDA: help in getting the complete exploratory data analysis by running the function instead of writing long R codes.
-
--   tidygraph
-
--   ggraph
-
 ### 1.5 Import Data
 
 In this exercise, we'll be using the mc3.json file and extract data using the jsonlite library.
@@ -225,7 +215,7 @@ mc3_graph <- tbl_graph(
 str(mc3_graph)
 ```
 
-Visualize Knowledge Graph
+## Visualize Knowledge Graph
 
 ```{r}
 set.seed(1234)
@@ -243,3 +233,12 @@ ggraph(mc3_graph,
                  size = 2.5) +
   theme_void()
 ```
+
+```{r}
+graph_unqiue_person <- mc3_graph %>%
+  activate(nodes) %>%
+  filter(`type` == "Entity")
+graph_unqiue_person
+```
+
+graph_memberof \<- graph %\>% activate(edges) %\>% filter(`Edge Type` == "Memberof")

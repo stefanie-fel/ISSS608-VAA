@@ -233,6 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#initial-eda" id="toc-initial-eda" class="nav-link" data-scroll-target="#initial-eda">Initial EDA</a></li>
   <li><a href="#data-cleaning-and-wrangling" id="toc-data-cleaning-and-wrangling" class="nav-link" data-scroll-target="#data-cleaning-and-wrangling">Data Cleaning and Wrangling</a></li>
   <li><a href="#build-tidygraph-object" id="toc-build-tidygraph-object" class="nav-link" data-scroll-target="#build-tidygraph-object">Build tidygraph Object</a></li>
+  <li><a href="#visualize-knowledge-graph" id="toc-visualize-knowledge-graph" class="nav-link" data-scroll-target="#visualize-knowledge-graph">Visualize Knowledge Graph</a></li>
   </ul>
 </nav>
     </div>
@@ -265,7 +266,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 24, 2025</p>
+      <p class="date-modified">May 26, 2025</p>
     </div>
   </div>
     
@@ -353,13 +354,6 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 </table>
 </div>
 </div>
-<ul>
-<li><p>tidyverse</p></li>
-<li><p>jsonlite: convert JSON data to R objects</p></li>
-<li><p>SmartEDA: help in getting the complete exploratory data analysis by running the function instead of writing long R codes.</p></li>
-<li><p>tidygraph</p></li>
-<li><p>ggraph</p></li>
-</ul>
 </section>
 <section id="import-data" class="level3">
 <h3 class="anchored" data-anchor-id="import-data">1.5 Import Data</h3>
@@ -738,11 +732,13 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x000002033247bf90&gt; 
+ $ :&lt;environment: 0x000002186852edd0&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
-<p>Visualize Knowledge Graph</p>
+</section>
+<section id="visualize-knowledge-graph" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-knowledge-graph">Visualize Knowledge Graph</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -765,6 +761,42 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 </div>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>graph_unqiue_person <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Entity"</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>graph_unqiue_person</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tbl_graph: 72 nodes and 0 edges
+#
+# A rooted forest with 72 trees
+#
+# Node Data: 72 × 31 (active)
+   type   label  name  sub_type id    timestamp monitoring_type findings content
+   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;  
+ 1 Entity Sam    Sam   Person   Sam   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 2 Entity Kelly  Kelly Person   Kelly &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 3 Entity Nadia… Nadi… Person   Nadi… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 4 Entity Elise  Elise Person   Elise &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 5 Entity Liam … Liam… Person   Liam… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 6 Entity Saman… Sama… Person   Sama… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 7 Entity Davis  Davis Person   Davis &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 8 Entity Rodri… Rodr… Person   Rodr… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+ 9 Entity Sailo… Sail… Person   Sail… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+10 Entity Clepp… Clep… Person   Clep… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
+# ℹ 62 more rows
+# ℹ 22 more variables: assessment_type &lt;chr&gt;, results &lt;chr&gt;,
+#   movement_type &lt;chr&gt;, destination &lt;chr&gt;, enforcement_type &lt;chr&gt;,
+#   outcome &lt;chr&gt;, activity_type &lt;chr&gt;, participants &lt;int&gt;, reference &lt;chr&gt;,
+#   date &lt;chr&gt;, time &lt;chr&gt;, friendship_type &lt;chr&gt;, permission_type &lt;chr&gt;,
+#   start_date &lt;chr&gt;, end_date &lt;chr&gt;, report_type &lt;chr&gt;, submission_date &lt;chr&gt;,
+#   jurisdiction_type &lt;chr&gt;, authority_level &lt;chr&gt;, coordination_type &lt;chr&gt;, …
+#
+# Edge Data: 0 × 4
+# ℹ 4 variables: from &lt;int&gt;, to &lt;int&gt;, is_inferred &lt;lgl&gt;, type &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>graph_memberof &lt;- graph %&gt;% activate(edges) %&gt;% filter(<code>Edge Type</code> == “Memberof”)</p>
 
 
 </section>
