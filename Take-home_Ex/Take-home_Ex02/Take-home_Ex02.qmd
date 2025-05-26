@@ -44,7 +44,7 @@ Clepper diligently recorded all intercepted radio communications over the last t
 ### 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT)
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr)
 ```
 
 The libraries used in this exercise are the following:
@@ -57,8 +57,9 @@ table_data <- matrix(
     "tidygraph",    "Provides tidy API for network or graph manipulation",
     "ggraph", "Extension of the ggplot2 API tailored to graph visualizations", 
     "knitr",  "Provides a tool for dynamic report generation",
-    "datable", "provides an R interface to the JavaScript library DataTables"), 
-  nrow = 7,
+    "datable", "Provides an R interface to the JavaScript library DataTables", 
+    "stringr", "Provides a cohesive set of functions designed to make working with strings easy"), 
+  nrow = 8,
   byrow = TRUE
 )
 
@@ -246,9 +247,37 @@ datatable(entity_table)
 ```
 
 ```{r}
+person_nodes <- mc3_graph %>%
+  activate(nodes) %>%
+  as_tibble() %>%
+  mutate(node_id = row_number()) %>%
+  filter(sub_type == "Person")
 
+entity_tables <- as_tibble(person_nodes, active = "nodes")
+datatable(entity_tables)
 ```
 
-entity_table \<- as_tibble(graph_unqiue_person, active = "nodes")
+```{r}
+edges_tbl <- mc3_graph %>%
+  activate(edges) %>%
+  as_tibble()
 
-graph_memberof \<- graph %\>% activate(edges) %\>% filter(`Edge Type` == "Memberof")
+# Step 2: Extract from/to indices and rename to avoid conflict
+edge_index <- igraph::as_data_frame(mc3_graph, what = "edges")[, 1:2]
+colnames(edge_index) <- c("from_id", "to_id")  # Rename to avoid conflict
+
+# Step 3: Combine cleanly
+edges_tbl <- bind_cols(edges_tbl, edge_index)
+```
+
+Nadia conti
+
+```{r}
+comm_about_nadia <- mc3_graph %>%
+  activate(nodes) %>%
+  filter(str_detect(content, "Nadia Conti"))
+
+
+comms_table <- as_tibble(comm_about_nadia, active = "nodes")
+datatable(comms_table)
+```
