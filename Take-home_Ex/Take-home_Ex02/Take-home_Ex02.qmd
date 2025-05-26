@@ -44,7 +44,7 @@ Clepper diligently recorded all intercepted radio communications over the last t
 ### 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr)
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT)
 ```
 
 The libraries used in this exercise are the following:
@@ -56,8 +56,9 @@ table_data <- matrix(
     "SmartEDA",     "Help in getting the complete exploratory data analysis by running the function instead of writing long R codes", 
     "tidygraph",    "Provides tidy API for network or graph manipulation",
     "ggraph", "Extension of the ggplot2 API tailored to graph visualizations", 
-    "knitr",  "Provides a tool for dynamic report generation"), 
-  nrow = 6,
+    "knitr",  "Provides a tool for dynamic report generation",
+    "datable", "provides an R interface to the JavaScript library DataTables"), 
+  nrow = 7,
   byrow = TRUE
 )
 
@@ -235,10 +236,19 @@ ggraph(mc3_graph,
 ```
 
 ```{r}
-graph_unqiue_person <- mc3_graph %>%
+graph_unique_person <- mc3_graph %>%
   activate(nodes) %>%
-  filter(`type` == "Entity")
-graph_unqiue_person
+  filter(`sub_type` == "Person") %>%
+  distinct()
+
+entity_table <- as_tibble(graph_unique_person, active = "nodes")
+datatable(entity_table)
 ```
+
+```{r}
+
+```
+
+entity_table \<- as_tibble(graph_unqiue_person, active = "nodes")
 
 graph_memberof \<- graph %\>% activate(edges) %\>% filter(`Edge Type` == "Memberof")

@@ -102,6 +102,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+<script src="../../site_libs/datatables-binding-0.33/datatables.js"></script>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+<script src="../../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+<link href="../../site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="../../site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -309,7 +329,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <section id="load-required-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="load-required-libraries">1.4 Load Required Libraries</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The libraries used in this exercise are the following:</p>
 <div class="cell">
@@ -349,6 +369,10 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <tr class="even">
 <td style="text-align: left;">knitr</td>
 <td style="text-align: left;">Provides a tool for dynamic report generation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">datable</td>
+<td style="text-align: left;">provides an R interface to the JavaScript library DataTables</td>
 </tr>
 </tbody>
 </table>
@@ -732,7 +756,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x0000029cdb55cc40&gt; 
+ $ :&lt;environment: 0x0000019ba954bf20&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -762,40 +786,19 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>graph_unqiue_person <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>graph_unique_person <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">type</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Entity"</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>graph_unqiue_person</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tbl_graph: 72 nodes and 0 edges
-#
-# A rooted forest with 72 trees
-#
-# Node Data: 72 × 31 (active)
-   type   label  name  sub_type id    timestamp monitoring_type findings content
-   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;  
- 1 Entity Sam    Sam   Person   Sam   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 2 Entity Kelly  Kelly Person   Kelly &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 3 Entity Nadia… Nadi… Person   Nadi… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 4 Entity Elise  Elise Person   Elise &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 5 Entity Liam … Liam… Person   Liam… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 6 Entity Saman… Sama… Person   Sama… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 7 Entity Davis  Davis Person   Davis &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 8 Entity Rodri… Rodr… Person   Rodr… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
- 9 Entity Sailo… Sail… Person   Sail… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
-10 Entity Clepp… Clep… Person   Clep… &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;     &lt;NA&gt;   
-# ℹ 62 more rows
-# ℹ 22 more variables: assessment_type &lt;chr&gt;, results &lt;chr&gt;,
-#   movement_type &lt;chr&gt;, destination &lt;chr&gt;, enforcement_type &lt;chr&gt;,
-#   outcome &lt;chr&gt;, activity_type &lt;chr&gt;, participants &lt;int&gt;, reference &lt;chr&gt;,
-#   date &lt;chr&gt;, time &lt;chr&gt;, friendship_type &lt;chr&gt;, permission_type &lt;chr&gt;,
-#   start_date &lt;chr&gt;, end_date &lt;chr&gt;, report_type &lt;chr&gt;, submission_date &lt;chr&gt;,
-#   jurisdiction_type &lt;chr&gt;, authority_level &lt;chr&gt;, coordination_type &lt;chr&gt;, …
-#
-# Edge Data: 0 × 4
-# ℹ 4 variables: from &lt;int&gt;, to &lt;int&gt;, is_inferred &lt;lgl&gt;, type &lt;chr&gt;</code></pre>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">sub_type</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Person"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>entity_table <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(graph_unique_person, <span class="at">active =</span> <span class="st">"nodes"</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(entity_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-b316f80421c5be0435d7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b316f80421c5be0435d7">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"],["Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity"],["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry"],["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry"],["Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person"],["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry"],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>type<\/th>\n      <th>label<\/th>\n      <th>name<\/th>\n      <th>sub_type<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>content<\/th>\n      <th>assessment_type<\/th>\n      <th>results<\/th>\n      <th>movement_type<\/th>\n      <th>destination<\/th>\n      <th>enforcement_type<\/th>\n      <th>outcome<\/th>\n      <th>activity_type<\/th>\n      <th>participants<\/th>\n      <th>reference<\/th>\n      <th>date<\/th>\n      <th>time<\/th>\n      <th>friendship_type<\/th>\n      <th>permission_type<\/th>\n      <th>start_date<\/th>\n      <th>end_date<\/th>\n      <th>report_type<\/th>\n      <th>submission_date<\/th>\n      <th>jurisdiction_type<\/th>\n      <th>authority_level<\/th>\n      <th>coordination_type<\/th>\n      <th>operational_role<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[17,31]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"type","targets":1},{"name":"label","targets":2},{"name":"name","targets":3},{"name":"sub_type","targets":4},{"name":"id","targets":5},{"name":"timestamp","targets":6},{"name":"monitoring_type","targets":7},{"name":"findings","targets":8},{"name":"content","targets":9},{"name":"assessment_type","targets":10},{"name":"results","targets":11},{"name":"movement_type","targets":12},{"name":"destination","targets":13},{"name":"enforcement_type","targets":14},{"name":"outcome","targets":15},{"name":"activity_type","targets":16},{"name":"participants","targets":17},{"name":"reference","targets":18},{"name":"date","targets":19},{"name":"time","targets":20},{"name":"friendship_type","targets":21},{"name":"permission_type","targets":22},{"name":"start_date","targets":23},{"name":"end_date","targets":24},{"name":"report_type","targets":25},{"name":"submission_date","targets":26},{"name":"jurisdiction_type","targets":27},{"name":"authority_level","targets":28},{"name":"coordination_type","targets":29},{"name":"operational_role","targets":30},{"name":"new_index","targets":31}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
+<p>entity_table &lt;- as_tibble(graph_unqiue_person, active = “nodes”)</p>
 <p>graph_memberof &lt;- graph %&gt;% activate(edges) %&gt;% filter(<code>Edge Type</code> == “Memberof”)</p>
 
 
