@@ -44,7 +44,7 @@ Clepper diligently recorded all intercepted radio communications over the last t
 ### 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr)
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia)
 ```
 
 The libraries used in this exercise are the following:
@@ -58,8 +58,9 @@ table_data <- matrix(
     "ggraph", "Extension of the ggplot2 API tailored to graph visualizations", 
     "knitr",  "Provides a tool for dynamic report generation",
     "datable", "Provides an R interface to the JavaScript library DataTables", 
-    "stringr", "Provides a cohesive set of functions designed to make working with strings easy"), 
-  nrow = 8,
+    "stringr", "Provides a cohesive set of functions designed to make working with strings easy", 
+    "cronologia", "HTML vertical timeline from a data frame as an input for 'rmarkdown' documents and 'shiny' applications"), 
+  nrow = 9,
   byrow = TRUE
 )
 
@@ -270,7 +271,9 @@ colnames(edge_index) <- c("from_id", "to_id")  # Rename to avoid conflict
 edges_tbl <- bind_cols(edges_tbl, edge_index)
 ```
 
-Nadia conti communication about her
+Communication on Nadia Conti
+
+the best way to know
 
 ```{r}
 comm_about_nadia <- mc3_graph %>%
@@ -278,10 +281,17 @@ comm_about_nadia <- mc3_graph %>%
   filter(str_detect(content, "Nadia Conti| Nadia | Conti ")) %>%
   distinct(content, .keep_all = TRUE)
 
-comm_about_nadia %>%
-  as_tibble() %>%
-  select(label, id, timestamp, content,monitoring_type, findings, new_index) %>%
-  datatable()
+timeline_nadia_comm <- comm_about_nadia %>%
+  as_tibble(active = "nodes") %>%  
+  select(label, id, timestamp, content, monitoring_type, findings, new_index)
+
+timeline_nadia_comm <- timeline_nadia_comm %>%
+  mutate(
+  timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
+    timestamp_desc = format(timestamp, "%A, %B %d, %Y"))
+
+timeline_nadia <- create_tml_2(df=timeline_nadia_comm, smr="timestamp_desc", dsc="label", dsc2="content")
+timeline_nadia
 ```
 
 <https://github.com/feddelegrand7/cronologia>
@@ -314,4 +324,21 @@ comm_encryption %>% as_tibble() %>% select(label, id, timestamp, content,monitor
 comm_nr_1045 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "NR-1045"))
 
 comm_nr_1045 %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
+```
+
+```{r}
+comm_oct_14 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "southwest"))
+
+comm_oct_14 %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
+```
+
+```{r}
+timeline_nadia_comm <- comm_about_nadia %>%
+  arrange(timestamp)
+
+colnames(timeline_nadia_comm)
+colnames(comm_about_nadia)
+
+timeline_nadia <- create_tml_2(df=timeline_nadia_comm, smr="timestamp", dsc="label", dsc2="content")
+
 ```
