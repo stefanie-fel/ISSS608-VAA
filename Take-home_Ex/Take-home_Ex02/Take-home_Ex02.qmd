@@ -296,7 +296,7 @@ timeline_nadia
 
 ::: {.callout-note title="Insight from the timeline"}
 -   People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter's Team, The Middleman, Ramora and Sailor Shifts
--   Code names that are mentioned: #NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844
+-   Code names that are mentioned: NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844
 -   There are couple of striking message mentioned in the exchanges e.g. "keep tourism appearance", "keep operations discreet", "destroy all related documentation" or "we need to stay under radar", which sounds sounds suspicious, so we should look deeper into it.
 :::
 
@@ -316,20 +316,36 @@ comm_about_cr <- comm_about_cr %>%
   timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
     timestamp_desc = format(timestamp, "%A, %B %d %Y, %H:%M"))
 
-timeline_cr <- create_tml(df=timeline_nadia_comm, smr="timestamp_desc", dsc="content", smr_bgcol = "#2E8BC0", dsc_col = "#2E8BC0")
+timeline_cr <- create_tml(df=comm_about_cr, smr="timestamp_desc", dsc="content", smr_bgcol = "#2E8BC0", dsc_col = "#2E8BC0")
 timeline_cr
 ```
+
 ::: {.callout-note title="Insight from the timeline"}
--   #CR-7844 is a special marine research permit created for (?) V.Miesel to conduct marine research equipment transport into the Nemo Reef
--   
--   There are couple of striking message mentioned in the exchanges e.g. "keep tourism appearance", "keep operations discreet", "destroy all related documentation" or "we need to stay under radar", which sounds sounds suspicious, so we should look deeper into it.
+-   #CR-7844 is a special marine research permit created under V.Miesel to conduct marine research equipment transport into the Nemo Reef, approved by Oceanus City Council. This indicates that V. Miesel is aware and is involved in the operation
+-   The permit is used from 8 Oct to deliver equipment through eastern reef routes and brought security team and extra crew for this operation
+-   They were secretive about the permit and mentioned Delta-3 encryption before the closing of Nemo Reef
 :::
 
-```{r}
-comm_encryption <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "Delta-3 encryption"))
+Next, we'll look into the **Delta-3 encryption** since the last exchange about the permit mentioned Delta-3 encryption.So we'll filter exchanges that mentions Delta-3 encryption, Delta or encryption in case they're mentioned separately.
 
-comm_encryption %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
+```{r}
+comm_encryption <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "Delta-3 encryption| encryption | Delta "))
+
+comm_encryption <- comm_encryption %>%
+  as_tibble(active = "nodes") %>%  
+  select(label, id, timestamp, content, monitoring_type, findings, new_index)
+
+comm_encryption <- comm_encryption %>%
+  mutate(
+  timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
+    timestamp_desc = format(timestamp, "%A, %B %d %Y, %H:%M"))
+
+timeline_encryption <- create_tml(df=comm_encryption, smr="timestamp_desc", dsc="content", smr_bgcol = "#1c9b8e", dsc_col = "#1c9b8e")
+timeline_encryption
 ```
+::: {.callout-note title="Insight from the timeline"}
+-   Delta-3 encryption is
+:::
 
 ```{r}
 comm_harbor_access <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "ALPHA-937"))
