@@ -332,13 +332,5 @@ comm_oct_14 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "sou
 comm_oct_14 %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
 ```
 
-```{r}
-timeline_nadia_comm <- comm_about_nadia %>%
-  arrange(timestamp)
-
-colnames(timeline_nadia_comm)
-colnames(comm_about_nadia)
-
-timeline_nadia <- create_tml_2(df=timeline_nadia_comm, smr="timestamp", dsc="label", dsc2="content")
-
+```{}
 ```
