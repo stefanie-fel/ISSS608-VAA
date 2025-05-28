@@ -767,7 +767,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x0000013cce673040&gt; 
+ $ :&lt;environment: 0x000002119f896008&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -1004,11 +1004,13 @@ Insight from the timeline
 <ul>
 <li>People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter’s Team, The Middleman, Ramora and Sailor Shifts</li>
 <li>Code names that are mentioned: #NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844</li>
-<li>There are couple of striking message mentioned in the exhanges e.g.&nbsp;“keep tourism appearance”, “keep operations discreet” or “we need to stay under radar”, which sounds sounds suspicious</li>
+<li>There are couple of striking message mentioned in the exchanges e.g.&nbsp;“keep tourism appearance”, “keep operations discreet”, “destroy all related documentation” or “we need to stay under radar”, which sounds sounds suspicious, so we should look deeper into it.</li>
 </ul>
 </div>
 </div>
-<p>Next, let’s visualize</p>
+<section id="create-timeline-for-code-names" class="level3">
+<h3 class="anchored" data-anchor-id="create-timeline-for-code-names">Create timeline for Code Names</h3>
+<p>First, let’s create timeline for each code name that is mentioned in the exchanges. In this code, we’ll look at the code name <strong>#CR-7844</strong> as it was mentioned frequently.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"#CR-7844"</span>))</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1160,6 +1162,23 @@ Insight from the timeline
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insight from the timeline
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>#CR-7844 is a special marine research permit created for (?) V.Miesel to conduct marine research equipment transport into the Nemo Reef</li>
+<li></li>
+<li>There are couple of striking message mentioned in the exchanges e.g.&nbsp;“keep tourism appearance”, “keep operations discreet”, “destroy all related documentation” or “we need to stay under radar”, which sounds sounds suspicious, so we should look deeper into it.</li>
+</ul>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"Delta-3 encryption"</span>))</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1205,6 +1224,7 @@ Insight from the timeline
 <script type="application/json" data-for="htmlwidget-be908584a95cbb657235">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication"],["Event_Communication_749","Event_Communication_751","Event_Communication_753","Event_Communication_795","Event_Communication_796","Event_Communication_847","Event_Communication_950","Event_Communication_951","Event_Communication_987"],["2040-10-11 09:15:00","2040-10-11 09:18:00","2040-10-11 09:20:00","2040-10-12 08:44:00","2040-10-12 08:47:00","2040-10-12 11:19:00","2040-10-14 08:58:00","2040-10-14 08:59:00","2040-10-14 12:17:00"],["EcoVigil, Liam Thorne here. Your ROV deployment at Nemo Reef is delayed due to technical protocol issues. Expect clearance by tomorrow afternoon. Council requests you focus on northern quadrant instead of southwest. Will update when resolved.","Liam, EcoVigil here. Understood about the northern quadrant directive, though our primary evidence suggests southwest activity. We've recalibrated equipment for northern deployment. Can you explain the technical protocol issues delaying our ROV clearance?","Nadia, Liam here. EcoVigil is questioning the ROV delay. I've redirected them to the northern quadrant, but they're suspicious about the southwest. We need to clean up operations there immediately. What's our contingency plan?","Liam, Nadia here. Redirect all remaining operations from southwest immediately. Move equipment to our secondary location. I'll handle EcoVigil through proper channels. Meet me at the usual place at 2100 hours with updated documentation.","The Accountant, it's The Middleman. Meeting at 0500 still on. Council pressure increasing after EcoVigil approval. Redirected them north, but Boss needs southwest cleared immediately. Bring extra encryption - we'll need it.","This is Nadia. Documentation for permit #CR-7844 is complete. Meeting The Middleman at 2100 to handle final details. Recommend accelerating timeline due to EcoVigil's ROV approval. Shifting operations from southwest immediately. Will update after meeting.","The Accountant, it's The Middleman. Council's breathing down my neck. Meeting with Boss at 2100 tonight. Need your financial records for southwest operations by morning. Bring everything to our 0500 meeting. Delete all digital traces.","The Middleman, this is The Accountant. Financial records for southwest operations prepared with triple encryption. I'm reviewing V. Miesel's vulnerabilities now. Will bring physical copies only to 0500. Confirm meeting location - standard spot?","Mako, this is Knowles. We're positioned southwest of your location, maintaining distance as instructed. Visibility good, moving to designated coordinates for tonight's operation. Will hold position and await further instructions."],[null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null],[575,576,577,606,607,640,698,699,718]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>label<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>content<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":7},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"label","targets":1},{"name":"id","targets":2},{"name":"timestamp","targets":3},{"name":"content","targets":4},{"name":"monitoring_type","targets":5},{"name":"findings","targets":6},{"name":"new_index","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
+</section>
 </section>
 <section id="reference" class="level2">
 <h2 class="anchored" data-anchor-id="reference">Reference</h2>
