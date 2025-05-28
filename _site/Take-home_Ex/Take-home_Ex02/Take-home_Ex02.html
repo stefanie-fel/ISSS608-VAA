@@ -766,7 +766,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x000001a5f8a71e40&gt; 
+ $ :&lt;environment: 0x00000241319afc40&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -835,7 +835,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>edges_tbl <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(edges_tbl, edge_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Communication on Nadia Conti</p>
-<p>the best way to know</p>
+<p>First, we’ll look at the communication that mentioned Nadia Conti, Conti and Nadia as the content mentions their identity and to whom they send the message to.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>comm_about_nadia <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
@@ -849,164 +849,165 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>timeline_nadia_comm <span class="ot">&lt;-</span> timeline_nadia_comm <span class="sc">%&gt;%</span></span>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d, %Y"</span>))</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
 <span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>timeline_nadia <span class="ot">&lt;-</span> <span class="fu">create_tml_2</span>(<span class="at">df=</span>timeline_nadia_comm, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"label"</span>, <span class="at">dsc2=</span><span class="st">"content"</span>)</span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>timeline_nadia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>timeline_nadia <span class="ot">&lt;-</span> <span class="fu">create_tml_2</span>(<span class="at">df=</span>timeline_nadia_comm, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"label"</span>, <span class="at">dsc2=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#9A7AA0"</span>, <span class="at">smr_col =</span> <span class="st">"white"</span>, <span class="at">dsc_col =</span> <span class="st">"#9A7AA0"</span>, <span class="at">dsc2_col =</span> <span class="st">"white"</span>,</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="at">dsc2_bgcol =</span> <span class="st">"peru"</span>)</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>timeline_nadia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="chronologia-wrapper">
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 05, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Rodriguez, Remora here. Overheard crew saying Davis' meeting with Nadia Conti went well - she's personally handling permits for Nemo Reef with approval expected today. Should we prepare for deployment? Need your instructions.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 05 2040, 09:00</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Rodriguez, Remora here. Overheard crew saying Davis' meeting with Nadia Conti went well - she's personally handling permits for Nemo Reef with approval expected today. Should we prepare for deployment? Need your instructions.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 05, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Haacklee Harbor to Nadia Conti. Following your visit yesterday regarding the Nemo Reef event logistics, we've prepared the necessary documentation. Harbor staff is ready to facilitate the special access corridor arrangements as discussed. Please confirm timeline for implementation.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 05 2040, 09:44</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Haacklee Harbor to Nadia Conti. Following your visit yesterday regarding the Nemo Reef event logistics, we've prepared the necessary documentation. Harbor staff is ready to facilitate the special access corridor arrangements as discussed. Please confirm timeline for implementation.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 05, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Haacklee Harbor, this is Nadia Conti. I need to cancel the special access corridor arrangements for Nemo Reef immediately. Plans have changed due to unforeseen circumstances. Destroy all related documentation. I'll contact you when we're ready to proceed with alternative locations.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 05 2040, 09:45</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Haacklee Harbor, this is Nadia Conti. I need to cancel the special access corridor arrangements for Nemo Reef immediately. Plans have changed due to unforeseen circumstances. Destroy all related documentation. I'll contact you when we're ready to proceed with alternative locations.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 05, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Haacklee Harbor to Oceanus City Council. Reporting unusual activity: Nadia Conti visited yesterday discussing special event logistics for Nemo Reef, requesting harbor cooperation for high-profile event. Today she urgently canceled all arrangements, requesting documentation destruction. Awaiting your guidance.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 05 2040, 09:47</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Haacklee Harbor to Oceanus City Council. Reporting unusual activity: Nadia Conti visited yesterday discussing special event logistics for Nemo Reef, requesting harbor cooperation for high-profile event. Today she urgently canceled all arrangements, requesting documentation destruction. Awaiting your guidance.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 05, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">This is Nadia Conti. My cancellation was due to scheduling conflicts with our tourism development initiatives. I wasn't aware of any permit approvals. I'll submit revised documentation for alternative sustainable tourism proposals next week.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 05 2040, 09:49</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">This is Nadia Conti. My cancellation was due to scheduling conflicts with our tourism development initiatives. I wasn't aware of any permit approvals. I'll submit revised documentation for alternative sustainable tourism proposals next week.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 05, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Mako, Remora here. Himark Harbor is questioning our expedited provisioning requests. They've noticed our coordinated preparation. Davis' meeting with Nadia Conti went well? Harbor's demanding proper documentation before approval. What's our next move?</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 05 2040, 09:58</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Mako, Remora here. Himark Harbor is questioning our expedited provisioning requests. They've noticed our coordinated preparation. Davis' meeting with Nadia Conti went well? Harbor's demanding proper documentation before approval. What's our next move?</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Saturday, October 06, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Remora here to Sailor Shifts. We'll need additional event staff aboard tomorrow. Davis mentioned thanking Nadia Conti personally - she called in favors at the permit office and got Commissioner Torres to sign off within hours. Unprecedented speed.</p>
+<summary style="color: white; background: #9A7AA0;">Saturday, October 06 2040, 09:57</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Remora here to Sailor Shifts. We'll need additional event staff aboard tomorrow. Davis mentioned thanking Nadia Conti personally - she called in favors at the permit office and got Commissioner Torres to sign off within hours. Unprecedented speed.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Saturday, October 06, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Davis, Rodriguez here. I'm heading to assist Mako soon. Got concerns about Nemo Reef selection - it's a protected area. Remora mentioned you had a meeting with Nadia Conti about permits. Should I continue with alternative site preparations?</p>
+<summary style="color: white; background: #9A7AA0;">Saturday, October 06 2040, 10:49</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Davis, Rodriguez here. I'm heading to assist Mako soon. Got concerns about Nemo Reef selection - it's a protected area. Remora mentioned you had a meeting with Nadia Conti about permits. Should I continue with alternative site preparations?</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Sunday, October 07, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Davis, Nadia here. Let's meet at 7PM at the marina office to review documentation. I've been working with alternative channels for permits. Bring all shipping manifests - we'll need to create a clean paper trail immediately.</p>
+<summary style="color: white; background: #9A7AA0;">Sunday, October 07 2040, 12:00</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Davis, Nadia here. Let's meet at 7PM at the marina office to review documentation. I've been working with alternative channels for permits. Bring all shipping manifests - we'll need to create a clean paper trail immediately.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Monday, October 08, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Liam, Nadia here. Need your services urgently. Investigation brewing around Nemo Reef permits. Double your usual fee if you can ensure Harbor Master remains cooperative through next week. Meet at the usual place tomorrow, 10PM.</p>
+<summary style="color: white; background: #9A7AA0;">Monday, October 08 2040, 08:18</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Liam, Nadia here. Need your services urgently. Investigation brewing around Nemo Reef permits. Double your usual fee if you can ensure Harbor Master remains cooperative through next week. Meet at the usual place tomorrow, 10PM.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Monday, October 08, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Neptune, Nadia here. Just confirming our 0600 meeting at the marina. I've reviewed the modified equipment specs with The Accountant. Please bring detailed timeline for foundation work and cost implications. We need to stay under radar.</p>
+<summary style="color: white; background: #9A7AA0;">Monday, October 08 2040, 08:30</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Neptune, Nadia here. Just confirming our 0600 meeting at the marina. I've reviewed the modified equipment specs with The Accountant. Please bring detailed timeline for foundation work and cost implications. We need to stay under radar.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Monday, October 08, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Neptune to Elise. Heavy equipment delivered to site. Need immediate funding approval for modified stabilization gear. Nadia raised concerns about foundation work scope. Can you finalize payment protocols before 0500 tomorrow?</p>
+<summary style="color: white; background: #9A7AA0;">Monday, October 08 2040, 08:32</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Neptune to Elise. Heavy equipment delivered to site. Need immediate funding approval for modified stabilization gear. Nadia raised concerns about foundation work scope. Can you finalize payment protocols before 0500 tomorrow?</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Monday, October 08, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Mako, Davis here. Good work maintaining protocol. Stay positioned near Nemo Reef but outside boundary until nightfall. I'll join you after meeting with Nadia at 7PM to finalize permits. Keep executive client comfortable and prepare for night operations.</p>
+<summary style="color: white; background: #9A7AA0;">Monday, October 08 2040, 10:29</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Mako, Davis here. Good work maintaining protocol. Stay positioned near Nemo Reef but outside boundary until nightfall. I'll join you after meeting with Nadia at 7PM to finalize permits. Keep executive client comfortable and prepare for night operations.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Monday, October 08, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Marlin, Nadia here. I understand you're inquiring about eastern shoal routes. Those are temporary diversions due to equipment transport needs. I'll have Davis provide the necessary documentation tonight. Nothing to be concerned about.</p>
+<summary style="color: white; background: #9A7AA0;">Monday, October 08 2040, 11:23</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Marlin, Nadia here. I understand you're inquiring about eastern shoal routes. Those are temporary diversions due to equipment transport needs. I'll have Davis provide the necessary documentation tonight. Nothing to be concerned about.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Monday, October 08, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Davis, Marlin here again. Nadia mentioned you'd provide documentation about those eastern shoal diversions tonight. Just checking if that's still coming through. Need to understand these new patterns while my vessel's being repaired.</p>
+<summary style="color: white; background: #9A7AA0;">Monday, October 08 2040, 11:26</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Davis, Marlin here again. Nadia mentioned you'd provide documentation about those eastern shoal diversions tonight. Just checking if that's still coming through. Need to understand these new patterns while my vessel's being repaired.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Monday, October 08, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Rodriguez, Davis here. Continue with Mako at Nemo Reef. We're operating under permit #CR-7844, meeting with Nadia tonight to finalize documentation. No need for alternative site preparations at this time. Keep operations discreet.</p>
+<summary style="color: white; background: #9A7AA0;">Monday, October 08 2040, 11:28</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Rodriguez, Davis here. Continue with Mako at Nemo Reef. We're operating under permit #CR-7844, meeting with Nadia tonight to finalize documentation. No need for alternative site preparations at this time. Keep operations discreet.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 12, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Liam, Nadia here. Redirect all remaining operations from southwest immediately. Move equipment to our secondary location. I'll handle EcoVigil through proper channels. Meet me at the usual place at 2100 hours with updated documentation.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 12 2040, 08:44</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Liam, Nadia here. Redirect all remaining operations from southwest immediately. Move equipment to our secondary location. I'll handle EcoVigil through proper channels. Meet me at the usual place at 2100 hours with updated documentation.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 12, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Rodriguez, Davis here. Maintain current position with Mako at Nemo Reef. Security team arriving at 0600. Continue operating under permit #CR-7844 and keep tourism appearance. I'll update after meeting with Nadia tonight.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 12 2040, 09:24</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Rodriguez, Davis here. Maintain current position with Mako at Nemo Reef. Security team arriving at 0600. Continue operating under permit #CR-7844 and keep tourism appearance. I'll update after meeting with Nadia tonight.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 12, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Davis here to V. Miesel Shipping. Crew reallocation from Remora to Neptune underway as requested. Will maintain confidentiality regarding permit #CR-7844. Security team arrives 0600 tomorrow. Meeting Nadia tonight to finalize documentation.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 12 2040, 11:14</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Davis here to V. Miesel Shipping. Crew reallocation from Remora to Neptune underway as requested. Will maintain confidentiality regarding permit #CR-7844. Security team arrives 0600 tomorrow. Meeting Nadia tonight to finalize documentation.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Friday, October 12, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Neptune. Harbor closure timeline confirmed for 0600 tomorrow, lasting 3 days. Maintain Delta-3 encryption. Nadia securing final documentation for permit #CR-7844. Davis bringing additional crew and security team. Proceed as planned.</p>
+<summary style="color: white; background: #9A7AA0;">Friday, October 12 2040, 12:52</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">V. Miesel HQ to Neptune. Harbor closure timeline confirmed for 0600 tomorrow, lasting 3 days. Maintain Delta-3 encryption. Nadia securing final documentation for permit #CR-7844. Davis bringing additional crew and security team. Proceed as planned.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Saturday, October 13, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Davis, Nadia here. Need you to verify final equipment transport tonight at Nemo Reef. The Middleman reports increased surveillance. Ensure all operations follow encrypted protocols. Meet me at V. Miesel HQ tomorrow at 0900 to discuss contingency plans.</p>
+<summary style="color: white; background: #9A7AA0;">Saturday, October 13 2040, 08:21</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Davis, Nadia here. Need you to verify final equipment transport tonight at Nemo Reef. The Middleman reports increased surveillance. Ensure all operations follow encrypted protocols. Meet me at V. Miesel HQ tomorrow at 0900 to discuss contingency plans.</p>
 </details>
 </div>
 <div class="chronologia-detail-wrapper">
 <details>
-<summary style="color: white; background: #002240;">Sunday, October 14, 2040</summary>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Communication</p>
-<p style="color: #1D1D1D; background: #FFFFFF; font-size: 14px;">Remora, Glitter's Team here. Confirming equipment needs for tomorrow: bring standard video gear plus underwater lighting rigs. We'll have 6 additional crew arriving at 0530. Delta-3-Coral clearance confirmed. Nadia approved everything.</p>
+<summary style="color: white; background: #9A7AA0;">Sunday, October 14 2040, 08:31</summary>
+<p style="color: #9A7AA0; background: #FFFFFF; font-size: 14px;">Communication</p>
+<p style="color: white; background: peru; font-size: 14px;">Remora, Glitter's Team here. Confirming equipment needs for tomorrow: bring standard video gear plus underwater lighting rigs. We'll have 6 additional crew arriving at 0530. Delta-3-Coral clearance confirmed. Nadia approved everything.</p>
 </details>
 </div>
 </div>
@@ -1067,7 +1068,6 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <script type="application/json" data-for="htmlwidget-df40c39265dde470547a">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication"],["Event_Communication_749","Event_Communication_751","Event_Communication_753","Event_Communication_795","Event_Communication_796","Event_Communication_847","Event_Communication_950","Event_Communication_951","Event_Communication_987"],["2040-10-11 09:15:00","2040-10-11 09:18:00","2040-10-11 09:20:00","2040-10-12 08:44:00","2040-10-12 08:47:00","2040-10-12 11:19:00","2040-10-14 08:58:00","2040-10-14 08:59:00","2040-10-14 12:17:00"],["EcoVigil, Liam Thorne here. Your ROV deployment at Nemo Reef is delayed due to technical protocol issues. Expect clearance by tomorrow afternoon. Council requests you focus on northern quadrant instead of southwest. Will update when resolved.","Liam, EcoVigil here. Understood about the northern quadrant directive, though our primary evidence suggests southwest activity. We've recalibrated equipment for northern deployment. Can you explain the technical protocol issues delaying our ROV clearance?","Nadia, Liam here. EcoVigil is questioning the ROV delay. I've redirected them to the northern quadrant, but they're suspicious about the southwest. We need to clean up operations there immediately. What's our contingency plan?","Liam, Nadia here. Redirect all remaining operations from southwest immediately. Move equipment to our secondary location. I'll handle EcoVigil through proper channels. Meet me at the usual place at 2100 hours with updated documentation.","The Accountant, it's The Middleman. Meeting at 0500 still on. Council pressure increasing after EcoVigil approval. Redirected them north, but Boss needs southwest cleared immediately. Bring extra encryption - we'll need it.","This is Nadia. Documentation for permit #CR-7844 is complete. Meeting The Middleman at 2100 to handle final details. Recommend accelerating timeline due to EcoVigil's ROV approval. Shifting operations from southwest immediately. Will update after meeting.","The Accountant, it's The Middleman. Council's breathing down my neck. Meeting with Boss at 2100 tonight. Need your financial records for southwest operations by morning. Bring everything to our 0500 meeting. Delete all digital traces.","The Middleman, this is The Accountant. Financial records for southwest operations prepared with triple encryption. I'm reviewing V. Miesel's vulnerabilities now. Will bring physical copies only to 0500. Confirm meeting location - standard spot?","Mako, this is Knowles. We're positioned southwest of your location, maintaining distance as instructed. Visibility good, moving to designated coordinates for tonight's operation. Will hold position and await further instructions."],[null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null],[575,576,577,606,607,640,698,699,718]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>label<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>content<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":7},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"label","targets":1},{"name":"id","targets":2},{"name":"timestamp","targets":3},{"name":"content","targets":4},{"name":"monitoring_type","targets":5},{"name":"findings","targets":6},{"name":"new_index","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<pre><code></code></pre>
 
 
 </section>
