@@ -44,7 +44,7 @@ Clepper diligently recorded all intercepted radio communications over the last t
 ### 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, timevis)
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia)
 ```
 
 The libraries used in this exercise are the following:
@@ -59,7 +59,7 @@ table_data <- matrix(
     "knitr",  "Provides a tool for dynamic report generation",
     "datable", "Provides an R interface to the JavaScript library DataTables", 
     "stringr", "Provides a cohesive set of functions designed to make working with strings easy", 
-    "timevis", "HTML vertical timeline from a data frame as an input for 'rmarkdown' documents and 'shiny' applications"), 
+    "cronologia", "HTML vertical timeline from a data frame as an input for 'rmarkdown' documents and 'shiny' applications"), 
   nrow = 9,
   byrow = TRUE
 )
@@ -288,25 +288,34 @@ timeline_nadia_comm <- comm_about_nadia %>%
 timeline_nadia_comm <- timeline_nadia_comm %>%
   mutate(
   timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
-    start = format(timestamp, "%A, %B %d %Y, %H:%M"),
-  content = paste0("<b style='color:#613659;'>", label, "</b><br>", content)
-  ) %>%
-  select(content, start)
+    timestamp_desc = format(timestamp, "%A, %B %d %Y, %H:%M"))
 
-# Create the interactive horizontal timeline
-timevis(timeline_nadia_comm)
+timeline_nadia <- create_tml(df=timeline_nadia_comm, smr="timestamp_desc", dsc="content", smr_bgcol = "#613659", dsc_col = "#613659")
+timeline_nadia
 ```
 
-::: {.callout-note title="Inisght from the timeline"}
--   People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council,
+::: {.callout-note title="Insight from the timeline"}
+-   People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter's Team, The Middleman, Ramora and Sailor Shifts
 -   Code names that are mentioned: #NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844
--   There are couple of striking thing (?) mentioned in the content e.g. "keep tourism appearance", "keep operation discreet",
+-   There are couple of striking message mentioned in the exhanges e.g. "keep tourism appearance", "keep operations discreet" or "we need to stay under radar", which sounds sounds suspicious
 :::
 
-```{r}
-comm_about_permit <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "#CR-7844"))
+Next, let's visualize
 
-comm_about_permit %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
+```{r}
+comm_about_cr <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "#CR-7844"))
+
+comm_about_cr <- comm_about_cr %>%
+  as_tibble(active = "nodes") %>%  
+  select(label, id, timestamp, content, monitoring_type, findings, new_index)
+
+comm_about_cr <- comm_about_cr %>%
+  mutate(
+  timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
+    timestamp_desc = format(timestamp, "%A, %B %d %Y, %H:%M"))
+
+timeline_cr <- create_tml(df=timeline_nadia_comm, smr="timestamp_desc", dsc="content", smr_bgcol = "#2E8BC0", dsc_col = "#2E8BC0")
+timeline_cr
 ```
 
 ```{r}
