@@ -290,9 +290,7 @@ timeline_nadia_comm <- timeline_nadia_comm %>%
   timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
     timestamp_desc = format(timestamp, "%A, %B %d %Y, %H:%M"))
 
-timeline_nadia <- create_tml_2(df=timeline_nadia_comm, smr="timestamp_desc", dsc="label", dsc2="content", smr_bgcol = "#9A7AA0", smr_col = "white", dsc_col = "#9A7AA0", dsc2_col = "white",
-dsc2_bgcol = "peru")
-timeline_nadia
+timeline_nadia <- create_tml_2(df=timeline_nadia_comm, smr="timestamp_desc", dsc="label", dsc2="content", smr_bgcol = "#613659", dsc2_col = "#613659")
 ```
 
 <https://github.com/feddelegrand7/cronologia>
