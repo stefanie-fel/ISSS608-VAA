@@ -12,39 +12,35 @@ execute:
 
 ## 1. Background
 
-Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. (there used to be illegal fishing but now these ppl has shifting on to another investment e.g. ocean tourism industry which makes a growing tension.) with teh growing tourism, it attracted interntaional pop star Sailor Shift (who wanted to shoot his/her new mv in the island).
+Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. Currently, people are shifting to another investment, i.e. ocean tourism industry, which creates a growing tension. With the growing tourism, it attracted international pop star Sailor Shift who wanted to shoot his/her new music video in the island.
 
 \
-Clepper Jensen is a former analyst at FishEye company who is new a seasoned journalist for Hecklee Herald, is observing the tension and recently looking at temporary closure of Nemo Reef. By using investigative tools and radio communication, he uncovered a complex web of expedited approvals and secretive logistics -\> this reveals story involving high-level Oceanus officials, Sailor Shift's team, local influential families adn local conservationist group (the Green Guardians) - this is a story of corruption and manipulation.
-
-**Your task is to develop new and novel visualizations and visual analytics approaches to help Clepper get to the bottom of this story.**
+Clepper Jensen is a former analyst at FishEye company who is new a seasoned journalist for Hecklee Herald, is observing the tension and recently looking at temporary closure of Nemo Reef. By using investigative tools and radio communication, he uncovered a complex web of expedited approvals and secretive logistics, in which I will be helping him to develop visualization to help give better clarity to the story.
 
 ### 1.2 Objective
 
 Objective of this exercise:
 
-Clepper diligently recorded all intercepted radio communications over the last two weeks. With the help of his intern, they have analyzed their content to identify important events and relationships between key players. The result is a knowledge graph describing the last two weeks on Oceanus. Clepper and his intern have spent a large amount of time generating this knowledge graph, and they would now like some assistance using it to answer the following questions.
-
 1.  Clepper has noticed that people often communicate with (or about) the same people or vessels, and that grouping them together may help with the investigation.
 
-    1.  Use visual analytics to help Clepper understand and explore the interactions and relationships between vessels and people in the knowledge graph.
+    -   Use visual analytics to help Clepper understand and explore the interactions and relationships between vessels and people in the knowledge graph.
 
-    2.  Are there groups that are more closely associated? If so, what are the topic areas that are predominant for each group?
+    -   Are there groups that are more closely associated? If so, what are the topic areas that are predominant for each group?
 
         -   For example, these groupings could be related to: Environmentalism (known associates of Green Guardians), Sailor Shift, and fishing/leisure vessels.
 
 2.  Clepper suspects that Nadia Conti, who was formerly entangled in an illegal fishing scheme, may have continued illicit activity within Oceanus
 
-    1.  Through visual analytics, provide evidence that Nadia is, or is not, doing something illegal
+    -   Through visual analytics, provide evidence that Nadia is, or is not, doing something illegal
 
-    2.  Summarize Nadia’s actions visually. Are Clepper’s suspicions justified?
+    -   Summarize Nadia’s actions visually. Are Clepper’s suspicions justified?
 
 ### 1.3 The Data
 
 ### 1.4 Load Required Libraries
 
 ```{r}
-pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia)
+pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia, igraph)
 ```
 
 The libraries used in this exercise are the following:
@@ -237,14 +233,39 @@ ggraph(mc3_graph,
   theme_void()
 ```
 
-```{r}
-graph_unique_person <- mc3_graph %>%
-  activate(nodes) %>%
-  filter(`sub_type` == "Person") %>%
-  distinct()
+## Visualize the 
 
-entity_table <- as_tibble(graph_unique_person, active = "nodes")
-datatable(entity_table)
+A table is generated to see the distinct people, organization and groups whose radio communication Clepper has intercepted.
+
+```{r}
+all_nodes <- mc3_graph %>%
+  activate(nodes) %>%
+  as_tibble()
+
+# Filter by sub_type
+persons <- all_nodes %>%
+  filter(sub_type == "Person") %>%
+  select(name) %>%
+  rename(Person = name)
+
+organizations <- all_nodes %>%
+  filter(sub_type == "Organization") %>%
+  select(name) %>%
+  rename(Organization = name)
+
+groups <- all_nodes %>%
+  filter(sub_type == "Group") %>%
+  select(name) %>%
+  rename(Group = name)
+max_len <- max(nrow(persons), nrow(organizations), nrow(groups))
+
+table_combined <- tibble(
+  Person = c(persons$Person, rep(NA, max_len - nrow(persons))),
+  Organization = c(organizations$Organization, rep(NA, max_len - nrow(organizations))),
+  Group = c(groups$Group, rep(NA, max_len - nrow(groups)))
+)
+
+datatable(table_combined)
 ```
 
 ```{r}
@@ -295,14 +316,14 @@ timeline_nadia
 ```
 
 ::: {.callout-note title="Insight from the timeline"}
--   People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter's Team, The Middleman, Ramora and Sailor Shifts
+-   People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter's Team, The Middleman and Ramora
 -   Code names that are mentioned: NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844
 -   There are couple of striking message mentioned in the exchanges e.g. "keep tourism appearance", "keep operations discreet", "destroy all related documentation" or "we need to stay under radar", which sounds sounds suspicious, so we should look deeper into it.
 :::
 
 ### Create timeline for Code Names
 
-First, let's create timeline for each code name that is mentioned in the exchanges. In this code, we'll look at the code name **#CR-7844** as it was mentioned frequently.
+First, let's create timeline for code name that is mentioned in the exchanges. In this code, we'll look at the code name **#CR-7844** as it was mentioned frequently.
 
 ```{r}
 comm_about_cr <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "#CR-7844"))
@@ -343,9 +364,31 @@ comm_encryption <- comm_encryption %>%
 timeline_encryption <- create_tml(df=comm_encryption, smr="timestamp_desc", dsc="content", smr_bgcol = "#1c9b8e", dsc_col = "#1c9b8e")
 timeline_encryption
 ```
+
 ::: {.callout-note title="Insight from the timeline"}
--   Delta-3 encryption is
+-   Delta-3 encryption is used as communication means between everyone that's involved in the operation
+-   The operation start executing on the 14 October on 04:00
+-   It is confirmed that V. Miesel is involved in the operation as some of its personnel are integrated in the operation
 :::
+
+```{r}
+comm_13_oct <- mc3_graph %>% activate(nodes) %>% filter(str_detect(timestamp, "2040-10-14"))
+
+comm_13_oct <- comm_13_oct %>%
+  as_tibble(active = "nodes") %>%  
+  select(label, id, timestamp, content, monitoring_type, findings, new_index) %>% datatable()
+comm_13_oct
+```
+
+```{r}
+nadia_relationship <- mc3_graph %>%
+  activate(nodes) %>%
+  filter(sub_type == "Person" & name == "Nadia Conti")
+
+nadia_relationship %>%
+  as_tibble() %>%
+  pull(new_index)
+```
 
 ```{r}
 comm_harbor_access <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "ALPHA-937"))
@@ -354,7 +397,7 @@ comm_harbor_access %>% as_tibble() %>% select(label, id, timestamp, content,moni
 ```
 
 ```{r}
-comm_berth_17 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "Berth 14"))
+comm_berth_17 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(timestamp, "2040-10-15"))
 
 comm_encryption %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
 ```
