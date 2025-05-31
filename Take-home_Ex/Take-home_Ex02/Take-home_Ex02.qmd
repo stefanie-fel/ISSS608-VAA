@@ -423,13 +423,7 @@ graph_relation <- graph_relation %>%
 graph_relation
 ```
 
-```{r}
-ggraph(graph_relation, layout = "fr") +
-  geom_edge_link(alpha = 0.3, colour = "gray") +
-  geom_node_point(color = "steelblue", size = 3) +
-  geom_node_text(aes(label = new_index), repel = TRUE, size = 3) +
-  theme_void() +
-  labs(title = "Network Graph with Nodes Labeled by new_index")
+```{}
 ```
 
 ```{r}
