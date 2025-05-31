@@ -290,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 29, 2025</p>
+      <p class="date-modified">May 30, 2025</p>
     </div>
   </div>
     
@@ -331,7 +331,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <section id="load-required-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="load-required-libraries">1.4 Load Required Libraries</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia, igraph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The libraries used in this exercise are the following:</p>
 <div class="cell">
@@ -664,7 +664,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.row_id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, .row_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then from_id and to_id columns in mc_edges_indexed are converted ito integer indices. The rows with unmatched nodes are also dropped.</p>
+<p>Then from_id and to_id columns in mc_edges_indexed are converted it to integer indices. The rows with unmatched nodes are also dropped.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mc3_edges_indexed <span class="ot">&lt;-</span> mc3_edges_cleaned <span class="sc">%&gt;%</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(node_index_lookup, </span>
@@ -766,7 +766,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x000002c7df89c190&gt; 
+ $ :&lt;environment: 0x000001a8e4a08cf0&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -834,50 +834,28 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>person_nodes <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">node_id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sub_type <span class="sc">==</span> <span class="st">"Person"</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>entity_tables <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(person_nodes, <span class="at">active =</span> <span class="st">"nodes"</span>)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(entity_tables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-ba0d097b346deca10955" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ba0d097b346deca10955">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"],["Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity","Entity"],["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry"],["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry"],["Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person","Person"],["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry"],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>type<\/th>\n      <th>label<\/th>\n      <th>name<\/th>\n      <th>sub_type<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>content<\/th>\n      <th>assessment_type<\/th>\n      <th>results<\/th>\n      <th>movement_type<\/th>\n      <th>destination<\/th>\n      <th>enforcement_type<\/th>\n      <th>outcome<\/th>\n      <th>activity_type<\/th>\n      <th>participants<\/th>\n      <th>reference<\/th>\n      <th>date<\/th>\n      <th>time<\/th>\n      <th>friendship_type<\/th>\n      <th>permission_type<\/th>\n      <th>start_date<\/th>\n      <th>end_date<\/th>\n      <th>report_type<\/th>\n      <th>submission_date<\/th>\n      <th>jurisdiction_type<\/th>\n      <th>authority_level<\/th>\n      <th>coordination_type<\/th>\n      <th>operational_role<\/th>\n      <th>new_index<\/th>\n      <th>node_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[17,31,32]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"type","targets":1},{"name":"label","targets":2},{"name":"name","targets":3},{"name":"sub_type","targets":4},{"name":"id","targets":5},{"name":"timestamp","targets":6},{"name":"monitoring_type","targets":7},{"name":"findings","targets":8},{"name":"content","targets":9},{"name":"assessment_type","targets":10},{"name":"results","targets":11},{"name":"movement_type","targets":12},{"name":"destination","targets":13},{"name":"enforcement_type","targets":14},{"name":"outcome","targets":15},{"name":"activity_type","targets":16},{"name":"participants","targets":17},{"name":"reference","targets":18},{"name":"date","targets":19},{"name":"time","targets":20},{"name":"friendship_type","targets":21},{"name":"permission_type","targets":22},{"name":"start_date","targets":23},{"name":"end_date","targets":24},{"name":"report_type","targets":25},{"name":"submission_date","targets":26},{"name":"jurisdiction_type","targets":27},{"name":"authority_level","targets":28},{"name":"coordination_type","targets":29},{"name":"operational_role","targets":30},{"name":"new_index","targets":31},{"name":"node_id","targets":32}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>edges_tbl <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Extract from/to indices and rename to avoid conflict</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>edge_index <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">as_data_frame</span>(mc3_graph, <span class="at">what =</span> <span class="st">"edges"</span>)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(edge_index) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"from_id"</span>, <span class="st">"to_id"</span>)  <span class="co"># Rename to avoid conflict</span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Combine cleanly</span></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>edges_tbl <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(edges_tbl, edge_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>edges_tbl <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Communication on Nadia Conti</p>
 <p>First, we’ll look at the communication that mentioned Nadia Conti, Conti and Nadia as the content mentions their identity and to whom they send the message to.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>comm_about_nadia <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"Nadia Conti| Nadia | Conti "</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(content, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>timeline_nadia_comm <span class="ot">&lt;-</span> comm_about_nadia <span class="sc">%&gt;%</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, id, timestamp, content, monitoring_type, findings, new_index)</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>timeline_nadia_comm <span class="ot">&lt;-</span> timeline_nadia_comm <span class="sc">%&gt;%</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>timeline_nadia <span class="ot">&lt;-</span> <span class="fu">create_tml</span>(<span class="at">df=</span>timeline_nadia_comm, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#613659"</span>, <span class="at">dsc_col =</span> <span class="st">"#613659"</span>)</span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>timeline_nadia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>comm_about_nadia <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"Nadia Conti| Nadia | Conti "</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(content, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>timeline_nadia_comm <span class="ot">&lt;-</span> comm_about_nadia <span class="sc">%&gt;%</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>timeline_nadia_comm <span class="ot">&lt;-</span> timeline_nadia_comm <span class="sc">%&gt;%</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>timeline_nadia <span class="ot">&lt;-</span> <span class="fu">create_tml</span>(<span class="at">df=</span>timeline_nadia_comm, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#613659"</span>, <span class="at">dsc_col =</span> <span class="st">"#613659"</span>)</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>timeline_nadia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="chronologia-wrapper">
 <div class="chronologia-detail-wrapper">
@@ -1026,7 +1004,7 @@ Insight from the timeline
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter’s Team, The Middleman and Ramora</li>
+<li>People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter’s Team, The Middleman, Ramora, Harbor Master and even the superstar Sailor Shift</li>
 <li>Code names that are mentioned: NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844</li>
 <li>There are couple of striking message mentioned in the exchanges e.g.&nbsp;“keep tourism appearance”, “keep operations discreet”, “destroy all related documentation” or “we need to stay under radar”, which sounds sounds suspicious, so we should look deeper into it.</li>
 </ul>
@@ -1036,19 +1014,19 @@ Insight from the timeline
 <h3 class="anchored" data-anchor-id="create-timeline-for-code-names">Create timeline for Code Names</h3>
 <p>First, let’s create timeline for code name that is mentioned in the exchanges. In this code, we’ll look at the code name <strong>#CR-7844</strong> as it was mentioned frequently.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"#CR-7844"</span>))</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> comm_about_cr <span class="sc">%&gt;%</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, id, timestamp, content, monitoring_type, findings, new_index)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> comm_about_cr <span class="sc">%&gt;%</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>timeline_cr <span class="ot">&lt;-</span> <span class="fu">create_tml</span>(<span class="at">df=</span>comm_about_cr, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#2E8BC0"</span>, <span class="at">dsc_col =</span> <span class="st">"#2E8BC0"</span>)</span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>timeline_cr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_any</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">str_detect</span>(<span class="fu">as.character</span>(.), <span class="st">"#CR-7844"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>timeline_table <span class="ot">&lt;-</span> comm_about_cr <span class="sc">%&gt;%</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(content))</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>timeline_cr <span class="ot">&lt;-</span><span class="fu">create_tml</span>(<span class="at">df=</span>timeline_table, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#2E8BC0"</span>, <span class="at">dsc_col =</span> <span class="st">"#2E8BC0"</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>timeline_cr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="chronologia-wrapper">
 <div class="chronologia-detail-wrapper">
@@ -1168,38 +1146,347 @@ Insight from the timeline
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> comm_about_cr <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(content)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>timestamp)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(comm_about_cr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ba0d097b346deca10955" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ba0d097b346deca10955">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["Event","Relationship"],["Monitoring","Operates"],[null,null],["Monitoring","Operates"],["Event_Monitoring_803","Relationship_Operates_474"],["surveillance",null],["Davis Rodriguez maintaining position with Mako at Nemo Reef. Operating under permit #CR-7844 while maintaining tourism appearance. Security team expected to arrive at 0600.",null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,"2040-10-11 10:05:00"],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,"permit #CR-7844 operations"],[122,1113],["Friday, October 12 2040, 09:24",null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>type<\/th>\n      <th>label<\/th>\n      <th>name<\/th>\n      <th>sub_type<\/th>\n      <th>id<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>content<\/th>\n      <th>assessment_type<\/th>\n      <th>results<\/th>\n      <th>movement_type<\/th>\n      <th>destination<\/th>\n      <th>enforcement_type<\/th>\n      <th>outcome<\/th>\n      <th>activity_type<\/th>\n      <th>participants<\/th>\n      <th>reference<\/th>\n      <th>date<\/th>\n      <th>time<\/th>\n      <th>friendship_type<\/th>\n      <th>permission_type<\/th>\n      <th>start_date<\/th>\n      <th>end_date<\/th>\n      <th>report_type<\/th>\n      <th>submission_date<\/th>\n      <th>jurisdiction_type<\/th>\n      <th>authority_level<\/th>\n      <th>coordination_type<\/th>\n      <th>operational_role<\/th>\n      <th>new_index<\/th>\n      <th>timestamp_desc<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[16,30]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"type","targets":1},{"name":"label","targets":2},{"name":"name","targets":3},{"name":"sub_type","targets":4},{"name":"id","targets":5},{"name":"monitoring_type","targets":6},{"name":"findings","targets":7},{"name":"content","targets":8},{"name":"assessment_type","targets":9},{"name":"results","targets":10},{"name":"movement_type","targets":11},{"name":"destination","targets":12},{"name":"enforcement_type","targets":13},{"name":"outcome","targets":14},{"name":"activity_type","targets":15},{"name":"participants","targets":16},{"name":"reference","targets":17},{"name":"date","targets":18},{"name":"time","targets":19},{"name":"friendship_type","targets":20},{"name":"permission_type","targets":21},{"name":"start_date","targets":22},{"name":"end_date","targets":23},{"name":"report_type","targets":24},{"name":"submission_date","targets":25},{"name":"jurisdiction_type","targets":26},{"name":"authority_level","targets":27},{"name":"coordination_type","targets":28},{"name":"operational_role","targets":29},{"name":"new_index","targets":30},{"name":"timestamp_desc","targets":31}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline and table">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Insight from the timeline
+Insight from the timeline and table
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
 <li>#CR-7844 is a special marine research permit created under V.Miesel to conduct marine research equipment transport into the Nemo Reef, approved by Oceanus City Council. This indicates that V. Miesel is aware and is involved in the operation</li>
-<li>The permit is used from 8 Oct to deliver equipment through eastern reef routes and brought security team and extra crew for this operation</li>
+<li>Similar to the last timeline built, there are frequent messages about transferring equipment through eastern reef routes and bringing security team and extra crew for the operation.</li>
+<li>It was officially used on 11 October for operation. On one of the message from Small Fry to Davis on 12 October 2040, he said that all documentation seem to be in order for tomorrow’s operation.</li>
 <li>They were secretive about the permit and mentioned Delta-3 encryption before the closing of Nemo Reef</li>
+</ul>
+</div>
+</div>
+<p>Since we found out that that they will start their operation on 13 October, let’s filter for all records on that day.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>comm_13_oct <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_any</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">str_detect</span>(timestamp, <span class="st">"2040-10-13"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>timeline_table_comm <span class="ot">&lt;-</span> comm_13_oct <span class="sc">%&gt;%</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(content))</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>timeline_13_oct <span class="ot">&lt;-</span><span class="fu">create_tml</span>(<span class="at">df=</span>timeline_table_comm, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#aa1945"</span>, <span class="at">dsc_col =</span> <span class="st">"#aa1945"</span>)</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>timeline_13_oct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="chronologia-wrapper">
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:10</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout here! Just spotted a pod of dolphins near the reef this morning - absolutely incredible! The conservation vessels are still monitoring, but the wildlife seems undisturbed. Are we still meeting for birdwatching tomorrow? Heard there might be some rare shearwaters passing through.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:12</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout, it's The Intern. I'll be there for our birdwatching session tomorrow. Excited about those shearwaters! I've packed my underwater camera too - might catch some dolphin footage if we're lucky. Conservation activity updates?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:15</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout here! Conservation vessels have increased activity - they're deploying underwater microphones around Nemo Reef now. Perfect conditions for our birdwatching tomorrow though! I've spotted three different osprey families near our usual spot. See you at 7!</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:17</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mrs. Money, The Intern reporting. Conservation vessels have deployed underwater microphones around Nemo Reef. I've compiled all financial projections and photographic evidence as requested. Will arrive at our 0500 meeting with complete documentation. Anything else needed urgently?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:19</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Boss, The Accountant here. Conservation vessels deploying underwater microphones around Nemo Reef. Meeting V. Miesel management at 10AM tomorrow. The Middleman confirms our 0500 meeting with enhanced encryption. Southwest clearance urgent after council pressure increased.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:19</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Boss, The Accountant here. Conservation vessels deploying underwater microphones around Nemo Reef. Meeting V. Miesel management at 10AM tomorrow. The Middleman confirms our 0500 meeting with enhanced encryption. Southwest clearance urgent after council pressure increased.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:21</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Davis, Nadia here. Need you to verify final equipment transport tonight at Nemo Reef. The Middleman reports increased surveillance. Ensure all operations follow encrypted protocols. Meet me at V. Miesel HQ tomorrow at 0900 to discuss contingency plans.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:40</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Remora, Mako here. Security team integration point confirmed at south dock maintenance entrance. Use clearance code Delta-3-Coral at 0600. Tourism facade remains priority during final equipment transfer. Weather conditions remain favorable for operation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:42</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Davis, Remora here. Confirming night operations proceeding smoothly. Minimal comms maintained during equipment transfers. Conservation vessels at safe distance. Ready to receive your support team at south dock. Need your ETA for final coordination.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:05</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Reef Guardian, Horizon here. Detecting unusual encrypted radio frequencies near Nemo Reef - appears to be coordinated vessel communications outside standard channels. Can you confirm similar signals from your position in east quadrant?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:07</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Horizon, Reef Guardian responding. Confirming similar encrypted communications in southeast quadrant. This validates our suspicions of unauthorized activity during closure. Will triangulate signals and add to our documentation. Can you record frequency patterns for evidence?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:08</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Seawatch, Horizon here. Have recorded frequency patterns of encrypted communications as requested. Detecting multiple transmission clusters near west reef edge. Can coordinate triangulation with your position to pinpoint source vessels. Maintain radio silence except on secure channel.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:57</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Council, Liam Thorne here. I've redirected EcoVigil to the northern quadrant as requested. ROV deployment delayed until tomorrow afternoon. Western quadrant access remains restricted per protocol. Will provide full status report by 2200 hours.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:59</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Green Guardians, Oceanus City Council here. Your allegations are serious and unfounded. Tomorrow's meeting is postponed pending internal review. All documentation must be submitted through official channels for verification before any public discussion.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:44</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Haacklee Harbor to Knowles. Your vessel is scheduled for departure at 22:00. Special clearance code Alpha-7-Delta has been issued for tonight's operation. Maintain radio silence after leaving the harbor. Confirm receipt.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:45</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Knowles to Haacklee Harbor. Confirming receipt of special clearance code Alpha-7-Delta. We will depart at 22:00 and maintain radio silence as instructed. All systems ready for tonight's operation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:47</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Haacklee Harbor to Oceanus City Council. Update on Nemo Reef situation: Multiple vessels with special clearance codes departing tonight. Knowles confirmed 22:00 departure with radio silence protocol. Awaiting further instructions regarding increased night operations.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:48</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Himark Harbor to Neptune. Your personnel transport is scheduled for 0400 hours tomorrow. Please use clearance code ALPHA-937 for after-hours departure. Maintain radio silence during exit. Berth 14 reserved for your equipment loading.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:51</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Neptune to Davis. Berth 14 is secured for equipment loading at 0400 hours. Your security team's arrival is confirmed. Use clearance code ALPHA-937 for harbor access. Delta-3 encryption mandatory for all communications.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:55</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Rodriguez, Remora here. Need your navigation expertise for tonight's equipment transfer. Maintain radio silence during operation, using only essential hand signals. Conservation vessels observed at perimeter. Meet at south dock at 0200.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:14</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, Reef Guardian here. Thank you for your surveillance report. Are these vessels displaying any identification? Request you continue monitoring and document any cargo transfers. This evidence is crucial for our case against this suspicious closure.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:15</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mako, Sentinel here. Currently tracking four vessels operating near Nemo Reef at 02:30 hours despite closure. No identifying markers, running dark with minimal wake. Exchanging large equipment containers. Do you have aerial visibility to confirm identities?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:17</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, Mako here. No aerial visibility available. Those vessels are NOT part of our authorized operation. Maintain distance and continue observation only. Do not approach or make contact. Report any additional activity immediately.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:20</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Reef Guardian, Sentinel here. Update on suspicious vessels: Four vessels now operating, still unidentified. They're transferring what appears to be drilling equipment. Water samples near their location show trace amounts of diesel fuel. Continuing documentation with night-vision photography.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:22</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Green Guardians, Reef Guardian reporting. Compiling evidence from multiple vessels shows unauthorized activity at Nemo Reef during closure - encrypted communications, equipment transfers, and fuel contamination. Request immediate regulatory intervention and press conference to challenge this clearly suspicious closure.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:24</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Oceanus City Council, Green Guardians leadership here. We strongly protest the meeting postponement. Our evidence is substantial and time-sensitive. We demand an emergency session within 24 hours and will pursue legal action if environmental violations continue unaddressed.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:27</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Paackland Harbor, Oceanus City Council here. Implement immediate night operation protocols for vessels with special clearance codes. Maintain strict radio silence and expedite departures. Report any conservation vessels attempting documentation near Nemo Reef.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:29</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, Paackland Harbor here. Be advised of night operations protocol now in effect. Vessels with special clearance codes will be departing after hours. Maintain distance from these authorized operations per council directive.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:31</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Green Guardians, Sentinel here. Night observation reveals five vessels now at Nemo Reef. Special clearance codes mentioned by Harbor Master. Water samples show increased diesel contamination. Documented activity with thermal imaging. Request guidance on next steps.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:34</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Seawatch, Green Guardians HQ here. We need you to coordinate with Sentinel and Horizon to gather additional evidence at Nemo Reef. Focus on water sample collection and documenting vessel movements. Council meeting postponed, but we're pressing for emergency session.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:36</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, The Lookout here. Using long-range equipment to document west reef activity. Spotted what appears to be a music video shoot with lighting rigs and camera equipment. Can't confirm details at this distance. Can you get closer for verification?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:38</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mako, Sentinel here. Following your instruction to maintain distance. Five vessels now operating at Nemo Reef with Paackland Harbor's special clearance. They've installed temporary lighting structures and large cylindrical equipment. Continuing documentation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:40</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Davis, Mako here. Unauthorized vessels detected at Nemo Reef operating with Paackland clearance. Possible security breach. Proceed with heightened caution during our operation. Maintain radio silence except for emergencies. Will await your assessment.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:41</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mako, Reef Guardian here. We're gathering substantial evidence of unauthorized activity at Nemo Reef during this suspicious closure. Can you patrol the western boundary and document any vessel movements or equipment transfers? Need comprehensive coverage for our case.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:44</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Reef Guardian, Mako here. Negative on your request. We operate strictly as a tourism vessel and cannot assist with surveillance. Suggest contacting proper authorities if you suspect illegal activities. Maintaining our scheduled route.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:45</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Intern here, Lookout. I'm packed for our 7AM birdwatching. Have you noticed any unusual vessel movements during dawn hours? I'll bring coffee and those specialty binoculars Mrs. Money lent me. Excited about those shearwaters!</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:48</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout here, Intern! Just spotted those conservation vessels moving equipment to the eastern side of Nemo Reef. Perfect morning for our birdwatching! I've brought my special spotting scope - those shearwaters should be visible from our usual spot. See you at 7!</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:49</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mrs. Money, The Intern here. I'll bring special binoculars to our 0500 meeting. The Lookout reports conservation vessels moving equipment to eastern Nemo Reef. Should I conduct reconnaissance before our meeting? All documentation ready as requested.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:57</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Horizon, The Lookout here. Regarding that music video activity - can you use your signal equipment to verify? Strange to see lighting rigs and cameras at this hour. Could be cover for something else. Need better visuals than my equipment can provide.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 13:18</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Oceanus City Council, Paackland Harbor reporting. Night operations proceeding as directed with minimal radio communication. Two special clearance vessels departed at 0200 hours. No conservation vessels detected in proximity to operations. Awaiting further instructions.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 13:20</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Liam, Oceanus City Council here. Require immediate status report on EcoVigil positioning. Ensure Western quadrant remains completely restricted through next 48 hours. Prioritize monitoring any unauthorized conservation vessels near restricted zones. Report directly to me.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 13:23</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Council, Liam Thorne reporting. Western quadrant restriction confirmed for 48 hours. EcoVigil redirected north as instructed. Unauthorized vessel monitoring in place. Will submit detailed report by 2200 hours as promised.</p>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>comm_13_oct <span class="ot">&lt;-</span> comm_13_oct <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(content)) <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>timestamp)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(comm_13_oct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-560a2c4adb7b237140e1" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-560a2c4adb7b237140e1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"],["Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event"],["Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","VesselMovement","VesselMovement","VesselMovement","VesselMovement","Enforcement","TourActivity","TourActivity"],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],["Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","VesselMovement","VesselMovement","VesselMovement","VesselMovement","Enforcement","TourActivity","TourActivity"],["Event_Monitoring_878","Event_Monitoring_900","Event_Monitoring_909","Event_Monitoring_911","Event_Monitoring_917","Event_Monitoring_922","Event_Monitoring_929","Event_Monitoring_932","Event_VesselMovement_806","Event_VesselMovement_883","Event_VesselMovement_887","Event_VesselMovement_892","Event_Enforcement_839","Event_TourActivity_814","Event_TourActivity_816"],["surveillance","surveillance","water quality testing","surveillance","patrol activity","surveillance","surveillance","surveillance",null,null,null,null,null,null,null],["Detected multiple transmission clusters near west reef edge. Recording frequency patterns of encrypted communications. Able to triangulate source vessels.","Unauthorized activity at Nemo Reef during closure - encrypted communications, equipment transfers, and fuel contamination","Need to gather additional evidence at Nemo Reef, including water sample collection and documenting vessel movements","Spotted what appears to be a music video shoot with lighting rigs and camera equipment on west reef. Unable to confirm details due to distance.","Unauthorized activity at Nemo Reef during closure, requiring patrol of western boundary to document vessel movements and equipment transfers","Conservation vessels moving equipment to the eastern side of Nemo Reef","EcoVigil positioning required. Western quadrant to remain completely restricted for 48 hours. Unauthorized conservation vessels near restricted zones to be monitored.","Western quadrant restriction confirmed for 48 hours. EcoVigil redirected north as instructed. Unauthorized vessel monitoring in place.",null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,"departure","departure","departure","rendezvous",null,null,null],[null,null,null,null,null,null,null,null,null,"Knowles",null,"south dock",null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,"enforcement operations",null,null],[null,null,null,null,null,null,null,null,null,null,null,null,"mandatory closure of Nemo Reef with 500-meter buffer zone",null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,"reef tour",null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[126,127,128,129,130,131,132,133,798,800,801,802,824,839,840],["Saturday, October 13 2040, 09:08","Saturday, October 13 2040, 12:22","Saturday, October 13 2040, 12:34","Saturday, October 13 2040, 12:36","Saturday, October 13 2040, 12:41","Saturday, October 13 2040, 07:00","Saturday, October 13 2040, 13:20","Saturday, October 13 2040, 13:23","Saturday, October 13 2040, 08:00","Saturday, October 13 2040, 22:00","Saturday, October 13 2040, 22:00","Saturday, October 13 2040, 02:00","Saturday, October 13 2040, 06:00","Saturday, October 13 2040, 08:00","Saturday, October 13 2040, 08:00"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>type<\/th>\n      <th>label<\/th>\n      <th>name<\/th>\n      <th>sub_type<\/th>\n      <th>id<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>content<\/th>\n      <th>assessment_type<\/th>\n      <th>results<\/th>\n      <th>movement_type<\/th>\n      <th>destination<\/th>\n      <th>enforcement_type<\/th>\n      <th>outcome<\/th>\n      <th>activity_type<\/th>\n      <th>participants<\/th>\n      <th>reference<\/th>\n      <th>date<\/th>\n      <th>time<\/th>\n      <th>friendship_type<\/th>\n      <th>permission_type<\/th>\n      <th>start_date<\/th>\n      <th>end_date<\/th>\n      <th>report_type<\/th>\n      <th>submission_date<\/th>\n      <th>jurisdiction_type<\/th>\n      <th>authority_level<\/th>\n      <th>coordination_type<\/th>\n      <th>operational_role<\/th>\n      <th>new_index<\/th>\n      <th>timestamp_desc<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[16,30]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"type","targets":1},{"name":"label","targets":2},{"name":"name","targets":3},{"name":"sub_type","targets":4},{"name":"id","targets":5},{"name":"monitoring_type","targets":6},{"name":"findings","targets":7},{"name":"content","targets":8},{"name":"assessment_type","targets":9},{"name":"results","targets":10},{"name":"movement_type","targets":11},{"name":"destination","targets":12},{"name":"enforcement_type","targets":13},{"name":"outcome","targets":14},{"name":"activity_type","targets":15},{"name":"participants","targets":16},{"name":"reference","targets":17},{"name":"date","targets":18},{"name":"time","targets":19},{"name":"friendship_type","targets":20},{"name":"permission_type","targets":21},{"name":"start_date","targets":22},{"name":"end_date","targets":23},{"name":"report_type","targets":24},{"name":"submission_date","targets":25},{"name":"jurisdiction_type","targets":26},{"name":"authority_level","targets":27},{"name":"coordination_type","targets":28},{"name":"operational_role","targets":29},{"name":"new_index","targets":30},{"name":"timestamp_desc","targets":31}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline and table">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insight from the timeline and table
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>From the timeline, we can see that the conservation vessel were still monitoring the activities of people with permits. However, what’s more surprising is the Oceanus City Council is actually involved in the operation as they told the Paackland Harbor to</li>
+<li>it also seems that there is another operation planned as Nadia asks David to verify the final equipment transport at Nemo Reef.</li>
 </ul>
 </div>
 </div>
 <p>Next, we’ll look into the <strong>Delta-3 encryption</strong> since the last exchange about the permit mentioned Delta-3 encryption.So we’ll filter exchanges that mentions Delta-3 encryption, Delta or encryption in case they’re mentioned separately.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"Delta-3 encryption| encryption | Delta "</span>))</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, id, timestamp, content, monitoring_type, findings, new_index)</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>timeline_encryption <span class="ot">&lt;-</span> <span class="fu">create_tml</span>(<span class="at">df=</span>comm_encryption, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#1c9b8e"</span>, <span class="at">dsc_col =</span> <span class="st">"#1c9b8e"</span>)</span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>timeline_encryption</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"Delta-3 encryption| encryption | Delta "</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, id, timestamp, content, monitoring_type, findings, new_index)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>timeline_encryption <span class="ot">&lt;-</span> <span class="fu">create_tml</span>(<span class="at">df=</span>comm_encryption, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#1c9b8e"</span>, <span class="at">dsc_col =</span> <span class="st">"#1c9b8e"</span>)</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>timeline_encryption</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="chronologia-wrapper">
 <div class="chronologia-detail-wrapper">
@@ -1313,63 +1600,62 @@ Insight from the timeline
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>comm_13_oct <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(timestamp, <span class="st">"2040-10-14"</span>))</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>comm_13_oct <span class="ot">&lt;-</span> comm_13_oct <span class="sc">%&gt;%</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, id, timestamp, content, monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>comm_13_oct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-560a2c4adb7b237140e1" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-560a2c4adb7b237140e1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58"],["Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Assessment","Assessment","Assessment","VesselMovement","VesselMovement","Enforcement","Enforcement","Enforcement","Enforcement","TourActivity","Collaborate","Collaborate"],["Event_Monitoring_934","Event_Monitoring_941","Event_Monitoring_942","Event_Monitoring_946","Event_Monitoring_957","Event_Monitoring_967","Event_Monitoring_971","Event_Monitoring_978","Event_Monitoring_995","Event_Communication_935","Event_Communication_936","Event_Communication_937","Event_Communication_939","Event_Communication_940","Event_Communication_943","Event_Communication_945","Event_Communication_949","Event_Communication_950","Event_Communication_951","Event_Communication_953","Event_Communication_955","Event_Communication_958","Event_Communication_960","Event_Communication_961","Event_Communication_963","Event_Communication_964","Event_Communication_965","Event_Communication_968","Event_Communication_970","Event_Communication_974","Event_Communication_976","Event_Communication_977","Event_Communication_979","Event_Communication_981","Event_Communication_982","Event_Communication_984","Event_Communication_986","Event_Communication_987","Event_Communication_989","Event_Communication_991","Event_Communication_993","Event_Communication_994","Event_Communication_997","Event_Communication_999","Event_Communication_1001","Event_Communication_1003","Event_Assessment_966","Event_Assessment_973","Event_Assessment_996","Event_VesselMovement_980","Event_VesselMovement_1002","Event_Enforcement_947","Event_Enforcement_952","Event_Enforcement_992","Event_Enforcement_998","Event_TourActivity_938","Event_Collaborate_868","Event_Collaborate_972"],["2040-10-14 08:06:00","2040-10-14 08:34:00","2040-10-14 08:34:00","2040-10-14 08:40:00","2040-10-14 09:04:00","2040-10-14 10:58:00","2040-10-14 11:32:00","2040-10-14 11:37:00","2040-10-14 12:51:00","2040-10-14 08:06:00","2040-10-14 08:07:00","2040-10-14 08:08:00","2040-10-14 08:30:00","2040-10-14 08:31:00","2040-10-14 08:34:00","2040-10-14 08:37:00","2040-10-14 08:40:00","2040-10-14 08:58:00","2040-10-14 08:59:00","2040-10-14 09:00:00","2040-10-14 09:02:00","2040-10-14 09:04:00","2040-10-14 09:28:00","2040-10-14 09:30:00","2040-10-14 09:55:00","2040-10-14 09:56:00","2040-10-14 10:54:00","2040-10-14 10:58:00","2040-10-14 11:00:00","2040-10-14 11:32:00","2040-10-14 11:33:00","2040-10-14 11:36:00","2040-10-14 11:37:00","2040-10-14 12:12:00","2040-10-14 12:13:00","2040-10-14 12:14:00","2040-10-14 12:16:00","2040-10-14 12:17:00","2040-10-14 12:18:00","2040-10-14 12:31:00","2040-10-14 12:47:00","2040-10-14 12:50:00","2040-10-14 12:51:00","2040-10-14 13:31:00","2040-10-14 13:34:00","2040-10-14 13:35:00","2040-10-14 10:58:00","2040-10-14 11:32:00","2040-10-14 12:51:00","2040-10-14 04:00:00","2040-10-14 22:00:00","2040-10-14 08:40:00","2040-10-14 09:00:00","2040-10-14 12:47:00","2040-10-14 13:31:00","2040-10-14 06:00:00","2040-10-14 09:00:00","2040-10-14 11:32:00"],[null,null,null,null,null,null,null,null,null,"The Lookout checking in, Intern! Just spotted the conservation vessels deploying drones with cameras over Nemo Reef. They seem determined! Perfect weather for our birdwatching tomorrow though. I've packed extra snacks for our early start!","The Intern here, Lookout. Noticed the conservation drones during my morning run. Will bring my camera with telephoto lens to our birdwatching. Do you think those drones will disturb our shearwater watching? I'll arrive at 6:45 to set up.","The Lookout here, Intern! The conservation drones shouldn't disturb our shearwater watching - they're focusing on the reef area. I've spotted a rare peregrine falcon this morning too! 6:45 works perfectly, I'll bring my field guide.","Sailor Shifts, this is Remora. Vessel prepared for your crew's arrival at 0600. South dock entrance secured with Delta-3-Coral clearance. All tourism facades in place. Need confirmation of any special equipment requirements for the shoot.","Remora, Glitter's Team here. Confirming equipment needs for tomorrow: bring standard video gear plus underwater lighting rigs. We'll have 6 additional crew arriving at 0530. Delta-3-Coral clearance confirmed. Nadia approved everything.","Nadia, Remora vessel reporting. All preparations for Sailor Shifts complete at south dock. Delta-3 protocols active, tourism facade maintained. Conservation vessels being monitored. Need final approval for underwater lighting placement at Nemo Reef.","Reef Guardian, Serenity here. We've decided to visit Dolphin Bay tomorrow morning. Noticed unusual radio traffic about Nemo Reef - some vessel called Neptune mistook us for part of an operation there. Is there something we should know about?","EcoVigil, Reef Guardian here. Port Authority blocking our approach to Nemo Reef. Can you deploy aerial drones for documentation? We need visual evidence of activities during this closure. Will coordinate with other vessels to create distraction if needed.","The Accountant, it's The Middleman. Council's breathing down my neck. Meeting with Boss at 2100 tonight. Need your financial records for southwest operations by morning. Bring everything to our 0500 meeting. Delete all digital traces.","The Middleman, this is The Accountant. Financial records for southwest operations prepared with triple encryption. I'm reviewing V. Miesel's vulnerabilities now. Will bring physical copies only to 0500. Confirm meeting location - standard spot?","Council, Liam Thorne with urgent update. Western quadrant cleanup proceeding on schedule. EcoVigil successfully contained to northern areas. Request additional security personnel for overnight monitoring of restricted zone perimeter.","Remora, Small Fry here. Will meet at south dock at 0200 for equipment transfer. Navigation charts prepared and team briefed on silent protocols. Conservation vessel positions mapped for optimal routing. Ready for your instructions.","V. Miesel, this is Remora. Operation proceeding as planned. Equipment transfer completed at south dock. Maintaining tourism facade successfully. Need authorization for additional fuel allocation due to extended perimeter monitoring. Boss's protocols fully implemented.","Horizon, EcoVigil here. Deployed aerial drones over Nemo Reef as requested. Surprising findings - appears to be a video production with cameras, lighting rigs, and performers. No evidence of mining equipment. Sending footage to your secure channel now.","Horizon to Green Guardians. Video evidence from EcoVigil confirms this is a music video production, not mining operation. Am broadcasting live updates to public channels, showing footage of performers, cameras and lighting equipment. Revising earlier assessment accordingly.","Davis, Mako here. Operation complete at Nemo Reef. All equipment secured and tourism facade maintained throughout. The Boss expressed satisfaction with arrangements. Crew celebrating discreetly at south dock. Return to standard protocols at 2200.","Davis to Mako. Well done on Nemo Reef operation completion. Glad to hear the Boss is satisfied. I'll be at south dock by 2130 to debrief and review equipment inventory before final transport. Maintain standard security protocols.","Seawatch, Sentinel here. Confirming your observation - definitely appears to be a music video production. Multiple lighting rigs, camera equipment, and personnel visible. No signs of drilling or environmental damage as initially suspected. Keeping distance as instructed.","Reef Guardian, Green Guardians HQ here. Thank you for your detailed report. Though Horizon confirms this was a music video shoot, we still need to investigate the environmental impact and permit violations. Continue monitoring water contamination levels and document all activities.","Port Authority, Reef Guardian here. We're conducting legitimate conservation monitoring at Nemo Reef. On what grounds are you preventing our approach? We have jurisdiction to monitor protected marine areas. Request immediate clarification and access.","EcoVigil, Reef Guardian here. Any success with drone deployment? Port Authority continues blocking our approach. We're attempting to coordinate with Sentinel for comprehensive documentation. Need aerial footage of equipment and activities at Nemo Reef urgently.","Sentinel, EcoVigil here. Drone footage confirms video production at Nemo Reef - performers, cameras, lighting equipment. No mining activity observed. Can you verify from your position? Appears to be music video shoot disguised as environmental closure.","EcoVigil, Sentinel here. Can confirm your drone footage findings - definitely a music video production. Multiple performers, equipment, and crew visible. No signs of environmental damage or mining activity. Security remains tight but situation appears benign.","Horizon broadcasting to Oceanus City Council. Live streaming evidence from Nemo Reef showing full video production underway - performers, lighting rigs, and filming equipment visible. No environmental assessment was conducted before this commercial activity. Footage available on public channels now.","Neptune to Davis. Confirm arrival with security team at Berth 14. Weather conditions optimal. Conservation vessels still present but maintaining distance. Maintain Delta-3 encryption for all communications. Ready to execute at 0400.","Rodriguez, Davis here. Need you at south dock by 2200 to supervise equipment breakdown and inventory after Nemo Reef operation. Ensure all items are properly logged and secured for transport back to headquarters.","Davis, Small Fry here. I'll be at south dock at 2200 as requested for equipment breakdown. Have already prepared inventory sheets and secured extra transport containers. Should I coordinate with Remora about our 0200 equipment transfer after your operation?","Remora, Davis here. Will arrive at south dock with team at 2100 hours for equipment coordination. Rodriguez joining us at 2200 for inventory. Confirm all conservation vessels still maintaining distance. Standard security protocols remain in effect.","Mako, this is Knowles. We're positioned southwest of your location, maintaining distance as instructed. Visibility good, moving to designated coordinates for tonight's operation. Will hold position and await further instructions.","Himark Harbor, Mako here. Requesting priority berth for tonight at 2300 hours. Completed successful charter at Nemo Reef, need to offload special equipment and accommodate celebrating crew. The Boss sends appreciation for your continued discretion.","Horizon, The Lookout here. Deployed second wave of aerial drones over Nemo Reef but facing stronger interference than before. Can you boost our signal strength or provide counter-jamming technology? Need to capture clear footage of ongoing activities.","Himark Harbor to Oceanus City Council. Security protocols for Nemo Reef operation complete. Coordinated 37 vessels successfully - all authorized personnel accounted for. Neptune equipment extraction on schedule. Seawatch attempted documentation but was kept at perimeter. Awaiting further instructions.","Green Guardians, Oceanus City Council here. Your emergency session request is denied. Our environmental review team requires 72 hours to properly assess your claims. Legal threats will not expedite this process. Submit documentation through official channels.","EcoVigil, Green Guardians HQ here. Your video evidence has been invaluable. Please continue monitoring Nemo Reef for environmental impacts. Document any cleanup efforts or lack thereof as vessels depart. We're building a case for regulatory action despite Council delays.","Defender to Mako. Be advised that conservation vessel Reef Guardian may attempt unauthorized entry to Nemo Reef. Maintain strict perimeter enforcement. Any vessels without proper clearance must be turned away immediately. Report any confrontations.","Knowles, Mako here. Proceed to southern dock at 2200 for equipment transfer. The Boss is pleased with operation results. Maintain radio silence until arrival. Davis will debrief at 2130. Celebration underway but security protocols remain in effect.","Davis, this is Knowles. Approaching southern dock for 22:00 equipment transfer as instructed by Mako. All systems operational and crew ready. Awaiting your debrief at 21:30. Maintaining security protocols.",null,null,null,null,null,null,null,null,null,null,null,null],["drone surveillance","surveillance","surveillance","drone surveillance","miscellaneous monitoring","miscellaneous monitoring","drone surveillance","surveillance","miscellaneous monitoring",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],["Conservation vessels deploying drones with cameras over Nemo Reef","Conservation vessels being monitored. Delta-3 protocols active, tourism facade maintained.","Conservation vessels being monitored. Delta-3 protocols active, tourism facade maintained.","Port Authority blocking approach to Nemo Reef, requesting aerial drone documentation of activities during closure","Operation proceeding as planned. Equipment transfer completed at south dock. Maintaining tourism facade successfully. Need authorization for additional fuel allocation due to extended perimeter monitoring.","Music video shoot occurring with potential environmental impact and permit violations. Green Guardians HQ confirming need to investigate and continue monitoring water contamination levels.","Port Authority blocking approach to Nemo Reef. Attempting to coordinate with Sentinel for documentation. Need aerial footage of equipment and activities at Nemo Reef.","Video production underway at Nemo Reef with performers, lighting rigs, and filming equipment visible. No environmental assessment was conducted before this commercial activity.","Video evidence collected of environmental impacts at Nemo Reef, with ongoing monitoring for cleanup efforts as vessels depart",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[134,135,136,137,138,139,140,141,142,690,691,692,693,694,695,696,697,698,699,700,701,702,703,704,705,706,707,708,709,710,711,712,713,714,715,716,717,718,719,720,721,722,723,724,725,726,760,761,762,806,808,826,827,828,829,841,868,869]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>label<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>content<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":7},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"label","targets":1},{"name":"id","targets":2},{"name":"timestamp","targets":3},{"name":"content","targets":4},{"name":"monitoring_type","targets":5},{"name":"findings","targets":6},{"name":"new_index","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>nadia_relationship <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sub_type <span class="sc">==</span> <span class="st">"Person"</span> <span class="sc">&amp;</span> name <span class="sc">==</span> <span class="st">"Nadia Conti"</span>)</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>nadia_relationship <span class="sc">%&gt;%</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(new_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>nadia_node <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sub_type <span class="sc">==</span> <span class="st">"Person"</span> <span class="sc">&amp;</span> name <span class="sc">==</span> <span class="st">"Nadia Conti"</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>nadia_node <span class="sc">%&gt;%</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(new_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>comm_harbor_access <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"ALPHA-937"</span>))</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>comm_harbor_access <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(label, id, timestamp, content,monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>graph_relation <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(from <span class="sc">==</span> <span class="st">"3"</span> <span class="sc">|</span> to <span class="sc">==</span> <span class="st">"3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>graph_relation <span class="ot">&lt;-</span> graph_relation <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(from, to) <span class="sc">%&gt;%</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>graph_relation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]    3  327  330  442  443  446  450  452  480  482  492  538  553  577  612
+[16]  638  639  654  695  859 1060  924  328  331  447  451  892  453  481 1067
+[31]  897  606  640  868  896  900  893  890</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>comm_harbor_access <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"ALPHA-937"</span>))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>comm_harbor_access <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(label, id, timestamp, content,monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="datatables html-widget html-fill-item" id="htmlwidget-b8d30bcaee968f11c019" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-b8d30bcaee968f11c019">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["Communication","Communication"],["Event_Communication_890","Event_Communication_891"],["2040-10-13 11:48:00","2040-10-13 11:51:00"],["Himark Harbor to Neptune. Your personnel transport is scheduled for 0400 hours tomorrow. Please use clearance code ALPHA-937 for after-hours departure. Maintain radio silence during exit. Berth 14 reserved for your equipment loading.","Neptune to Davis. Berth 14 is secured for equipment loading at 0400 hours. Your security team's arrival is confirmed. Use clearance code ALPHA-937 for harbor access. Delta-3 encryption mandatory for all communications."],[null,null],[null,null],[665,666]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>label<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>content<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":7},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"label","targets":1},{"name":"id","targets":2},{"name":"timestamp","targets":3},{"name":"content","targets":4},{"name":"monitoring_type","targets":5},{"name":"findings","targets":6},{"name":"new_index","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>comm_berth_17 <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(timestamp, <span class="st">"2040-10-15"</span>))</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(label, id, timestamp, content,monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>comm_berth_17 <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(timestamp, <span class="st">"2040-10-15"</span>))</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(label, id, timestamp, content,monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="datatables html-widget html-fill-item" id="htmlwidget-05547d5907d47cd4c5c6" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-05547d5907d47cd4c5c6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"],["Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication"],["Event_Communication_458","Event_Communication_464","Event_Communication_519","Event_Communication_724","Event_Communication_726","Event_Communication_796","Event_Communication_821","Event_Communication_822","Event_Communication_823","Event_Communication_824","Event_Communication_851","Event_Communication_852","Event_Communication_853","Event_Communication_891","Event_Communication_981"],["2040-10-07T01:31:00Z","2040-10-07T01:38:00Z","2040-10-07T03:35:00Z","2040-10-11T00:15:00Z","2040-10-11T00:16:00Z","2040-10-12T00:47:00Z","2040-10-12T01:54:00Z","2040-10-12T01:55:00Z","2040-10-12T01:56:00Z","2040-10-12T01:58:00Z","2040-10-12T04:52:00Z","2040-10-12T04:55:00Z","2040-10-12T04:56:00Z","2040-10-13T03:51:00Z","2040-10-14T04:12:00Z"],["Neptune, this is Mrs. Money. Confirmed for 0500 tomorrow. Will coordinate payment protocols with Mako and Remora captains. Your eastern reef route is approved - it avoids the new permit zones. Bring encryption devices for financial transfers.","Mako, Mrs. Money here. My role is financial controller for this operation - I'll be handling payment distribution, equipment funding, and resource allocation. Will bring encryption protocols and transfer devices. Eastern reef route documentation prepared for your review.","The Middleman, Mrs. Money here. Need your connections for additional encryption tech before 0500 tomorrow at Nemo Reef. V. Miesel shipping lanes overlapping with operation area by 40%. Can you deliver personally?","Elise, Liam here. Conservation vessels found nothing at Nemo Reef. Council meeting tomorrow with Sentinel - I'll deflect concerns. V. Miesel appears to be expanding operations in that area. Will bring encryption tech to our 0500 meeting.","Boss, The Accountant here. Conservation vessels found nothing concerning at Nemo Reef according to The Middleman. He's attending council meeting with Sentinel tomorrow and will deflect. Bringing encryption tech to our 0500 meeting. V. Miesel definitely expanding in target area.","The Accountant, it's The Middleman. Meeting at 0500 still on. Council pressure increasing after EcoVigil approval. Redirected them north, but Boss needs southwest cleared immediately. Bring extra encryption - we'll need it.","V. Miesel HQ to Neptune. Secondary communication channel authorized. Use encryption protocol Delta-3 for sensitive transmissions. Continue heightened security measures. Keep us informed of any conservation vessel activity near your position.","Neptune to Remora. All logistics confirmed for tomorrow's operation. Ensure your transferred crew is briefed on enhanced security protocols, especially Delta-3 encryption. Report any unusual conservation vessel activity immediately. Maintain operational discretion.","Neptune, Remora here. All systems 100% operational and V. Miesel personnel fully integrated. Enhanced security protocols implemented with Delta-3 encryption active. No conservation vessel interference reported. Ready for 0600 harbor closure. Awaiting final go-ahead.","Neptune to V. Miesel HQ. Final logistics confirmed for operation at 0600. All crews operating under Delta-3 encryption. Conservation vessels still present but maintaining distance. Security protocols at maximum. Requesting confirmation of harbor closure timeline.","V. Miesel HQ to Neptune. Harbor closure timeline confirmed for 0600 tomorrow, lasting 3 days. Maintain Delta-3 encryption. Nadia securing final documentation for permit #CR-7844. Davis bringing additional crew and security team. Proceed as planned.","Neptune to Remora. Final confirmation: operation proceeds at 0600. Maintain strict Delta-3 encryption and security protocols. Monitor conservation vessel movements closely. Davis bringing additional support team. All systems green for harbor closure. Report any deviations immediately.","Davis, Remora here. What's your ETA with the additional support team? Need to coordinate integration with security at harbor entrance. Confirm you have all Delta-3 encryption keys and harbor closure protocols ready for 0600.","Neptune to Davis. Berth 14 is secured for equipment loading at 0400 hours. Your security team's arrival is confirmed. Use clearance code ALPHA-937 for harbor access. Delta-3 encryption mandatory for all communications.","Neptune to Davis. Confirm arrival with security team at Berth 14. Weather conditions optimal. Conservation vessels still present but maintaining distance. Maintain Delta-3 encryption for all communications. Ready to execute at 0400."],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[410,413,441,561,562,607,622,623,624,625,643,644,645,666,714]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>label<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>content<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":7},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"label","targets":1},{"name":"id","targets":2},{"name":"timestamp","targets":3},{"name":"content","targets":4},{"name":"monitoring_type","targets":5},{"name":"findings","targets":6},{"name":"new_index","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>comm_nr_1045 <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"NR-1045"</span>))</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>comm_nr_1045 <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(label, id, timestamp, content,monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>comm_nr_1045 <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"NR-1045"</span>))</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>comm_nr_1045 <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(label, id, timestamp, content,monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="datatables html-widget html-fill-item" id="htmlwidget-3c9e7f5cb0a918940f5e" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-3c9e7f5cb0a918940f5e">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"],["Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication"],["Event_Communication_350","Event_Communication_351","Event_Communication_353","Event_Communication_354","Event_Communication_355","Event_Communication_356","Event_Communication_378","Event_Communication_386","Event_Communication_387","Event_Communication_396","Event_Communication_399","Event_Communication_438","Event_Communication_439","Event_Communication_451","Event_Communication_467","Event_Communication_560","Event_Communication_574","Event_Communication_575"],["2040-10-05 10:06:00","2040-10-05 10:09:00","2040-10-05 10:12:00","2040-10-05 10:18:00","2040-10-05 10:19:00","2040-10-05 10:22:00","2040-10-06 09:25:00","2040-10-06 09:53:00","2040-10-06 09:56:00","2040-10-06 10:45:00","2040-10-06 10:48:00","2040-10-06 13:15:00","2040-10-06 13:18:00","2040-10-07 09:23:00","2040-10-07 09:40:00","2040-10-08 10:40:00","2040-10-08 11:12:00","2040-10-08 11:14:00"],["Oceanus City Council, Paackland Harbor here. Just received call from City Permit Office regarding 'Priority Event Application NR-1045' needing immediate processing. They mentioned senior official approval. Need clarification on this expedited permit for Nemo Reef area.","Paackland Harbor, this is Oceanus City Council. Regarding Application NR-1045: this is officially approved with senior authorization. Process immediately without standard review. This is part of our expedited Nemo Reef access initiative. Prepare for vessel traffic tomorrow.","Reef Guardian, Paackland Harbor here. Be advised: special access corridor to Nemo Reef approved via application NR-1045. Expect increased vessel traffic tomorrow. Please prepare for monitoring operations under these unusual circumstances.","Green Guardians, Reef Guardian reporting. Paackland Harbor just notified me of a special access corridor to Nemo Reef approved via application NR-1045. Unexpected development given prior restrictions. Request immediate guidance on monitoring protocols for tomorrow's increased traffic.","Paackland Harbor, Green Guardians here. We're concerned about application NR-1045 creating a special access corridor to Nemo Reef. Please provide details on which vessels have been approved for this corridor and their scheduled arrival times.","Green Guardians, Paackland Harbor here. Regarding NR-1045: We've been directed to process without standard review. Currently awaiting final vessel manifest from Oceanus City Council. Will forward details once received. Expect operations to commence tomorrow morning.","Mako, Paackland Harbor here. We've been attempting to reach you. Please confirm your position and status immediately. Also need to discuss clearance protocols for the approved NR-1045 permit for Nemo Reef access tomorrow.","Paackland Harbor, Reef Guardian here. Regarding application NR-1045, I'm observing multiple vessels approaching Nemo Reef with official permits showing last-minute approval. These bypass standard protocols and bear the commissioner's signature. Can you confirm this unusual approval process?","Mako, Paackland Harbor responding to your clearance request. We confirm permit NR-1045 is valid despite unusual timeline. Authorization came directly from senior officials at Oceanus City Council. Please maintain regular communication during your operation.","Paackland Harbor, this is Mako. Confirming our position at Himark Harbor, preparing for departure. We acknowledge receipt of permit NR-1045 for Nemo Reef access. Will maintain communication during operations as requested. Departing within 3 hours.","Oceanus City Council, Paackland Harbor here. Mako has confirmed departure from Himark Harbor within 3 hours. They've acknowledged permit NR-1045. Request immediate transmission of complete vessel manifest for tomorrow's Nemo Reef operations.","Paackland Harbor, Green Guardians here. We require immediate clarification on NR-1045's expedited approval process. What specific directive bypassed standard review protocols, and who issued it? This information is crucial for our records.","Green Guardians, Paackland Harbor responding. NR-1045 was expedited via Emergency Protocol 7-B, authorized by Commissioner Blake of Oceanus City Council. Documentation states 'time-sensitive research opportunity.' We were instructed not to delay processing.","Himark Harbor, Mako here. Confirming immediate departure. We're proceeding with expedited permits NR-1045. Special docking requirements: need secure berth upon return for equipment transfers with Neptune. Expect 3-day operation timeline.","Sentinel, Mako here. We're experiencing legitimate transponder issues near Nemo Reef while conducting authorized marine sampling. Will update position once technical problems resolved. Currently operating under permit NR-1045 for conservation research.","Remora, Paackland Harbor here. Under permit NR-1045, we're approving your request for extended operational hours at Nemo Reef tomorrow. Please submit your specific schedule requirements and maintain regular position updates during your activities.","Mako, Sentinel here. Your transponder issues seem convenient given Neptune's unusual activities. We've documented deep-substrate extraction tools and unmarked container exchanges at Nemo Reef. What's your actual position and purpose under permit NR-1045?","Sentinel, Mako here. Your allegations are unfounded. We're operating under permit #CR-7844, not NR-1045. Our transponder issues were genuine technical problems, now resolved. We're conducting authorized marine research equipment transport, nothing more."],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[341,342,343,344,345,346,364,369,370,376,377,400,401,407,414,467,474,475]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>label<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>content<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":7},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"label","targets":1},{"name":"id","targets":2},{"name":"timestamp","targets":3},{"name":"content","targets":4},{"name":"monitoring_type","targets":5},{"name":"findings","targets":6},{"name":"new_index","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>comm_oct_14 <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"southwest"</span>))</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>comm_oct_14 <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(label, id, timestamp, content,monitoring_type, findings, new_index) <span class="sc">%&gt;%</span> <span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-be908584a95cbb657235" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-be908584a95cbb657235">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication","Communication"],["Event_Communication_749","Event_Communication_751","Event_Communication_753","Event_Communication_795","Event_Communication_796","Event_Communication_847","Event_Communication_950","Event_Communication_951","Event_Communication_987"],["2040-10-11 09:15:00","2040-10-11 09:18:00","2040-10-11 09:20:00","2040-10-12 08:44:00","2040-10-12 08:47:00","2040-10-12 11:19:00","2040-10-14 08:58:00","2040-10-14 08:59:00","2040-10-14 12:17:00"],["EcoVigil, Liam Thorne here. Your ROV deployment at Nemo Reef is delayed due to technical protocol issues. Expect clearance by tomorrow afternoon. Council requests you focus on northern quadrant instead of southwest. Will update when resolved.","Liam, EcoVigil here. Understood about the northern quadrant directive, though our primary evidence suggests southwest activity. We've recalibrated equipment for northern deployment. Can you explain the technical protocol issues delaying our ROV clearance?","Nadia, Liam here. EcoVigil is questioning the ROV delay. I've redirected them to the northern quadrant, but they're suspicious about the southwest. We need to clean up operations there immediately. What's our contingency plan?","Liam, Nadia here. Redirect all remaining operations from southwest immediately. Move equipment to our secondary location. I'll handle EcoVigil through proper channels. Meet me at the usual place at 2100 hours with updated documentation.","The Accountant, it's The Middleman. Meeting at 0500 still on. Council pressure increasing after EcoVigil approval. Redirected them north, but Boss needs southwest cleared immediately. Bring extra encryption - we'll need it.","This is Nadia. Documentation for permit #CR-7844 is complete. Meeting The Middleman at 2100 to handle final details. Recommend accelerating timeline due to EcoVigil's ROV approval. Shifting operations from southwest immediately. Will update after meeting.","The Accountant, it's The Middleman. Council's breathing down my neck. Meeting with Boss at 2100 tonight. Need your financial records for southwest operations by morning. Bring everything to our 0500 meeting. Delete all digital traces.","The Middleman, this is The Accountant. Financial records for southwest operations prepared with triple encryption. I'm reviewing V. Miesel's vulnerabilities now. Will bring physical copies only to 0500. Confirm meeting location - standard spot?","Mako, this is Knowles. We're positioned southwest of your location, maintaining distance as instructed. Visibility good, moving to designated coordinates for tonight's operation. Will hold position and await further instructions."],[null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null],[575,576,577,606,607,640,698,699,718]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>label<\/th>\n      <th>id<\/th>\n      <th>timestamp<\/th>\n      <th>content<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>new_index<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":7},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"label","targets":1},{"name":"id","targets":2},{"name":"timestamp","targets":3},{"name":"content","targets":4},{"name":"monitoring_type","targets":5},{"name":"findings","targets":6},{"name":"new_index","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
