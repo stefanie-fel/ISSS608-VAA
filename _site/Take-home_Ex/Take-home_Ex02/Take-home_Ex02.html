@@ -304,8 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">1. Background</h2>
-<p>Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. Currently, people are shifting to another investment, i.e.&nbsp;ocean tourism industry, which creates a growing tension. With the growing tourism, it attracted international pop star Sailor Shift who wanted to shoot his/her new music video in the island.</p>
-<p><br>
+<p>Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. Currently, people are shifting to another investment, i.e.&nbsp;ocean tourism industry, which creates a growing tension. With the growing tourism, it attracted international pop star Sailor Shift who wanted to shoot his/her new music video in the island.<br>
 Clepper Jensen is a former analyst at FishEye company who is new a seasoned journalist for Hecklee Herald, is observing the tension and recently looking at temporary closure of Nemo Reef. By using investigative tools and radio communication, he uncovered a complex web of expedited approvals and secretive logistics, in which I will be helping him to develop visualization to help give better clarity to the story.</p>
 <section id="objective" class="level3">
 <h3 class="anchored" data-anchor-id="objective">1.2 Objective</h3>
@@ -756,7 +755,7 @@ Clepper Jensen is a former analyst at FishEye company who is new a seasoned jour
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x000002c85596b318&gt; 
+ $ :&lt;environment: 0x0000028aea8a9e70&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -1472,168 +1471,40 @@ Insight from the timeline and table
 </ul>
 </div>
 </div>
-<p>Next, we’ll look into the <strong>Delta-3 encryption</strong> since the last exchange about the permit mentioned Delta-3 encryption.So we’ll filter exchanges that mentions Delta-3 encryption, Delta or encryption in case they’re mentioned separately.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"Delta-3 encryption| encryption | Delta "</span>))</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, id, timestamp, content, monitoring_type, findings, new_index)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>timeline_encryption <span class="ot">&lt;-</span> <span class="fu">create_tml</span>(<span class="at">df=</span>comm_encryption, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#1c9b8e"</span>, <span class="at">dsc_col =</span> <span class="st">"#1c9b8e"</span>)</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>timeline_encryption</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="chronologia-wrapper">
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Sunday, October 07 2040, 09:31</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune, this is Mrs. Money. Confirmed for 0500 tomorrow. Will coordinate payment protocols with Mako and Remora captains. Your eastern reef route is approved - it avoids the new permit zones. Bring encryption devices for financial transfers.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Sunday, October 07 2040, 09:38</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Mako, Mrs. Money here. My role is financial controller for this operation - I'll be handling payment distribution, equipment funding, and resource allocation. Will bring encryption protocols and transfer devices. Eastern reef route documentation prepared for your review.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Sunday, October 07 2040, 11:35</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">The Middleman, Mrs. Money here. Need your connections for additional encryption tech before 0500 tomorrow at Nemo Reef. V. Miesel shipping lanes overlapping with operation area by 40%. Can you deliver personally?</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Thursday, October 11 2040, 08:15</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Elise, Liam here. Conservation vessels found nothing at Nemo Reef. Council meeting tomorrow with Sentinel - I'll deflect concerns. V. Miesel appears to be expanding operations in that area. Will bring encryption tech to our 0500 meeting.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Thursday, October 11 2040, 08:16</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Boss, The Accountant here. Conservation vessels found nothing concerning at Nemo Reef according to The Middleman. He's attending council meeting with Sentinel tomorrow and will deflect. Bringing encryption tech to our 0500 meeting. V. Miesel definitely expanding in target area.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 08:47</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">The Accountant, it's The Middleman. Meeting at 0500 still on. Council pressure increasing after EcoVigil approval. Redirected them north, but Boss needs southwest cleared immediately. Bring extra encryption - we'll need it.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:54</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Neptune. Secondary communication channel authorized. Use encryption protocol Delta-3 for sensitive transmissions. Continue heightened security measures. Keep us informed of any conservation vessel activity near your position.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:55</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Remora. All logistics confirmed for tomorrow's operation. Ensure your transferred crew is briefed on enhanced security protocols, especially Delta-3 encryption. Report any unusual conservation vessel activity immediately. Maintain operational discretion.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:56</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune, Remora here. All systems 100% operational and V. Miesel personnel fully integrated. Enhanced security protocols implemented with Delta-3 encryption active. No conservation vessel interference reported. Ready for 0600 harbor closure. Awaiting final go-ahead.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:58</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to V. Miesel HQ. Final logistics confirmed for operation at 0600. All crews operating under Delta-3 encryption. Conservation vessels still present but maintaining distance. Security protocols at maximum. Requesting confirmation of harbor closure timeline.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 12:52</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Neptune. Harbor closure timeline confirmed for 0600 tomorrow, lasting 3 days. Maintain Delta-3 encryption. Nadia securing final documentation for permit #CR-7844. Davis bringing additional crew and security team. Proceed as planned.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 12:55</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Remora. Final confirmation: operation proceeds at 0600. Maintain strict Delta-3 encryption and security protocols. Monitor conservation vessel movements closely. Davis bringing additional support team. All systems green for harbor closure. Report any deviations immediately.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 12:56</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Davis, Remora here. What's your ETA with the additional support team? Need to coordinate integration with security at harbor entrance. Confirm you have all Delta-3 encryption keys and harbor closure protocols ready for 0600.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Saturday, October 13 2040, 11:51</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Davis. Berth 14 is secured for equipment loading at 0400 hours. Your security team's arrival is confirmed. Use clearance code ALPHA-937 for harbor access. Delta-3 encryption mandatory for all communications.</p>
-</details>
-</div>
-<div class="chronologia-detail-wrapper">
-<details>
-<summary style="color: white; background: #1c9b8e;">Sunday, October 14 2040, 12:12</summary>
-<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Davis. Confirm arrival with security team at Berth 14. Weather conditions optimal. Conservation vessels still present but maintaining distance. Maintain Delta-3 encryption for all communications. Ready to execute at 0400.</p>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Insight from the timeline
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Delta-3 encryption is used as communication means between everyone that’s involved in the operation</li>
-<li>The operation start executing on the 14 October on 04:00</li>
-<li>It is confirmed that V. Miesel is involved in the operation as some of its personnel are integrated in the operation</li>
-<li>There are a few encrypted</li>
-</ul>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>nadia_node <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sub_type <span class="sc">==</span> <span class="st">"Person"</span> <span class="sc">&amp;</span> name <span class="sc">==</span> <span class="st">"Nadia Conti"</span>)</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>nadia_node <span class="sc">%&gt;%</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(new_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>nadia_node <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sub_type <span class="sc">==</span> <span class="st">"Person"</span> <span class="sc">&amp;</span> name <span class="sc">==</span> <span class="st">"Nadia Conti"</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>nadia_node <span class="sc">%&gt;%</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(new_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>graph_relation <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>graph_relation <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(from <span class="sc">==</span> <span class="st">"3"</span> <span class="sc">|</span> to <span class="sc">==</span> <span class="st">"3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>node_ids <span class="ot">&lt;-</span> graph_relation <span class="sc">%&gt;%</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(from <span class="sc">==</span> <span class="st">"3"</span> <span class="sc">|</span> to <span class="sc">==</span> <span class="st">"3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(from, to) <span class="sc">%&gt;%</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>node_ids <span class="ot">&lt;-</span> graph_relation <span class="sc">%&gt;%</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>node_labels <span class="ot">&lt;-</span> graph_relation <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(from, to) <span class="sc">%&gt;%</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">node_id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(node_id <span class="sc">%in%</span> node_ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>node_labels <span class="ot">&lt;-</span> graph_relation <span class="sc">%&gt;%</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">node_id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(node_id <span class="sc">%in%</span> node_ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>node_labels <span class="sc">%&gt;%</span> <span class="fu">select</span>(node_id, label, name, sub_type, content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>node_labels <span class="sc">%&gt;%</span> <span class="fu">select</span>(node_id, label, name, sub_type, content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 38 × 5
    node_id label         name        sub_type      content                      
@@ -1652,62 +1523,68 @@ Insight from the timeline
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>content <span class="ot">&lt;-</span> node_labels<span class="sc">$</span>content</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>persons</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>content <span class="ot">&lt;-</span> node_labels<span class="sc">$</span>content</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>persons <span class="ot">&lt;-</span> <span class="fu">c</span>(persons, organizations, <span class="st">"Haacklee Harbor"</span>, <span class="st">"Nadia"</span>, <span class="st">"Conti"</span>, <span class="st">"Liam"</span>, <span class="st">"Samantha"</span>, <span class="st">"Clepper"</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>persons</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 18 × 1
-   Person        
-   &lt;chr&gt;         
- 1 Sam           
- 2 Kelly         
- 3 Nadia Conti   
- 4 Elise         
- 5 Liam Thorne   
- 6 Samantha Blake
- 7 Davis         
- 8 Rodriguez     
- 9 Sailor Shift  
-10 Clepper Jensen
-11 Miranda Jordan
-12 The Intern    
-13 The Lookout   
-14 The Accountant
-15 Mrs. Money    
-16 The Middleman 
-17 Boss          
-18 Small Fry     </code></pre>
+<pre><code>$Person
+ [1] "Sam"            "Kelly"          "Nadia Conti"    "Elise"         
+ [5] "Liam Thorne"    "Samantha Blake" "Davis"          "Rodriguez"     
+ [9] "Sailor Shift"   "Clepper Jensen" "Miranda Jordan" "The Intern"    
+[13] "The Lookout"    "The Accountant" "Mrs. Money"     "The Middleman" 
+[17] "Boss"           "Small Fry"     
+
+$Organization
+[1] "Glitters Team"        "Oceanus City Council" "Green Guardians"     
+[4] "V. Miesel Shipping"   "Sailor Shifts Team"  
+
+[[3]]
+[1] "Haacklee Harbor"
+
+[[4]]
+[1] "Nadia"
+
+[[5]]
+[1] "Conti"
+
+[[6]]
+[1] "Liam"
+
+[[7]]
+[1] "Samantha"
+
+[[8]]
+[1] "Clepper"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>persons <span class="ot">&lt;-</span> <span class="fu">c</span>(persons, <span class="st">"Nadia"</span>, <span class="st">"Conti"</span>, <span class="st">"Liam"</span>, <span class="st">"Samantha"</span>, <span class="st">"Clepper"</span>)</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>extracted_names <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>names <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(content)) {</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">0</span>)  <span class="co"># empty vector for matched names in this record</span></span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (person <span class="cf">in</span> persons) {</span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">grepl</span>(person, content[i], <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>      names <span class="ot">&lt;-</span> <span class="fu">c</span>(names, person)</span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>  extracted_names[[i]] <span class="ot">&lt;-</span> <span class="fu">unique</span>(names)  <span class="co"># save unique names found in this record</span></span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a><span class="co"># View result</span></span>
-<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(extracted_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>extracted_names <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>names <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(content)) {</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">0</span>)  <span class="co"># empty vector for matched names in this record</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (person <span class="cf">in</span> persons) {</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">grepl</span>(person, content[i], <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>      names <span class="ot">&lt;-</span> <span class="fu">c</span>(names, person)</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>  extracted_names[[i]] <span class="ot">&lt;-</span> <span class="fu">unique</span>(names)  <span class="co"># save unique names found in this record</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="co"># View result</span></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(extracted_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 character(0)
 
 [[2]]
-[1] "Nadia" "Conti"
+[1] "Haacklee Harbor" "Nadia"           "Conti"          
 
 [[3]]
-[1] "Nadia" "Conti"
+[1] "Haacklee Harbor" "Nadia"           "Conti"          
 
 [[4]]
-[1] "Conti"
+[1] "Haacklee Harbor" "Conti"          
 
 [[5]]
 [1] "Nadia" "Conti"
@@ -1825,55 +1702,187 @@ character(0)</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>exchanges_nadia <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">content =</span> <span class="fu">character</span>(),</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sender =</span> <span class="fu">character</span>(),</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">recipient =</span> <span class="fu">character</span>(),</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through extracted_names and corresponding content</span></span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(extracted_names)) {</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> extracted_names[[i]]</span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(names) <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>    sender <span class="ot">&lt;-</span> names[<span class="dv">1</span>]</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>    recipient <span class="ot">&lt;-</span> names[<span class="dv">2</span>]</span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>    text <span class="ot">&lt;-</span> node_labels<span class="sc">$</span>content[i]</span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>    exchanges_nadia <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>      exchanges_nadia,</span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(<span class="at">content =</span> text, <span class="at">sender =</span> sender, <span class="at">recipient =</span> recipient, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>exchanges_nadia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>exchanges_nadia <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">content =</span> <span class="fu">character</span>(),</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sender =</span> <span class="fu">character</span>(),</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">recipient =</span> <span class="fu">character</span>(),</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through extracted_names and corresponding content</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(extracted_names)) {</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> extracted_names[[i]]</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(names) <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    sender <span class="ot">&lt;-</span> names[<span class="dv">1</span>]</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>    recipient <span class="ot">&lt;-</span> names[<span class="dv">2</span>]</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>    text <span class="ot">&lt;-</span> node_labels<span class="sc">$</span>content[i]</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>    exchanges_nadia <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>      exchanges_nadia,</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(<span class="at">content =</span> text, <span class="at">sender =</span> sender, <span class="at">recipient =</span> recipient, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>exchanges_nadia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                                                                                                                                                                                                                                                                                    content
 1                Haacklee Harbor to Nadia Conti. Following your visit yesterday regarding the Nemo Reef event logistics, we've prepared the necessary documentation. Harbor staff is ready to facilitate the special access corridor arrangements as discussed. Please confirm timeline for implementation.
 2                Haacklee Harbor, this is Nadia Conti. I need to cancel the special access corridor arrangements for Nemo Reef immediately. Plans have changed due to unforeseen circumstances. Destroy all related documentation. I'll contact you when we're ready to proceed with alternative locations.
-3                                                         This is Nadia Conti. My cancellation was due to scheduling conflicts with our tourism development initiatives. I wasn't aware of any permit approvals. I'll submit revised documentation for alternative sustainable tourism proposals next week.
-4                                             Nadia, Elise here. Meeting at Nemo Reef 0500 tomorrow to establish payment protocols. Sam uncovered V. Miesel shipping lanes overlapping with Mako by 40%. Neptune mentioned 'underwater foundation work' - outside our original scope. Need your assessment.
-5                                                                       Liam, Nadia here. Need your services urgently. Investigation brewing around Nemo Reef permits. Double your usual fee if you can ensure Harbor Master remains cooperative through next week. Meet at the usual place tomorrow, 10PM.
-6                                                                    Nadia, Liam here. Meeting confirmed for tomorrow at 10PM. I've redirected Harbor Master's attention and implemented new patrol schedules that work in our favor. Council suspects nothing about Nemo Reef. Bring payment as discussed.
-7  Nadia, Elise here. Situation escalating. Permanent underwater construction confirmed at Nemo Reef. Sam reports concrete forms suggesting structures beyond equipment installation. Need urgent clarification on real scope and V. Miesel's involvement before tomorrow's meeting. Prepare contingencies.
-8                  Nadia, Elise here. Meeting confirmed for 0500 at Nemo Reef. Sam's evidence shows clear V. Miesel connection to permanent structures. Conservation vessels increasing surveillance - could complicate our operation. Bring alternate financial channels in case we need quick adaptation.
-9                                                                        Nadia, Liam here. EcoVigil is questioning the ROV delay. I've redirected them to the northern quadrant, but they're suspicious about the southwest. We need to clean up operations there immediately. What's our contingency plan?
-10                                                             Liam, Nadia here. Redirect all remaining operations from southwest immediately. Move equipment to our secondary location. I'll handle EcoVigil through proper channels. Meet me at the usual place at 2100 hours with updated documentation.
-11                                                                             Rodriguez, Davis here. Maintain current position with Mako at Nemo Reef. Security team arriving at 0600. Continue operating under permit #CR-7844 and keep tourism appearance. I'll update after meeting with Nadia tonight.
-12                                             Davis, Nadia here. Need you to verify final equipment transport tonight at Nemo Reef. The Middleman reports increased surveillance. Ensure all operations follow encrypted protocols. Meet me at V. Miesel HQ tomorrow at 0900 to discuss contingency plans.
-   sender recipient
-1   Nadia     Conti
-2   Nadia     Conti
-3   Nadia     Conti
-4     Sam     Kelly
-5   Nadia      Liam
-6   Nadia      Liam
-7     Sam     Kelly
-8     Sam     Kelly
-9   Nadia     Conti
-10  Nadia      Liam
-11  Nadia     Conti
-12  Nadia     Conti</code></pre>
+3                                          Ms. Conti, this is Oceanus City Council. We need clarification regarding your canceled Nemo Reef event arrangements at Haacklee Harbor. Please explain your documentation destruction request immediately. This relates to our newly expedited permit approvals.
+4                                                         This is Nadia Conti. My cancellation was due to scheduling conflicts with our tourism development initiatives. I wasn't aware of any permit approvals. I'll submit revised documentation for alternative sustainable tourism proposals next week.
+5                                             Nadia, Elise here. Meeting at Nemo Reef 0500 tomorrow to establish payment protocols. Sam uncovered V. Miesel shipping lanes overlapping with Mako by 40%. Neptune mentioned 'underwater foundation work' - outside our original scope. Need your assessment.
+6                                                                       Liam, Nadia here. Need your services urgently. Investigation brewing around Nemo Reef permits. Double your usual fee if you can ensure Harbor Master remains cooperative through next week. Meet at the usual place tomorrow, 10PM.
+7                                                                    Nadia, Liam here. Meeting confirmed for tomorrow at 10PM. I've redirected Harbor Master's attention and implemented new patrol schedules that work in our favor. Council suspects nothing about Nemo Reef. Bring payment as discussed.
+8  Nadia, Elise here. Situation escalating. Permanent underwater construction confirmed at Nemo Reef. Sam reports concrete forms suggesting structures beyond equipment installation. Need urgent clarification on real scope and V. Miesel's involvement before tomorrow's meeting. Prepare contingencies.
+9                  Nadia, Elise here. Meeting confirmed for 0500 at Nemo Reef. Sam's evidence shows clear V. Miesel connection to permanent structures. Conservation vessels increasing surveillance - could complicate our operation. Bring alternate financial channels in case we need quick adaptation.
+10                                                                       Nadia, Liam here. EcoVigil is questioning the ROV delay. I've redirected them to the northern quadrant, but they're suspicious about the southwest. We need to clean up operations there immediately. What's our contingency plan?
+11                                                             Liam, Nadia here. Redirect all remaining operations from southwest immediately. Move equipment to our secondary location. I'll handle EcoVigil through proper channels. Meet me at the usual place at 2100 hours with updated documentation.
+12                                                                             Rodriguez, Davis here. Maintain current position with Mako at Nemo Reef. Security team arriving at 0600. Continue operating under permit #CR-7844 and keep tourism appearance. I'll update after meeting with Nadia tonight.
+13                                             Davis, Nadia here. Need you to verify final equipment transport tonight at Nemo Reef. The Middleman reports increased surveillance. Ensure all operations follow encrypted protocols. Meet me at V. Miesel HQ tomorrow at 0900 to discuss contingency plans.
+            sender recipient
+1  Haacklee Harbor     Nadia
+2  Haacklee Harbor     Nadia
+3  Haacklee Harbor     Conti
+4            Nadia     Conti
+5              Sam     Kelly
+6            Nadia      Liam
+7            Nadia      Liam
+8              Sam     Kelly
+9              Sam     Kelly
+10           Nadia     Conti
+11           Nadia      Liam
+12           Nadia     Conti
+13           Nadia     Conti</code></pre>
+</div>
+</div>
+<p>Conslusion: - Nadia Conti was working together with V. Miesel to create special permits that as intended, she created permit for operations that is illegal -&gt; thus Clepper’s suspicions are justified</p>
+<p>EXTRA THINGS THAT CAN BE REMOVED IF NOT NEEDED</p>
+<p>Next, we’ll look into the <strong>Delta-3 encryption</strong> since the last exchange about the permit mentioned Delta-3 encryption.So we’ll filter exchanges that mentions Delta-3 encryption, Delta or encryption in case they’re mentioned separately.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span> <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(content, <span class="st">"Delta-3 encryption| encryption | Delta "</span>))</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, id, timestamp, content, monitoring_type, findings, new_index)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>comm_encryption <span class="ot">&lt;-</span> comm_encryption <span class="sc">%&gt;%</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>))</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>timeline_encryption <span class="ot">&lt;-</span> <span class="fu">create_tml</span>(<span class="at">df=</span>comm_encryption, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#1c9b8e"</span>, <span class="at">dsc_col =</span> <span class="st">"#1c9b8e"</span>)</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>timeline_encryption</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="chronologia-wrapper">
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Sunday, October 07 2040, 09:31</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune, this is Mrs. Money. Confirmed for 0500 tomorrow. Will coordinate payment protocols with Mako and Remora captains. Your eastern reef route is approved - it avoids the new permit zones. Bring encryption devices for financial transfers.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Sunday, October 07 2040, 09:38</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Mako, Mrs. Money here. My role is financial controller for this operation - I'll be handling payment distribution, equipment funding, and resource allocation. Will bring encryption protocols and transfer devices. Eastern reef route documentation prepared for your review.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Sunday, October 07 2040, 11:35</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">The Middleman, Mrs. Money here. Need your connections for additional encryption tech before 0500 tomorrow at Nemo Reef. V. Miesel shipping lanes overlapping with operation area by 40%. Can you deliver personally?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Thursday, October 11 2040, 08:15</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Elise, Liam here. Conservation vessels found nothing at Nemo Reef. Council meeting tomorrow with Sentinel - I'll deflect concerns. V. Miesel appears to be expanding operations in that area. Will bring encryption tech to our 0500 meeting.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Thursday, October 11 2040, 08:16</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Boss, The Accountant here. Conservation vessels found nothing concerning at Nemo Reef according to The Middleman. He's attending council meeting with Sentinel tomorrow and will deflect. Bringing encryption tech to our 0500 meeting. V. Miesel definitely expanding in target area.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 08:47</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">The Accountant, it's The Middleman. Meeting at 0500 still on. Council pressure increasing after EcoVigil approval. Redirected them north, but Boss needs southwest cleared immediately. Bring extra encryption - we'll need it.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:54</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Neptune. Secondary communication channel authorized. Use encryption protocol Delta-3 for sensitive transmissions. Continue heightened security measures. Keep us informed of any conservation vessel activity near your position.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:55</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Remora. All logistics confirmed for tomorrow's operation. Ensure your transferred crew is briefed on enhanced security protocols, especially Delta-3 encryption. Report any unusual conservation vessel activity immediately. Maintain operational discretion.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:56</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune, Remora here. All systems 100% operational and V. Miesel personnel fully integrated. Enhanced security protocols implemented with Delta-3 encryption active. No conservation vessel interference reported. Ready for 0600 harbor closure. Awaiting final go-ahead.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 09:58</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to V. Miesel HQ. Final logistics confirmed for operation at 0600. All crews operating under Delta-3 encryption. Conservation vessels still present but maintaining distance. Security protocols at maximum. Requesting confirmation of harbor closure timeline.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 12:52</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Neptune. Harbor closure timeline confirmed for 0600 tomorrow, lasting 3 days. Maintain Delta-3 encryption. Nadia securing final documentation for permit #CR-7844. Davis bringing additional crew and security team. Proceed as planned.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 12:55</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Remora. Final confirmation: operation proceeds at 0600. Maintain strict Delta-3 encryption and security protocols. Monitor conservation vessel movements closely. Davis bringing additional support team. All systems green for harbor closure. Report any deviations immediately.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Friday, October 12 2040, 12:56</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Davis, Remora here. What's your ETA with the additional support team? Need to coordinate integration with security at harbor entrance. Confirm you have all Delta-3 encryption keys and harbor closure protocols ready for 0600.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Saturday, October 13 2040, 11:51</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Davis. Berth 14 is secured for equipment loading at 0400 hours. Your security team's arrival is confirmed. Use clearance code ALPHA-937 for harbor access. Delta-3 encryption mandatory for all communications.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #1c9b8e;">Sunday, October 14 2040, 12:12</summary>
+<p style="color: #1c9b8e; background: #FFFFFF; font-size: 14px;">Neptune to Davis. Confirm arrival with security team at Berth 14. Weather conditions optimal. Conservation vessels still present but maintaining distance. Maintain Delta-3 encryption for all communications. Ready to execute at 0400.</p>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insight from the timeline
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Delta-3 encryption is used as communication means between everyone that’s involved in the operation</li>
+<li>The operation start executing on the 14 October on 04:00</li>
+<li>It is confirmed that V. Miesel is involved in the operation as some of its personnel are integrated in the operation</li>
+<li>There are a few encrypted</li>
+</ul>
 </div>
 </div>
 <div class="cell">
