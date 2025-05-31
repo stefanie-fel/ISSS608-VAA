@@ -10,6 +10,8 @@ execute:
   freeze: true
 ---
 
+
+
 ## 1. Background
 
 Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. Currently, people are shifting to another investment, i.e. ocean tourism industry, which creates a growing tension. With the growing tourism, it attracted international pop star Sailor Shift who wanted to shoot his/her new music video in the island.\
@@ -26,11 +28,17 @@ Objective of this exercise:
 
 ### 1.4 Load Required Libraries
 
+
+
 ```{r}
 pacman::p_load(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia)
 ```
 
+
+
 The libraries used in this exercise are the following:
+
+
 
 ```{r, echo=FALSE}
 table_data <- matrix(
@@ -50,22 +58,32 @@ table_data <- matrix(
 kable(table_data, col.names = c("Package Name", "Description"))
 ```
 
+
+
 ### 1.5 Import Data
 
 In this exercise, we'll be using the mc3.json file and extract data using the jsonlite library.
+
+
 
 ```{r}
 MC3 <- fromJSON("data/MC3_graph.json")
 MC3_schema <- fromJSON("data/MC3_schema.json")
 ```
 
+
+
 ## Inspect Knowledge Graph Structure
 
 Before preparing the data, we'll check the structure of the knowledge graph.
 
+
+
 ```{r}
 glimpse(MC3)
 ```
+
+
 
 Since the industry column is in list data type, we'' exclude the column since list data type isn't acceptable by `tbl_graph()`.
 
@@ -73,19 +91,27 @@ Since the industry column is in list data type, we'' exclude the column since li
 
 The `as_tibble()` function is used to extract nodes and links tibble data frame from MC3 tibble data frame.
 
+
+
 ```{r}
 mc3_nodes <- as_tibble(MC3$nodes)
 mc3_edges <- as_tibble(MC3$edges)
 ```
 
+
+
 ## Initial EDA
 
 We'll use `ExpCatViz()` from SmartEDA library to reveal frequency distribution of all categorical fields from mc3_nodes.
+
+
 
 ```{r}
 ExpCatViz(data=mc3_nodes,
           col="lightblue")
 ```
+
+
 
 ## Data Cleaning and Wrangling
 
@@ -99,6 +125,8 @@ The following steps are taken to clean the **nodes**:
 
 -   Exclude *thing_collected* field
 
+
+
 ```{r}
 mc3_nodes_cleaned <- mc3_nodes %>%
   mutate(id = as.character(id)) %>%
@@ -106,6 +134,8 @@ mc3_nodes_cleaned <- mc3_nodes %>%
   distinct(id, .keep_all = TRUE) %>%
   select(-thing_collected)
 ```
+
+
 
 Next, the following steps are taken to clean the **edges**:
 
@@ -116,6 +146,8 @@ Next, the following steps are taken to clean the **edges**:
 -   Exclude values in from_id and to_id that's not found in the id column from *mc3_nodes_cleaned*
 
 -   Exclude records where *from_id* and *to_id*, or *from_id* or *to_id* is missing
+
+
 
 ```{r}
     mc3_edges_cleaned <- mc3_edges %>%
@@ -128,7 +160,11 @@ Next, the following steps are taken to clean the **edges**:
       filter(!is.na(from_id), !is.na(to_id))
 ```
 
+
+
 A new dataframe from the existing data frame (*mc3_nodes_cleaned*) and *.row_id* column is added which assigns unique row number to each row number (works like row index). Then we select *id* and .*row_id* columns whereas other columns are dropped.
+
+
 
 ```{r}
 node_index_lookup <- mc3_nodes_cleaned %>%
@@ -136,7 +172,11 @@ node_index_lookup <- mc3_nodes_cleaned %>%
   select(id, .row_id)
 ```
 
+
+
 Then from_id and to_id columns in mc_edges_indexed are converted it to integer indices. The rows with unmatched nodes are also dropped.
+
+
 
 ```{r}
 mc3_edges_indexed <- mc3_edges_cleaned %>%
@@ -150,7 +190,11 @@ mc3_edges_indexed <- mc3_edges_cleaned %>%
   filter(!is.na(from) & !is.na(to))  
 ```
 
+
+
 Next, the node list will only include nodes that are used in the edge list and new indices are assigned
+
+
 
 ```{r}
 used_node_indices <- sort(
@@ -162,7 +206,11 @@ mc3_nodes_final <- mc3_nodes_cleaned %>%
   mutate(new_index = row_number())
 ```
 
+
+
 The lookup is rebuild from old index to new index.
+
+
 
 ```{r}
 old_to_new_index <- tibble(
@@ -171,7 +219,11 @@ old_to_new_index <- tibble(
     used_node_indices))
 ```
 
+
+
 Then, we'll update edge indices to match new node table
+
+
 
 ```{r}
 mc3_edges_final <- mc3_edges_indexed %>%
@@ -185,9 +237,13 @@ mc3_edges_final <- mc3_edges_indexed %>%
          is_inferred, type)
 ```
 
+
+
 ## Build tidygraph Object
 
 Next, we'll build the tidygraph object
+
+
 
 ```{r}
 mc3_graph <- tbl_graph(
@@ -201,9 +257,13 @@ mc3_graph <- tbl_graph(
 str(mc3_graph)
 ```
 
+
+
 ## Visualize Knowledge Graph
 
 Next, we'll set a seed to ensure reproducibility.
+
+
 
 ```{r}
 set.seed(1234)
@@ -222,11 +282,15 @@ ggraph(mc3_graph,
   theme_void()
 ```
 
+
+
 ## Objective #1: Visualize Groups based on the Topics Frequently Brought Up in Their Exchanges
 
 ### Visualize the Subgraph
 
 A table is generated to see the distinct people, organization and groups whose radio communication Clepper has intercepted.
+
+
 
 ```{r}
 all_nodes <- mc3_graph %>%
@@ -265,11 +329,15 @@ edges_tbl <- mc3_graph %>%
   as_tibble()
 ```
 
+
+
 ## Objective #2: Is Nadia Conti currently involved in illegal activities ?
 
 ### Exchanges by or about Nadia Conti
 
 First, we'll look at the communication that mentioned Nadia Conti, Conti and Nadia as the content mentions their identity and to whom they send the message to.
+
+
 
 ```{r}
 comm_about_nadia <- mc3_graph %>%
@@ -289,6 +357,8 @@ timeline_nadia <- create_tml(df=timeline_nadia_comm, smr="timestamp_desc", dsc="
 timeline_nadia
 ```
 
+
+
 ::: {.callout-note title="Insight from the timeline"}
 -   People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter's Team, The Middleman, Ramora, Harbor Master and even the superstar Sailor Shift
 -   Code names that are mentioned: NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844
@@ -298,6 +368,8 @@ timeline_nadia
 ### Create timeline for Code Names
 
 First, let's create timeline for code name that is mentioned in the exchanges. In this code, we'll look at the code name **#CR-7844** as it was mentioned frequently.
+
+
 
 ```{r}
 comm_about_cr <- mc3_graph %>%
@@ -322,6 +394,8 @@ comm_about_cr <- comm_about_cr %>%
 datatable(comm_about_cr)
 ```
 
+
+
 ::: {.callout-note title="Insight from the timeline and table"}
 -   #CR-7844 is a special marine research permit created under V.Miesel to conduct marine research equipment transport into the Nemo Reef, approved by Oceanus City Council. This indicates that V. Miesel is aware and is involved in the operation
 -   Similar to the last timeline built, there are frequent messages about transferring equipment through eastern reef routes and bringing security team and extra crew for the operation.
@@ -330,6 +404,8 @@ datatable(comm_about_cr)
 :::
 
 Since we found out that that they will start their operation on 13 October, let's filter for all records on that day.
+
+
 
 ```{r}
 comm_13_oct <- mc3_graph %>%
@@ -354,11 +430,15 @@ comm_13_oct <- comm_13_oct %>%
 datatable(comm_13_oct)
 ```
 
+
+
 ::: {.callout-note title="Insight from the timeline and table"}
 -   From the timeline, we can see that the conservation vessel were still monitoring the activities of people with permits. However, what's more surprising is that we found evidence the Oceanus City Council is actually involved in the operation as they told Green Guardians to hold the investigation when there may be potential fuel contamination in the Nemo Reef
 -   It seems that there is another operation planned as Nadia asks David to verify the final equipment transport at Nemo Reef (might be for Berth 14)
 -   Incidents happening on the day: there was also a music video, equipment transfers, fuel contamination and shooting on the Nemo Reef
 :::
+
+
 
 
 ```{r}
@@ -448,6 +528,8 @@ for (i in seq_along(extracted_names)) {
 exchanges_nadia
 ```
 
+
+
 Conslusion:
 - Nadia Conti was working together with V. Miesel to create special permits that as intended, she created permit for operations that is illegal -> 
 thus Clepper's suspicions are justified
@@ -455,6 +537,8 @@ thus Clepper's suspicions are justified
 EXTRA THINGS THAT CAN BE REMOVED IF NOT NEEDED
 
 Next, we'll look into the **Delta-3 encryption** since the last exchange about the permit mentioned Delta-3 encryption.So we'll filter exchanges that mentions Delta-3 encryption, Delta or encryption in case they're mentioned separately.
+
+
 
 ```{r}
 comm_encryption <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "Delta-3 encryption| encryption | Delta "))
@@ -472,12 +556,16 @@ timeline_encryption <- create_tml(df=comm_encryption, smr="timestamp_desc", dsc=
 timeline_encryption
 ```
 
+
+
 ::: {.callout-note title="Insight from the timeline"}
 -   Delta-3 encryption is used as communication means between everyone that's involved in the operation
 -   The operation start executing on the 14 October on 04:00
 -   It is confirmed that V. Miesel is involved in the operation as some of its personnel are integrated in the operation
 -   There are a few encrypted
 :::
+
+
 ```{r}
 comm_harbor_access <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "ALPHA-937"))
 
@@ -496,6 +584,9 @@ comm_nr_1045 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "NR
 comm_nr_1045 %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
 ```
 
+
+
 ## Reference
 
 -   <https://github.com/feddelegrand7/cronologia>
+
