@@ -225,7 +225,7 @@ ggraph(mc3_graph,
   theme_void()
 ```
 
-## 3.1 Objective #1: Visualize Groups based on the Topics Frequently Brought Up in Their Exchanges
+## 3.1 Objective #1: Group Individual and Groups based on the Topics Frequently Brought Up in Their Exchanges
 
 ### 3.2 Visualize the Subgraph
 
@@ -305,7 +305,7 @@ Then we combine every exchanges Sam receives or sends and check for the contents
 all_text_sam <- connected_node_content_sam %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_sam
+cat(as.character(all_text_sam$full_text))
 
 text_clean_sam <- connected_node_content_sam %>%
   filter(!is.na(content)) %>%
@@ -329,7 +329,7 @@ name_freq_sam <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_sam)
 ```
 
-Sam seem to talk to or about these people: the Lookout, the Conservation Vessel, Kelly and Elise.
+Sam seem to talk to the Lookout and Kelly based on the exchanges and he talked a lot about conservation vessels. Additionally, he could be categorized as environmentalist as he and his friends talked a lot about watching animals near or on the Nemo Reef.
 
 ### 2nd Individual: Kelly
 
@@ -356,7 +356,7 @@ connected_node_content_kelly <- mc3_graph %>%
 all_text_kelly <- connected_node_content_kelly %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_kelly
+cat(as.character(all_text_kelly$full_text))
 
 text_clean_kelly <- connected_node_content_kelly %>%
   filter(!is.na(content)) %>%
@@ -372,7 +372,7 @@ name_freq_kelly <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_kelly)
 ```
 
-Elise frequently talk about or communicate to Sam and Elise.
+Elise frequently communicate with Sam about animals and inicidents happening in the Nemo Reef. Similarly to Sam, from the exchanges she had, she can also be categorized as environmentalist especially when she spoek to Sam on the approved permit.
 
 ### 3rd Individual: Nadia Conti
 
@@ -397,7 +397,7 @@ connected_node_content_nadia <- mc3_graph %>%
 all_text_nadia <- connected_node_content_nadia %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_nadia
+cat(as.character(all_text_nadia$full_text))
 
 text_clean_nadia <- connected_node_content_nadia %>%
   filter(!is.na(content)) %>%
@@ -413,7 +413,7 @@ name_freq_nadia<- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_nadia)
 ```
 
-Nadia Conti frequently talk about or communicate to Davis and Elise, Sam, Sailor Shift, the Middleman, the Accountant, Rodriquez, Sailor Shifts Team, V. Miesel Shipping and Conservation Vessels.
+Nadia Conti frequently talk about or communicate to Davis and Elise, Sam, Sailor Shift, the Middleman, the Accountant, Rodriquez, Sailor Shifts Team, V. Miesel Shipping and Conservation Vessels. She can be categorized as Sailor Shift as the team communicates with her on staffing and permit. So it's highly likely that they're working together.
 
 ### 4th Individual: Elise
 
@@ -438,7 +438,7 @@ connected_node_content_elise <- mc3_graph %>%
 all_text_elise <- connected_node_content_elise %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_elise
+cat(as.character(all_text_elise$full_text))
 
 text_clean_elise <- connected_node_content_elise %>%
   filter(!is.na(content)) %>%
@@ -454,7 +454,7 @@ name_freq_elise <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_elise)
 ```
 
-Elise frequently talk about or communicate to Sam, Conservation Vessels and V. Miesel Shipping.
+Elise frequently communicate to Sam, Nadia, Liam, Neptune, Mako and Ramora. She can be categorized as Sailor Shift as she is involved with Nadia in transferring equipment and the operation.
 
 ### 5th Individual: Liam Thorne
 
@@ -479,7 +479,7 @@ connected_node_content_liam <- mc3_graph %>%
 all_text_liam <- connected_node_content_liam %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_liam
+cat(as.character(all_text_liam$full_text))
 
 text_clean_liam <- connected_node_content_liam %>%
   filter(!is.na(content)) %>%
@@ -495,7 +495,7 @@ name_freq_liam <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_liam)
 ```
 
-Liam Thorne frequently talk about or communicate to Oceanus City Council, Sam, Conservation Vessels, V. Miesel Shipping, Elise, Ms. Money, the Middleman, Green Guardians and Boss.
+Liam Thorne seem to be an important person as he works together with with Paackland Harbor and the City Council. However, he can be categorized as Sailor Shifts as he works together with Nadia, possibly with a bribe to ensure that the Harbor Master stays cooperative.
 
 ### 6th individual: Samantha Blake
 
@@ -520,7 +520,7 @@ connected_node_content_samantha <- mc3_graph %>%
 all_text_samantha <- connected_node_content_samantha %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_samantha
+cat(as.character(all_text_samantha$full_text))
 
 text_clean_samatha <- connected_node_content_samantha %>%
   filter(!is.na(content)) %>%
@@ -536,7 +536,7 @@ name_freq_samantha <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_samantha)
 ```
 
-Samantha Blake frequently talk about or communicate to Sam, Oceanus City Council, Sailor Shift and his/her team, Boss and Glitter's Team.
+Samantha Blake frequently communicate to Oceanus City Council and Sailor Shift team on music video shooting. However, it seems that she couldn't obtain the permit for it as Nemo Reef is protected areas that they could not shoot there. She can be categorized as Sailor Shift as she works directly to provide them with offiical permit.
 
 ### 7th Individual: Davis
 
@@ -561,7 +561,7 @@ connected_node_content_davis <- mc3_graph %>%
 all_text_davis <- connected_node_content_davis %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_davis
+cat(as.character(all_text_davis$full_text))
 
 text_clean_davis <- connected_node_content_davis %>%
   filter(!is.na(content)) %>%
@@ -577,7 +577,7 @@ name_freq_davis <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_davis)
 ```
 
-Davis frequently talk about or communicate to Nadia Conti, Small Fry, Conservation Vessels, V. Miesel Shipping and the Middleman.
+Davis frequently talk about or communicate to Nadia Conti, Mako, Rodriquez Small Fry and the Middleman. He can be categorized as Sailor Shift as he works with Sailor's team.
 
 ### 8th Individual: Rodriquez
 
@@ -602,7 +602,7 @@ connected_node_content_rodriquez <- mc3_graph %>%
 all_text_rodriquez <- connected_node_content_rodriquez %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_rodriquez
+cat(as.character(all_text_rodriquez$full_text))
 
 text_clean_rodriquez <- connected_node_content_rodriquez %>%
   filter(!is.na(content)) %>%
@@ -618,7 +618,7 @@ name_freq_rodriquez <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_rodriquez)
 ```
 
-Rodriquez frequently talk about or communicate to Davis, Nadia Conti, Boss, Conservation Vessel, Sailor Shift and Mrs. Money.
+Rodriquez frequently communicate to Davis, as he is most likely colleagues with Davis and works as logistics. He can be categorized as Sailor Shift as he works directly with Sailor's team for filming location and equipment transfer.
 
 ### 9th Individual: Sailor Shifts
 
@@ -672,7 +672,7 @@ connected_node_content_clepper <- mc3_graph %>%
 all_text_clepper <- connected_node_content_clepper %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_clepper
+cat(as.character(all_text_clepper$full_text))
 
 text_clean_clepper <- connected_node_content_clepper %>%
   filter(!is.na(content)) %>%
@@ -688,7 +688,7 @@ name_freq_clepper <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_clepper)
 ```
 
-Clepper Jensen frequently talk about or communicate to Rodriquez, Conservation Vessels, Sam, V. Miesel Shipping, sailor Shift, Oceanus City Council and Sailor Shift's team.
+Clepper Jensen frequently communicate to Miranda on Rodriquez, Conservation Vessels, Sam, V. Miesel Shipping, sailor Shift, Oceanus City Council and Sailor Shift's team. He is working to expose them and the corruption in Oceanus.
 
 ### 11th Individual: Miranda Jordan
 
@@ -713,7 +713,7 @@ connected_node_content_miranda <- mc3_graph %>%
 all_text_miranda <- connected_node_content_miranda %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_miranda
+cat(as.character(all_text_miranda$full_text))
 
 text_clean_miranda <- connected_node_content_miranda %>%
   filter(!is.na(content)) %>%
@@ -729,7 +729,7 @@ name_freq_miranda <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_miranda)
 ```
 
-Miranda Jordan frequently talk about or communicate to Rodriquez, Conservation Vessels, Sam, V. Miesel Shipping, Sailor Shift and his/her team and Oceanus City Council.
+Miranda Jordan frequently communicate to Clepper on Rodriquez, Conservation Vessels, Sam, V. Miesel Shipping, Sailor Shift and his/her team and Oceanus City Council. She is working together with Clepper to expose the corruption and manipulation in Oceanus.
 
 ### 12th Individual: The Intern
 
@@ -754,7 +754,7 @@ connected_node_content_intern <- mc3_graph %>%
 all_text_intern <- connected_node_content_intern %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_intern
+cat(as.character(all_text_intern$full_text))
 
 text_clean_intern <- connected_node_content_intern %>%
   filter(!is.na(content)) %>%
@@ -770,7 +770,7 @@ name_freq_intern <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_intern)
 ```
 
-The Intern frequently talk about or communicate to the Lookout, Mrs. Money, Conservation Vessels, Sam adn V. Miesel Shipping.
+The Intern frequently talk about or communicate to the Lookout, Mrs. Money on Conservation Vessels, and V. Miesel Shipping. It's interesting because it doesn't seem that they're working with Sailor's team, but has an operation that they're working on too.
 
 ### 13th Individual: The Lookout
 
@@ -801,7 +801,7 @@ connected_node_content_lookout <- mc3_graph %>%
 all_text_lookout <- connected_node_content_lookout %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_lookout
+cat(as.character(all_text_lookout$full_text))
 
 text_clean_lookout <- connected_node_content_lookout %>%
   filter(!is.na(content)) %>%
@@ -842,7 +842,7 @@ connected_node_content_accountant <- mc3_graph %>%
 all_text_accountant <- connected_node_content_accountant %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_accountant
+cat(as.character(all_text_accountant$full_text))
 
 text_clean_accountant <- connected_node_content_accountant %>%
   filter(!is.na(content)) %>%
@@ -858,7 +858,7 @@ name_freq_accountant <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_accountant)
 ```
 
-The Accountant frequently talk about or communicate to The Middleman, Boss and Conservation Vessels.
+The Accountant seem to be an important person as he/she spoke with the council and planned to deflect so that they won't get suspicious. He frequently spoke with Boss and the Middleman.
 
 ### 15th Individual: Mrs. Money
 
@@ -883,7 +883,7 @@ connected_node_content_money <- mc3_graph %>%
 all_text_money <- connected_node_content_money %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_money
+cat(as.character(all_text_money$full_text))
 
 text_clean_money <- connected_node_content_money %>%
   filter(!is.na(content)) %>%
@@ -899,7 +899,7 @@ name_freq_money <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_money)
 ```
 
-Mrs. Money seem to be a person who wants to be anonymous and keep their real identities hidden, as frequently talk about or communicate to the Intern, Boss, the Lookout, the Middleman, people who also use nicknames. Apart from that Mrs. Money seem to frequently talk about or communicate to Conservation Vessels, V. Miesel Shipping, Sam and Rodriquez.
+Mrs. Money seem to be a person who wants to be anonymous and keep their real identities hidden, as frequently talk about or communicate to the Intern, Boss, the Lookout, the Middleman, people who also use nicknames. Apart from that Mrs. Money seem to frequently communicate with the Lookout, Boss, Mako and the Middleman, they seem to have their own operations on Nemo Reef although it's not very clear what it is.
 
 ### 16th Individual: The Middleman
 
@@ -924,7 +924,7 @@ connected_node_content_middleman <- mc3_graph %>%
 all_text_middleman <- connected_node_content_middleman %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " ")) 
-all_text_middleman
+cat(as.character(all_text_middleman$full_text))
 
 text_clean_middleman <- connected_node_content_middleman %>%
   filter(!is.na(content)) %>%
@@ -965,7 +965,7 @@ connected_node_content_boss <- mc3_graph %>%
 all_text_boss <- connected_node_content_boss %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_boss
+cat(as.character(all_text_boss$full_text))
 
 text_clean_boss <- connected_node_content_boss %>%
   filter(!is.na(content)) %>%
@@ -981,7 +981,7 @@ name_freq_boss <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_boss)
 ```
 
-Boss frequently talk about or communicate to Mrs. Money, the Middleman, Conservation Vessels, the Intern, Rodrqiuez, V. Miesel Shipping, Davis, the Accountant, Sam, Nadia Conti, Samantha Blake, Glitter's Team and Green Guardians.
+Boss frequently talk about or communicate to Mrs. Money and the Middleman for their own operation for tourism ventures.
 
 ### 18th Individual: Small Fry
 
@@ -1006,7 +1006,7 @@ connected_node_content_fry <- mc3_graph %>%
 all_text_fry <- connected_node_content_fry %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_fry
+cat(as.character(all_text_fry$full_text))
 
 text_clean_fry <- connected_node_content_fry %>%
   filter(!is.na(content)) %>%
@@ -1022,7 +1022,7 @@ name_freq_fry <- tibble(name = people, clean_name = people_clean) %>%
 datatable(name_freq_fry)
 ```
 
-Small Fry frequently talk about or communicate to Glitter's Team, Davis and Boss.
+Small Fry frequently talk about or communicate to Glitter's Team, Davis and Boss. He/she potentially works with Sailor's team but also with Boss.
 
 ## 4.1 Objective #2: Is Nadia Conti currently involved in illegal activities ?
 
@@ -1149,7 +1149,7 @@ timeline_encryption
 
 -   Nadia Conti was working together with V. Miesel to create special permits that as intended, she created permit for operations that is illegal
 
--   There is also a possible bribery done by Nadia as she told Liam that she needed his services to ensure that Harbor Master remains "cooperative" through next week and investigation on Nemo Reef permits were brewing.
+-   There is also bribery done by Nadia as she told Liam that she needed his services to ensure that Harbor Master remains "cooperative" through next week and investigation on Nemo Reef permits were brewing.
 
 Although, there was no evidence apart from her exchanges that she was directly involved in the illegal activities. It seemed like she worked behind the scene in getting the permit and authorizing operations, thus justifying Clepper's suspicions.
 
