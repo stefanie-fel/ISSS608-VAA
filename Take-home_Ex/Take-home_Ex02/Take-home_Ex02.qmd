@@ -225,7 +225,7 @@ ggraph(mc3_graph,
 
 ## 3.1 Objective #1: Visualize Groups based on the Topics Frequently Brought Up in Their Exchanges
 
-### Visualize the Subgraph
+### 3.2 Visualize the Subgraph
 
 A table is generated to see the distinct people, organization and groups whose radio communication Clepper has intercepted.
 
@@ -259,7 +259,9 @@ table_combined <- tibble(
 
 datatable(table_combined)
 ```
-Next, we'll combine all the people, groups and organizations to check what are the people/organization/groups each individuals talk about or talk to:
+
+Next, we'll combine all the people, groups and organizations to check what are the people/organization/groups each individual talk about or talk to:
+
 ```{r}
 people <- c(persons$Person, groups$Group, organizations$Organization)
 people
@@ -268,6 +270,11 @@ persons <- all_nodes %>%
   select(name, new_index)
 persons
 ```
+
+### 3.3 1st Individual: Sam
+
+First, we'll look for nodes that are connected to Sam.
+
 ```{r}
 sam_content <- mc3_graph %>%
   activate(edges) %>%
@@ -281,6 +288,8 @@ used_node_sam <- sam_content %>%
   unique()
 ```
 
+Next, we'll check the new_index in the nodes and extract its name, sub type and content
+
 ```{r}
 connected_node_content_sam <- mc3_graph %>%
   activate(nodes) %>%
@@ -289,6 +298,9 @@ connected_node_content_sam <- mc3_graph %>%
   select(name, sub_type, content)
 
 ```
+
+Then we combine every exchanges Sam receives or sends and check for the contents of the exchanges. We can see which organization or group or individual he talks about.
+
 ```{r}
 all_text_sam <- connected_node_content_sam %>%
   filter(!is.na(content)) %>%
@@ -301,19 +313,27 @@ text_clean_sam <- connected_node_content_sam %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 people_clean <- str_to_lower(people) %>%
   str_replace_all("[^a-z\\s]", "") %>%
   str_squish()
+```
 
+The result is stored in name_freq_sam, where each occurrence of people/group/organization name will be counted and ordered by the highest occurance of names.
+
+```{r}
 name_freq_sam <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_sam$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_sam
 ```
+
 Sam seem to talk to or about these people: the Lookout, the Conservation Vessel, Kelly and Elise.
+
+### 2nd Individual: Kelly
+
+The same procedure is done for Elise and other individuals to check which people, group or organization they talk about.
+
 ```{r}
 kelly_content <- mc3_graph %>%
   activate(edges) %>%
@@ -325,17 +345,13 @@ used_node_kelly <- kelly_content %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
-
-```{r}
+  
 connected_node_content_kelly <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_kelly) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_kelly <- connected_node_content_kelly %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
@@ -347,15 +363,17 @@ text_clean_kelly <- connected_node_content_kelly %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_kelly <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_kelly$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_kelly
-
 ```
+
+Elise frequently talk about or communicate to Sam and Elise.
+
+### 3rd Individual: Nadia Conti
+
 ```{r}
 nadia_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -367,21 +385,16 @@ used_node_nadia <- nadia_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_nadia <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_nadia) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_nadia <- connected_node_content_nadia %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_nadia
 
 text_clean_nadia <- connected_node_content_nadia %>%
   filter(!is.na(content)) %>%
@@ -390,14 +403,17 @@ text_clean_nadia <- connected_node_content_nadia %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_nadia<- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_nadia$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_nadia
 ```
+
+Nadia Conti frequently talk about or communicate to Davis and Elise, Sam, Sailor Shift, the Middleman, the Accountant, Rodriquez, Sailor Shifts Team, V. Miesel Shipping and Conservation Vessels.
+
+### 4th Individual: Elise
+
 ```{r}
 elise_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -409,21 +425,16 @@ used_node_elise <- elise_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_elise <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_elise) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_elise <- connected_node_content_elise %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_elise
 
 text_clean_elise <- connected_node_content_elise %>%
   filter(!is.na(content)) %>%
@@ -432,15 +443,16 @@ text_clean_elise <- connected_node_content_elise %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
-
 name_freq_elise <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_elise$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_elise
 ```
+
+Elise frequently talk about or communicate to Sam, Conservation Vessels and V. Miesel Shipping.
+
+### 5th Individual: Liam Thorne
 
 ```{r}
 liam_contents <- mc3_graph %>%
@@ -453,21 +465,16 @@ used_node_liam <- liam_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_liam <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_liam) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_liam <- connected_node_content_liam %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_nadia
 
 text_clean_liam <- connected_node_content_liam %>%
   filter(!is.na(content)) %>%
@@ -476,14 +483,17 @@ text_clean_liam <- connected_node_content_liam %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_liam <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_liam$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_liam
 ```
+
+Liam Thorne frequently talk about or communicate to Oceanus City Council, Sam, Conservation Vessels, V. Miesel Shipping, Elise, Ms. Money, the Middleman, Green Guardians and Boss.
+
+### 6th individual: Samantha Blake
+
 ```{r}
 samantha_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -495,17 +505,13 @@ used_node_samantha <- samantha_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_samantha <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_samantha) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_samantha <- connected_node_content_samantha %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
@@ -517,14 +523,17 @@ text_clean_samatha <- connected_node_content_samantha %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_samantha <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_samatha$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_samantha
 ```
+
+Samantha Blake frequently talk about or communicate to .
+
+### 7th Individual: Davis
+
 ```{r}
 davis_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -536,17 +545,13 @@ used_node_davis <- davis_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_davis <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_davis) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_davis <- connected_node_content_davis %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
@@ -558,14 +563,15 @@ text_clean_davis <- connected_node_content_davis %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_davis <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_davis$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_davis
 ```
+
+### 8th Individual: Rodriquez
+
 ```{r}
 rodriquez_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -577,21 +583,16 @@ used_node_rodriquez <- rodriquez_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_rodriquez <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_rodriquez) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_rodriquez <- connected_node_content_rodriquez %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_rodriquez
 
 text_clean_rodriquez <- connected_node_content_rodriquez %>%
   filter(!is.na(content)) %>%
@@ -600,14 +601,15 @@ text_clean_rodriquez <- connected_node_content_rodriquez %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_rodriquez <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_rodriquez$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_rodriquez
 ```
+
+### 9th Individual: Sailor Shifts
+
 ```{r}
 sailor_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -619,21 +621,16 @@ used_node_sailor <- sailor_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_sailor <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_sailor) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_sailor <- connected_node_content_sailor %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_sailor
 
 text_clean_sailor <- connected_node_content_sailor %>%
   filter(!is.na(content)) %>%
@@ -642,14 +639,15 @@ text_clean_sailor <- connected_node_content_sailor %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_sailor <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_sailor$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_sailor
 ```
+
+### 10th Individual: Clepper Jensen
+
 ```{r}
 clepper_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -661,21 +659,16 @@ used_node_clepper <- clepper_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_clepper <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_clepper) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_clepper <- connected_node_content_clepper %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_clepper
 
 text_clean_clepper <- connected_node_content_clepper %>%
   filter(!is.na(content)) %>%
@@ -684,14 +677,15 @@ text_clean_clepper <- connected_node_content_clepper %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_clepper <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_clepper$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_clepper
 ```
+
+### 11th Individual: Miranda Jordan 
+
 ```{r}
 miranda_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -703,21 +697,16 @@ used_node_miranda <- miranda_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_miranda <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_miranda) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_miranda <- connected_node_content_miranda %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_miranda
 
 text_clean_miranda <- connected_node_content_miranda %>%
   filter(!is.na(content)) %>%
@@ -726,14 +715,15 @@ text_clean_miranda <- connected_node_content_miranda %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_miranda <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_miranda$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_miranda
 ```
+
+### 12th Individual: The Intern
+
 ```{r}
 intern_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -745,21 +735,16 @@ used_node_intern <- intern_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_intern <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_intern) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_intern <- connected_node_content_intern %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_intern
 
 text_clean_intern <- connected_node_content_intern %>%
   filter(!is.na(content)) %>%
@@ -768,14 +753,14 @@ text_clean_intern <- connected_node_content_intern %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_intern <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_intern$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_intern
 ```
+
+### 13th Individual: The Lookout
 
 ```{r}
 lookout_contents <- mc3_graph %>%
@@ -788,21 +773,22 @@ used_node_lookout <- lookout_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_lookout <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_lookout) %>%
   select(name, sub_type, content)
 
-```
-```{r}
+connected_node_content_lookout <- mc3_graph %>%
+  activate(nodes) %>%
+  as_tibble() %>%
+  filter(new_index %in% used_node_lookout) %>%
+  select(name, sub_type, content)
+
 all_text_lookout <- connected_node_content_lookout %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_lookout
 
 text_clean_lookout <- connected_node_content_lookout %>%
   filter(!is.na(content)) %>%
@@ -811,14 +797,15 @@ text_clean_lookout <- connected_node_content_lookout %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_lookout <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_lookout$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_lookout
 ```
+
+### 14th Individual: The Accountant
+
 ```{r}
 accountant_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -830,21 +817,16 @@ used_node_accountant <- accountant_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_accountant <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_accountant) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_accountant <- connected_node_content_accountant %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_accountant
 
 text_clean_accountant <- connected_node_content_accountant %>%
   filter(!is.na(content)) %>%
@@ -853,14 +835,15 @@ text_clean_accountant <- connected_node_content_accountant %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_accountant <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_accountant$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_accountant
 ```
+
+### 15th Individual: Ms. Money
+
 ```{r}
 money_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -872,21 +855,16 @@ used_node_money <- money_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_money <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_money) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_money <- connected_node_content_money %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_money
 
 text_clean_money <- connected_node_content_money %>%
   filter(!is.na(content)) %>%
@@ -895,14 +873,13 @@ text_clean_money <- connected_node_content_money %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_money <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_money$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_money
 ```
+
 ```{r}
 middleman_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -914,21 +891,16 @@ used_node_middleman <- middleman_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_middleman <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_middleman) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_middleman <- connected_node_content_middleman %>%
   filter(!is.na(content)) %>%
-  summarise(full_text = paste(content, collapse = " "))
-all_text_middleman
+  summarise(full_text = paste(content, collapse = " ")) 
 
 text_clean_middleman <- connected_node_content_middleman %>%
   filter(!is.na(content)) %>%
@@ -937,14 +909,15 @@ text_clean_middleman <- connected_node_content_middleman %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_middleman <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_middleman$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_middleman
 ```
+
+### 17th Inidvidual: Boss
+
 ```{r}
 boss_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -956,21 +929,16 @@ used_node_boss <- boss_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_boss <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_boss) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_boss <- connected_node_content_boss %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_boss
 
 text_clean_boss <- connected_node_content_boss %>%
   filter(!is.na(content)) %>%
@@ -979,14 +947,15 @@ text_clean_boss <- connected_node_content_boss %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_boss <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_boss$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_boss
 ```
+
+### 18th Individual: Small Fry
+
 ```{r}
 fry_contents <- mc3_graph %>%
   activate(edges) %>%
@@ -998,21 +967,16 @@ used_node_fry <- fry_contents %>%
   select(from, to) %>%
   unlist() %>%
   unique()
-```
 
-```{r}
 connected_node_content_fry <- mc3_graph %>%
   activate(nodes) %>%
   as_tibble() %>%
   filter(new_index %in% used_node_fry) %>%
   select(name, sub_type, content)
 
-```
-```{r}
 all_text_fry <- connected_node_content_fry %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
-all_text_fry
 
 text_clean_fry <- connected_node_content_fry %>%
   filter(!is.na(content)) %>%
@@ -1021,14 +985,13 @@ text_clean_fry <- connected_node_content_fry %>%
          full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
          full_text = str_squish(full_text))
 
-```
-```{r}
 name_freq_fry <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_fry$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
 name_freq_fry
 ```
+
 ## 4.1 Objective #2: Is Nadia Conti currently involved in illegal activities ?
 
 ### 4.2 Exchanges by or about Nadia Conti
