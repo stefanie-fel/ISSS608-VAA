@@ -12,7 +12,8 @@ execute:
 
 ## 1. Background
 
-Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. Currently, people are shifting to another investment, i.e. ocean tourism industry, which creates a growing tension. With the growing tourism, it attracted international pop star Sailor Shift who wanted to shoot his/her new music video in the island.\
+Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. Currently, people are shifting to another investment, i.e. ocean tourism industry, which creates a growing tension. With the growing tourism, it attracted international pop star Sailor Shift who wanted to shoot his/her new music video in the island.
+
 Clepper Jensen is a former analyst at FishEye company who is new a seasoned journalist for Hecklee Herald, is observing the tension and recently looking at temporary closure of Nemo Reef. By using investigative tools and radio communication, he uncovered a complex web of expedited approvals and secretive logistics, in which I will be helping him to develop visualization to help give better clarity to the story.
 
 ### 1.2 Objective
@@ -292,7 +293,7 @@ timeline_nadia
 ::: {.callout-note title="Insight from the timeline"}
 -   People that are involved: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter's Team, The Middleman, Ramora, Harbor Master and even the superstar Sailor Shift
 -   Code names that are mentioned: NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844
--   There are couple of striking message mentioned in the exchanges e.g. "keep tourism appearance", "keep operations discreet", "destroy all related documentation" or "we need to stay under radar", which sounds sounds suspicious, so we should look deeper into it.
+-   There are couple of striking message mentioned in the exchanges e.g. "keep tourism appearance", "keep operations discreet", "destroy all related documentation", "ensure Harbor Master remains cooperative" or "we need to stay under radar", which sounds sounds suspicious, so we should look deeper into it.
 :::
 
 ### Create timeline for Code Names
@@ -323,9 +324,9 @@ datatable(comm_about_cr)
 ```
 
 ::: {.callout-note title="Insight from the timeline and table"}
--   #CR-7844 is a special marine research permit created under V.Miesel to conduct marine research equipment transport into the Nemo Reef, approved by Oceanus City Council. This indicates that V. Miesel is aware and is involved in the operation
+-   #CR-7844 is a special marine research permit created under V. Miesel to conduct marine research equipment transport into the Nemo Reef, approved by Oceanus City Council. This indicates that V. Miesel is aware and is involved in the operation
 -   Similar to the last timeline built, there are frequent messages about transferring equipment through eastern reef routes and bringing security team and extra crew for the operation.
--   It was officially used on 11 October for operation. On one of the message from Small Fry to Davis on 12 October 2040, he said that all documentation seem to be in order for tomorrow's operation.
+-   The premit was officially used on 11 October for operation. On one of the message from Small Fry to Davis on 12 October 2040, he said that all documentation seem to be in order for tomorrow's operation.
 -   They were secretive about the permit and mentioned Delta-3 encryption before the closing of Nemo Reef
 :::
 
@@ -356,103 +357,9 @@ datatable(comm_13_oct)
 
 ::: {.callout-note title="Insight from the timeline and table"}
 -   From the timeline, we can see that the conservation vessel were still monitoring the activities of people with permits. However, what's more surprising is that we found evidence the Oceanus City Council is actually involved in the operation as they told Green Guardians to hold the investigation when there may be potential fuel contamination in the Nemo Reef
--   It seems that there is another operation planned as Nadia asks David to verify the final equipment transport at Nemo Reef (might be for Berth 14)
--   Incidents happening on the day: there was also a music video, equipment transfers, fuel contamination and shooting on the Nemo Reef
+-   It seems that there is another operation planned as Nadia asks David to verify the final equipment transport at Nemo Reef.
+-   Incidents happening on the day: there was also a music video shooting, equipment transfers and possible fuel contamination on the Nemo Reef
 :::
-
-
-```{r}
-nadia_node <- mc3_graph %>%
-  activate(nodes) %>%
-  filter(sub_type == "Person" & name == "Nadia Conti")
-
-nadia_node %>%
-  as_tibble() %>%
-  pull(new_index)
-```
-
-```{r}
-graph_relation <- mc3_graph %>%
-  activate(edges) %>%
-  filter(from == "3" | to == "3")
-```
-
-```{r}
-node_ids <- graph_relation %>%
-  activate(edges) %>%
-  as_tibble() %>%
-  select(from, to) %>%
-  unlist() %>%
-  unique()
-
-```
-
-```{r}
-node_labels <- graph_relation %>%
-  activate(nodes) %>%
-  as_tibble() %>%
-  mutate(node_id = row_number()) %>%
-  filter(node_id %in% node_ids)
-```
-
-```{r}
-node_labels %>% select(node_id, label, name, sub_type, content)
-```
-
-```{r}
-content <- node_labels$content
-persons <- c(persons, organizations, "Haacklee Harbor", "Nadia", "Conti", "Liam", "Samantha", "Clepper")
-persons
-
-extracted_names <- list()
-names <- list()
-
-for (i in seq_along(content)) {
-  names <- character(0)  # empty vector for matched names in this record
-  
-  for (person in persons) {
-    if (grepl(person, content[i], ignore.case = TRUE)) {
-      names <- c(names, person)
-    }
-  }
-  
-  extracted_names[[i]] <- unique(names)  # save unique names found in this record
-}
-
-# View result
-print(extracted_names)
-```
-
-```{r}
-exchanges_nadia <- data.frame(
-  content = character(),
-  sender = character(),
-  recipient = character(),
-  stringsAsFactors = FALSE
-)
-
-# Loop through extracted_names and corresponding content
-for (i in seq_along(extracted_names)) {
-  names <- extracted_names[[i]]
-  if (length(names) >= 2) {
-    sender <- names[1]
-    recipient <- names[2]
-    text <- node_labels$content[i]
-
-    exchanges_nadia <- rbind(
-      exchanges_nadia,
-      data.frame(content = text, sender = sender, recipient = recipient, stringsAsFactors = FALSE)
-    )
-  }
-}
-exchanges_nadia
-```
-
-Conslusion:
-- Nadia Conti was working together with V. Miesel to create special permits that as intended, she created permit for operations that is illegal -> 
-thus Clepper's suspicions are justified
-
-EXTRA THINGS THAT CAN BE REMOVED IF NOT NEEDED
 
 Next, we'll look into the **Delta-3 encryption** since the last exchange about the permit mentioned Delta-3 encryption.So we'll filter exchanges that mentions Delta-3 encryption, Delta or encryption in case they're mentioned separately.
 
@@ -474,27 +381,19 @@ timeline_encryption
 
 ::: {.callout-note title="Insight from the timeline"}
 -   Delta-3 encryption is used as communication means between everyone that's involved in the operation
+
 -   The operation start executing on the 14 October on 04:00
+
 -   It is confirmed that V. Miesel is involved in the operation as some of its personnel are integrated in the operation
--   There are a few encrypted
 :::
-```{r}
-comm_harbor_access <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "ALPHA-937"))
 
-comm_harbor_access %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
-```
+### Conclusion from the timeline:
 
-```{r}
-comm_berth_17 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(timestamp, "2040-10-15"))
+-   Nadia Conti was working together with V. Miesel to create special permits that as intended, she created permit for operations that is illegal
 
-comm_encryption %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
-```
+-   There is also a possible bribery done by Nadia as she told Liam that she needed his services to ensure that Harbor Master remains "cooperative" through next week and investigation on Nemo Reef permits were brewing.
 
-```{r}
-comm_nr_1045 <- mc3_graph %>% activate(nodes) %>% filter(str_detect(content, "NR-1045"))
-
-comm_nr_1045 %>% as_tibble() %>% select(label, id, timestamp, content,monitoring_type, findings, new_index) %>% datatable()
-```
+Although, there was no evidence apart from her exchanges that she was directly involved in the illegal activities. It seemed like she worked behind the scene in getting the permit and authorizing operations, thus justifying Clepper's suspicions.
 
 ## Reference
 
