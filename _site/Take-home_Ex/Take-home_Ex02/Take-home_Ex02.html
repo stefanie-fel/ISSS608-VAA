@@ -755,7 +755,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x0000019a6127fa50&gt; 
+ $ :&lt;environment: 0x000001db8b2a2c48&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -825,7 +825,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="application/json" data-for="htmlwidget-b316f80421c5be0435d7">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"],["Sam","Kelly","Nadia Conti","Elise","Liam Thorne","Samantha Blake","Davis","Rodriguez","Sailor Shift","Clepper Jensen","Miranda Jordan","The Intern","The Lookout","The Accountant","Mrs. Money","The Middleman","Boss","Small Fry"],["Glitters Team","Oceanus City Council","Green Guardians","V. Miesel Shipping","Sailor Shifts Team",null,null,null,null,null,null,null,null,null,null,null,null,null],["Recreational Fishing Boats","City Officials","Diving Tour Operators","Tourists","Conservation Vessels",null,null,null,null,null,null,null,null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Person<\/th>\n      <th>Organization<\/th>\n      <th>Group<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Person","targets":1},{"name":"Organization","targets":2},{"name":"Group","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<p>Next, we’ll combine all the people, groups and organizations to</p>
+<p>Next, we’ll combine all the people, groups and organizations to check what are the people/organization/groups each individuals talk about or talk to:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>people <span class="ot">&lt;-</span> <span class="fu">c</span>(persons<span class="sc">$</span>Person, groups<span class="sc">$</span>Group, organizations<span class="sc">$</span>Organization)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>people</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -932,6 +932,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ 18 more rows</code></pre>
 </div>
 </div>
+<p>Sam seem to talk to or about these people: the Lookout, the Conservation Vessel, Kelly and Elise.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>kelly_content <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(edges) <span class="sc">%&gt;%</span></span>
