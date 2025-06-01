@@ -249,16 +249,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">1. Background</a></li>
-  <li><a href="#inspect-knowledge-graph-structure" id="toc-inspect-knowledge-graph-structure" class="nav-link" data-scroll-target="#inspect-knowledge-graph-structure">Inspect Knowledge Graph Structure</a></li>
-  <li><a href="#extract-edges-and-nodes-tables" id="toc-extract-edges-and-nodes-tables" class="nav-link" data-scroll-target="#extract-edges-and-nodes-tables">Extract Edges and Nodes Tables</a></li>
-  <li><a href="#initial-eda" id="toc-initial-eda" class="nav-link" data-scroll-target="#initial-eda">Initial EDA</a></li>
-  <li><a href="#data-cleaning-and-wrangling" id="toc-data-cleaning-and-wrangling" class="nav-link" data-scroll-target="#data-cleaning-and-wrangling">Data Cleaning and Wrangling</a></li>
-  <li><a href="#build-tidygraph-object" id="toc-build-tidygraph-object" class="nav-link" data-scroll-target="#build-tidygraph-object">Build tidygraph Object</a></li>
-  <li><a href="#visualize-knowledge-graph" id="toc-visualize-knowledge-graph" class="nav-link" data-scroll-target="#visualize-knowledge-graph">Visualize Knowledge Graph</a></li>
-  <li><a href="#objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges" id="toc-objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges" class="nav-link" data-scroll-target="#objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges">Objective #1: Visualize Groups based on the Topics Frequently Brought Up in Their Exchanges</a></li>
-  <li><a href="#objective-2-is-nadia-conti-currently-involved-in-illegal-activities" id="toc-objective-2-is-nadia-conti-currently-involved-in-illegal-activities" class="nav-link" data-scroll-target="#objective-2-is-nadia-conti-currently-involved-in-illegal-activities">Objective #2: Is Nadia Conti currently involved in illegal activities ?</a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">1.1 Background</a></li>
+  <li><a href="#inspect-knowledge-graph-structure" id="toc-inspect-knowledge-graph-structure" class="nav-link" data-scroll-target="#inspect-knowledge-graph-structure">2.1 Inspect Knowledge Graph Structure</a></li>
+  <li><a href="#extract-edges-and-nodes-tables" id="toc-extract-edges-and-nodes-tables" class="nav-link" data-scroll-target="#extract-edges-and-nodes-tables">2.2 Extract Edges and Nodes Tables</a></li>
+  <li><a href="#initial-eda" id="toc-initial-eda" class="nav-link" data-scroll-target="#initial-eda">2.3 Initial EDA</a></li>
+  <li><a href="#data-cleaning-and-wrangling" id="toc-data-cleaning-and-wrangling" class="nav-link" data-scroll-target="#data-cleaning-and-wrangling">2.4 Data Cleaning and Wrangling</a></li>
+  <li><a href="#build-tidygraph-object" id="toc-build-tidygraph-object" class="nav-link" data-scroll-target="#build-tidygraph-object">2.5 Build tidygraph Object</a></li>
+  <li><a href="#visualize-knowledge-graph" id="toc-visualize-knowledge-graph" class="nav-link" data-scroll-target="#visualize-knowledge-graph">2.6 Visualize Knowledge Graph</a></li>
+  <li><a href="#objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges" id="toc-objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges" class="nav-link" data-scroll-target="#objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges">3.1 Objective #1: Visualize Groups based on the Topics Frequently Brought Up in Their Exchanges</a></li>
+  <li><a href="#objective-2-is-nadia-conti-currently-involved-in-illegal-activities" id="toc-objective-2-is-nadia-conti-currently-involved-in-illegal-activities" class="nav-link" data-scroll-target="#objective-2-is-nadia-conti-currently-involved-in-illegal-activities">4.1 Objective #2: Is Nadia Conti currently involved in illegal activities ?</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">5. Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">1. Background</h2>
+<h2 class="anchored" data-anchor-id="background">1.1 Background</h2>
 <p>Over the past decade, the community of Oceanus has undergone transformations and challenges evolving from its fishing-centric origins. Currently, people are shifting to another investment, i.e.&nbsp;ocean tourism industry, which creates a growing tension. With the growing tourism, it attracted international pop star Sailor Shift who wanted to shoot his/her new music video in the island.</p>
 <p>Clepper Jensen is a former analyst at FishEye company who is new a seasoned journalist for Hecklee Herald, is observing the tension and recently looking at temporary closure of Nemo Reef. By using investigative tools and radio communication, he uncovered a complex web of expedited approvals and secretive logistics, in which I will be helping him to develop visualization to help give better clarity to the story.</p>
 <section id="objective" class="level3">
@@ -388,7 +388,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 <section id="inspect-knowledge-graph-structure" class="level2">
-<h2 class="anchored" data-anchor-id="inspect-knowledge-graph-structure">Inspect Knowledge Graph Structure</h2>
+<h2 class="anchored" data-anchor-id="inspect-knowledge-graph-structure">2.1 Inspect Knowledge Graph Structure</h2>
 <p>Before preparing the data, we’ll check the structure of the knowledge graph.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(MC3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -446,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Since the industry column is in list data type, we’’ exclude the column since list data type isn’t acceptable by <code>tbl_graph()</code>.</p>
 </section>
 <section id="extract-edges-and-nodes-tables" class="level2">
-<h2 class="anchored" data-anchor-id="extract-edges-and-nodes-tables">Extract Edges and Nodes Tables</h2>
+<h2 class="anchored" data-anchor-id="extract-edges-and-nodes-tables">2.2 Extract Edges and Nodes Tables</h2>
 <p>The <code>as_tibble()</code> function is used to extract nodes and links tibble data frame from MC3 tibble data frame.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mc3_nodes <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(MC3<span class="sc">$</span>nodes)</span>
@@ -454,7 +454,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="initial-eda" class="level2">
-<h2 class="anchored" data-anchor-id="initial-eda">Initial EDA</h2>
+<h2 class="anchored" data-anchor-id="initial-eda">2.3 Initial EDA</h2>
 <p>We’ll use <code>ExpCatViz()</code> from SmartEDA library to reveal frequency distribution of all categorical fields from mc3_nodes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ExpCatViz</span>(<span class="at">data=</span>mc3_nodes,</span>
@@ -615,7 +615,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="data-cleaning-and-wrangling" class="level2">
-<h2 class="anchored" data-anchor-id="data-cleaning-and-wrangling">Data Cleaning and Wrangling</h2>
+<h2 class="anchored" data-anchor-id="data-cleaning-and-wrangling">2.4 Data Cleaning and Wrangling</h2>
 <p>The following steps are taken to clean the <strong>nodes</strong>:</p>
 <ul>
 <li><p>Convert values in id into character data type</p></li>
@@ -696,7 +696,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="build-tidygraph-object" class="level2">
-<h2 class="anchored" data-anchor-id="build-tidygraph-object">Build tidygraph Object</h2>
+<h2 class="anchored" data-anchor-id="build-tidygraph-object">2.5 Build tidygraph Object</h2>
 <p>Next, we’ll build the tidygraph object</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>mc3_graph <span class="ot">&lt;-</span> <span class="fu">tbl_graph</span>(</span>
@@ -755,13 +755,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x000002553494aa48&gt; 
+ $ :&lt;environment: 0x00000133a1a0d888&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
 </section>
 <section id="visualize-knowledge-graph" class="level2">
-<h2 class="anchored" data-anchor-id="visualize-knowledge-graph">Visualize Knowledge Graph</h2>
+<h2 class="anchored" data-anchor-id="visualize-knowledge-graph">2.6 Visualize Knowledge Graph</h2>
 <p>Next, we’ll set a seed to ensure reproducibility.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -787,7 +787,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges" class="level2">
-<h2 class="anchored" data-anchor-id="objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges">Objective #1: Visualize Groups based on the Topics Frequently Brought Up in Their Exchanges</h2>
+<h2 class="anchored" data-anchor-id="objective-1-visualize-groups-based-on-the-topics-frequently-brought-up-in-their-exchanges">3.1 Objective #1: Visualize Groups based on the Topics Frequently Brought Up in Their Exchanges</h2>
 <section id="visualize-the-subgraph" class="level3">
 <h3 class="anchored" data-anchor-id="visualize-the-subgraph">Visualize the Subgraph</h3>
 <p>A table is generated to see the distinct people, organization and groups whose radio communication Clepper has intercepted.</p>
@@ -833,9 +833,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 <section id="objective-2-is-nadia-conti-currently-involved-in-illegal-activities" class="level2">
-<h2 class="anchored" data-anchor-id="objective-2-is-nadia-conti-currently-involved-in-illegal-activities">Objective #2: Is Nadia Conti currently involved in illegal activities ?</h2>
+<h2 class="anchored" data-anchor-id="objective-2-is-nadia-conti-currently-involved-in-illegal-activities">4.1 Objective #2: Is Nadia Conti currently involved in illegal activities ?</h2>
 <section id="exchanges-by-or-about-nadia-conti" class="level3">
-<h3 class="anchored" data-anchor-id="exchanges-by-or-about-nadia-conti">Exchanges by or about Nadia Conti</h3>
+<h3 class="anchored" data-anchor-id="exchanges-by-or-about-nadia-conti">4.2 Exchanges by or about Nadia Conti</h3>
 <p>First, we’ll look at the communication that mentioned Nadia Conti, Conti and Nadia as the content mentions their identity and to whom they send the message to.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>comm_about_nadia <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
@@ -1009,7 +1009,7 @@ Insight from the timeline
 </div>
 </section>
 <section id="create-timeline-for-code-names" class="level3">
-<h3 class="anchored" data-anchor-id="create-timeline-for-code-names">Create timeline for Code Names</h3>
+<h3 class="anchored" data-anchor-id="create-timeline-for-code-names">4.3 Create timeline for Code Names</h3>
 <p>First, let’s create timeline for code name that is mentioned in the exchanges. In this code, we’ll look at the code name <strong>#CR-7844</strong> as it was mentioned frequently.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
@@ -1600,7 +1600,7 @@ Insight from the timeline
 </div>
 </section>
 <section id="conclusion-from-the-timeline" class="level3">
-<h3 class="anchored" data-anchor-id="conclusion-from-the-timeline">Conclusion from the timeline:</h3>
+<h3 class="anchored" data-anchor-id="conclusion-from-the-timeline">4.3 Conclusion from the timeline:</h3>
 <ul>
 <li><p>Nadia Conti was working together with V. Miesel to create special permits that as intended, she created permit for operations that is illegal</p></li>
 <li><p>There is also a possible bribery done by Nadia as she told Liam that she needed his services to ensure that Harbor Master remains “cooperative” through next week and investigation on Nemo Reef permits were brewing.</p></li>
@@ -1609,7 +1609,7 @@ Insight from the timeline
 </section>
 </section>
 <section id="reference" class="level2">
-<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<h2 class="anchored" data-anchor-id="reference">5. Reference</h2>
 <ul>
 <li><a href="https://github.com/feddelegrand7/cronologia" class="uri">https://github.com/feddelegrand7/cronologia</a></li>
 </ul>
