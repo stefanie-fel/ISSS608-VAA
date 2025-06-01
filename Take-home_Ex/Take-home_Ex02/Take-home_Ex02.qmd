@@ -43,8 +43,10 @@ table_data <- matrix(
     "knitr",  "Provides a tool for dynamic report generation",
     "datable", "Provides an R interface to the JavaScript library DataTables", 
     "stringr", "Provides a cohesive set of functions designed to make working with strings easy", 
-    "cronologia", "HTML vertical timeline from a data frame as an input for 'rmarkdown' documents and 'shiny' applications"), 
-  nrow = 9,
+    "cronologia", "HTML vertical timeline from a data frame as an input for 'rmarkdown' documents and 'shiny' applications", 
+    "tidytext", "make many text mining tasks easier, more effective, and consistent with tools already in wide use",  
+    "dplyr", " grammar of data manipulation, providing a consistent set of verbs that help solve the most common data manipulation challenges"), 
+  nrow = 11,
   byrow = TRUE
 )
 
@@ -264,11 +266,9 @@ Next, we'll combine all the people, groups and organizations to check what are t
 
 ```{r}
 people <- c(persons$Person, groups$Group, organizations$Organization)
-people
 persons <- all_nodes %>%
   filter(sub_type == "Person") %>%
   select(name, new_index)
-persons
 ```
 
 ### 3.3 1st Individual: Sam
@@ -305,6 +305,7 @@ Then we combine every exchanges Sam receives or sends and check for the contents
 all_text_sam <- connected_node_content_sam %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_sam
 
 text_clean_sam <- connected_node_content_sam %>%
   filter(!is.na(content)) %>%
@@ -325,7 +326,7 @@ name_freq_sam <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_sam$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_sam
+datatable(name_freq_sam)
 ```
 
 Sam seem to talk to or about these people: the Lookout, the Conservation Vessel, Kelly and Elise.
@@ -355,6 +356,7 @@ connected_node_content_kelly <- mc3_graph %>%
 all_text_kelly <- connected_node_content_kelly %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_kelly
 
 text_clean_kelly <- connected_node_content_kelly %>%
   filter(!is.na(content)) %>%
@@ -367,7 +369,7 @@ name_freq_kelly <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_kelly$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_kelly
+datatable(name_freq_kelly)
 ```
 
 Elise frequently talk about or communicate to Sam and Elise.
@@ -395,6 +397,7 @@ connected_node_content_nadia <- mc3_graph %>%
 all_text_nadia <- connected_node_content_nadia %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_nadia
 
 text_clean_nadia <- connected_node_content_nadia %>%
   filter(!is.na(content)) %>%
@@ -407,7 +410,7 @@ name_freq_nadia<- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_nadia$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_nadia
+datatable(name_freq_nadia)
 ```
 
 Nadia Conti frequently talk about or communicate to Davis and Elise, Sam, Sailor Shift, the Middleman, the Accountant, Rodriquez, Sailor Shifts Team, V. Miesel Shipping and Conservation Vessels.
@@ -435,6 +438,7 @@ connected_node_content_elise <- mc3_graph %>%
 all_text_elise <- connected_node_content_elise %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_elise
 
 text_clean_elise <- connected_node_content_elise %>%
   filter(!is.na(content)) %>%
@@ -447,7 +451,7 @@ name_freq_elise <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_elise$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_elise
+datatable(name_freq_elise)
 ```
 
 Elise frequently talk about or communicate to Sam, Conservation Vessels and V. Miesel Shipping.
@@ -475,6 +479,7 @@ connected_node_content_liam <- mc3_graph %>%
 all_text_liam <- connected_node_content_liam %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_liam
 
 text_clean_liam <- connected_node_content_liam %>%
   filter(!is.na(content)) %>%
@@ -487,7 +492,7 @@ name_freq_liam <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_liam$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_liam
+datatable(name_freq_liam)
 ```
 
 Liam Thorne frequently talk about or communicate to Oceanus City Council, Sam, Conservation Vessels, V. Miesel Shipping, Elise, Ms. Money, the Middleman, Green Guardians and Boss.
@@ -515,6 +520,7 @@ connected_node_content_samantha <- mc3_graph %>%
 all_text_samantha <- connected_node_content_samantha %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_samantha
 
 text_clean_samatha <- connected_node_content_samantha %>%
   filter(!is.na(content)) %>%
@@ -527,10 +533,10 @@ name_freq_samantha <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_samatha$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_samantha
+datatable(name_freq_samantha)
 ```
 
-Samantha Blake frequently talk about or communicate to .
+Samantha Blake frequently talk about or communicate to Sam, Oceanus City Council, Sailor Shift and his/her team, Boss and Glitter's Team.
 
 ### 7th Individual: Davis
 
@@ -555,6 +561,7 @@ connected_node_content_davis <- mc3_graph %>%
 all_text_davis <- connected_node_content_davis %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_davis
 
 text_clean_davis <- connected_node_content_davis %>%
   filter(!is.na(content)) %>%
@@ -567,8 +574,10 @@ name_freq_davis <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_davis$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_davis
+datatable(name_freq_davis)
 ```
+
+Davis frequently talk about or communicate to Nadia Conti, Small Fry, Conservation Vessels, V. Miesel Shipping and the Middleman.
 
 ### 8th Individual: Rodriquez
 
@@ -593,6 +602,7 @@ connected_node_content_rodriquez <- mc3_graph %>%
 all_text_rodriquez <- connected_node_content_rodriquez %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_rodriquez
 
 text_clean_rodriquez <- connected_node_content_rodriquez %>%
   filter(!is.na(content)) %>%
@@ -605,8 +615,10 @@ name_freq_rodriquez <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_rodriquez$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_rodriquez
+datatable(name_freq_rodriquez)
 ```
+
+Rodriquez frequently talk about or communicate to Davis, Nadia Conti, Boss, Conservation Vessel, Sailor Shift and Mrs. Money.
 
 ### 9th Individual: Sailor Shifts
 
@@ -631,20 +643,11 @@ connected_node_content_sailor <- mc3_graph %>%
 all_text_sailor <- connected_node_content_sailor %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_sailor
 
-text_clean_sailor <- connected_node_content_sailor %>%
-  filter(!is.na(content)) %>%
-  summarise(full_text = paste(content, collapse = " ")) %>%
-  mutate(full_text = str_to_lower(full_text),
-         full_text = str_replace_all(full_text, "[^a-z\\s]", ""),
-         full_text = str_squish(full_text))
-
-name_freq_sailor <- tibble(name = people, clean_name = people_clean) %>%
-  rowwise() %>%
-  mutate(freq = str_count(text_clean_sailor$full_text, fixed(clean_name))) %>%
-  arrange(desc(freq))
-name_freq_sailor
 ```
+
+It seems that Sailor, though recorded as an individual, but did not communicate to anyone.
 
 ### 10th Individual: Clepper Jensen
 
@@ -669,6 +672,7 @@ connected_node_content_clepper <- mc3_graph %>%
 all_text_clepper <- connected_node_content_clepper %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_clepper
 
 text_clean_clepper <- connected_node_content_clepper %>%
   filter(!is.na(content)) %>%
@@ -681,10 +685,12 @@ name_freq_clepper <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_clepper$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_clepper
+datatable(name_freq_clepper)
 ```
 
-### 11th Individual: Miranda Jordan 
+Clepper Jensen frequently talk about or communicate to Rodriquez, Conservation Vessels, Sam, V. Miesel Shipping, sailor Shift, Oceanus City Council and Sailor Shift's team.
+
+### 11th Individual: Miranda Jordan
 
 ```{r}
 miranda_contents <- mc3_graph %>%
@@ -707,6 +713,7 @@ connected_node_content_miranda <- mc3_graph %>%
 all_text_miranda <- connected_node_content_miranda %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_miranda
 
 text_clean_miranda <- connected_node_content_miranda %>%
   filter(!is.na(content)) %>%
@@ -719,8 +726,10 @@ name_freq_miranda <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_miranda$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_miranda
+datatable(name_freq_miranda)
 ```
+
+Miranda Jordan frequently talk about or communicate to Rodriquez, Conservation Vessels, Sam, V. Miesel Shipping, Sailor Shift and his/her team and Oceanus City Council.
 
 ### 12th Individual: The Intern
 
@@ -745,6 +754,7 @@ connected_node_content_intern <- mc3_graph %>%
 all_text_intern <- connected_node_content_intern %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_intern
 
 text_clean_intern <- connected_node_content_intern %>%
   filter(!is.na(content)) %>%
@@ -757,8 +767,10 @@ name_freq_intern <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_intern$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_intern
+datatable(name_freq_intern)
 ```
+
+The Intern frequently talk about or communicate to the Lookout, Mrs. Money, Conservation Vessels, Sam adn V. Miesel Shipping.
 
 ### 13th Individual: The Lookout
 
@@ -789,6 +801,7 @@ connected_node_content_lookout <- mc3_graph %>%
 all_text_lookout <- connected_node_content_lookout %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_lookout
 
 text_clean_lookout <- connected_node_content_lookout %>%
   filter(!is.na(content)) %>%
@@ -801,8 +814,10 @@ name_freq_lookout <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_lookout$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_lookout
+datatable(name_freq_lookout)
 ```
+
+The Intern frequently talk about or communicate to the Lookout, Conservation Vessels, Mrs. Money, Green Guardians and Sam.
 
 ### 14th Individual: The Accountant
 
@@ -827,6 +842,7 @@ connected_node_content_accountant <- mc3_graph %>%
 all_text_accountant <- connected_node_content_accountant %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_accountant
 
 text_clean_accountant <- connected_node_content_accountant %>%
   filter(!is.na(content)) %>%
@@ -839,10 +855,12 @@ name_freq_accountant <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_accountant$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_accountant
+datatable(name_freq_accountant)
 ```
 
-### 15th Individual: Ms. Money
+The Accountant frequently talk about or communicate to The Middleman, Boss and Conservation Vessels.
+
+### 15th Individual: Mrs. Money
 
 ```{r}
 money_contents <- mc3_graph %>%
@@ -865,6 +883,7 @@ connected_node_content_money <- mc3_graph %>%
 all_text_money <- connected_node_content_money %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_money
 
 text_clean_money <- connected_node_content_money %>%
   filter(!is.na(content)) %>%
@@ -877,8 +896,12 @@ name_freq_money <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_money$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_money
+datatable(name_freq_money)
 ```
+
+Mrs. Money seem to be a person who wants to be anonymous and keep their real identities hidden, as frequently talk about or communicate to the Intern, Boss, the Lookout, the Middleman, people who also use nicknames. Apart from that Mrs. Money seem to frequently talk about or communicate to Conservation Vessels, V. Miesel Shipping, Sam and Rodriquez.
+
+### 16th Individual: The Middleman
 
 ```{r}
 middleman_contents <- mc3_graph %>%
@@ -901,6 +924,7 @@ connected_node_content_middleman <- mc3_graph %>%
 all_text_middleman <- connected_node_content_middleman %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " ")) 
+all_text_middleman
 
 text_clean_middleman <- connected_node_content_middleman %>%
   filter(!is.na(content)) %>%
@@ -913,8 +937,10 @@ name_freq_middleman <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_middleman$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_middleman
+datatable(name_freq_middleman)
 ```
+
+The Middleman is similar to Mrs. Money, he/she talk about or communicate to Mrs. Money, Boss, the Acountant, people who keep their identities hidden. He/she also talks about or to V. Miesel Shipping, Green Guardians, Sam and Conservation Vessels.
 
 ### 17th Inidvidual: Boss
 
@@ -939,6 +965,7 @@ connected_node_content_boss <- mc3_graph %>%
 all_text_boss <- connected_node_content_boss %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_boss
 
 text_clean_boss <- connected_node_content_boss %>%
   filter(!is.na(content)) %>%
@@ -951,8 +978,10 @@ name_freq_boss <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_boss$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_boss
+datatable(name_freq_boss)
 ```
+
+Boss frequently talk about or communicate to Mrs. Money, the Middleman, Conservation Vessels, the Intern, Rodrqiuez, V. Miesel Shipping, Davis, the Accountant, Sam, Nadia Conti, Samantha Blake, Glitter's Team and Green Guardians.
 
 ### 18th Individual: Small Fry
 
@@ -977,6 +1006,7 @@ connected_node_content_fry <- mc3_graph %>%
 all_text_fry <- connected_node_content_fry %>%
   filter(!is.na(content)) %>%
   summarise(full_text = paste(content, collapse = " "))
+all_text_fry
 
 text_clean_fry <- connected_node_content_fry %>%
   filter(!is.na(content)) %>%
@@ -989,8 +1019,10 @@ name_freq_fry <- tibble(name = people, clean_name = people_clean) %>%
   rowwise() %>%
   mutate(freq = str_count(text_clean_fry$full_text, fixed(clean_name))) %>%
   arrange(desc(freq))
-name_freq_fry
+datatable(name_freq_fry)
 ```
+
+Small Fry frequently talk about or communicate to Glitter's Team, Davis and Boss.
 
 ## 4.1 Objective #2: Is Nadia Conti currently involved in illegal activities ?
 
