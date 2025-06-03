@@ -1,0 +1,25 @@
+---
+title: "Take-home Exercise 3"
+author: "Stefanie Felicia"
+date: ""
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+In this take-home exercise, you are required to select one of the module of your proposed Shiny application and complete the following tasks:
+
+    To evaluate and determine the necessary R packages needed for your Shiny application are supported in R CRAN,
+    To prepare and test the specific R codes can be run and returned the correct output as expected,
+    To determine the parameters and outputs that will be exposed on the Shiny applications, and
+    To select the appropriate Shiny UI components for exposing the parameters determine above.
+
+
+The analytical visualisation must be prepared by using R and appropriate R packages. The report must provide detail discussion and explanation of:
+
+    the data preparation process,
+    the selection of data visualisation techniques used,
+    and the data visualisation design and interactivity principles and best practices implemented.
