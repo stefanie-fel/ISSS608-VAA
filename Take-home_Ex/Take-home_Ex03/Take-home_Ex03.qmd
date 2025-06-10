@@ -1,7 +1,7 @@
 ---
 title: "Take-home Exercise 3"
 author: "Stefanie Felicia"
-date: ""
+date: "10 June 2025"
 date-modified: "last-modified"
 execute: 
   eval: true
@@ -10,16 +10,28 @@ execute:
   freeze: true
 ---
 
-In this take-home exercise, you are required to select one of the module of your proposed Shiny application and complete the following tasks:
+## 1.1 Objective
 
-    To evaluate and determine the necessary R packages needed for your Shiny application are supported in R CRAN,
-    To prepare and test the specific R codes can be run and returned the correct output as expected,
-    To determine the parameters and outputs that will be exposed on the Shiny applications, and
-    To select the appropriate Shiny UI components for exposing the parameters determine above.
+The purpose of this take-home exercise is to:
 
+-   Evaluate and determine the necessary R packages needed for Shiny Application which are supported in R CRAN
+
+-   Review my teammates' take-home exercise 2 and prepare storyboards to visualize our work together
+
+-   Prepare and test specific R codes and ensure it returns the expected output
+
+-   Select appropriate Shiny UI components for exposing the paremeters
+
+## 2.1 Data Cleaning and Wrangling
 
 The analytical visualisation must be prepared by using R and appropriate R packages. The report must provide detail discussion and explanation of:
 
-    the data preparation process,
-    the selection of data visualisation techniques used,
-    and the data visualisation design and interactivity principles and best practices implemented.
+```         
+the data preparation process,
+the selection of data visualisation techniques used,
+and the data visualisation design and interactivity principles and best practices implemented.
+```
+
+Storyboard of Visualization
+
+<https://giniceseah.netlify.app/posts/2021-07-31-storyboard/>
