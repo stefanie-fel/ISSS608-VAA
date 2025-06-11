@@ -3,6 +3,7 @@ title: "Hands-on Exercise 8c"
 author: "Stefanie Felicia"
 date: "11 June 2025"
 date-modified: "last-modified"
+format: html
 execute: 
   eval: true
   echo: true
@@ -10,3 +11,72 @@ execute:
   freeze: true
 ---
 
+## Getting Started
+
+Objective of this exercise:
+
+-   Import geospatial data in rds format into R
+-   Create cartographic quality choropleth maps using appropriate map function
+-   Create rate map
+-   Create percentile map
+-   Create boxmap
+
+## Import Libraries
+
+```{r}
+pacman::p_load(tmap, tidyverse, sf)
+```
+
+The libraries used in this exercise would be:
+
+-   sf: support for simple feature access, standardized way to encode and analyze spatial vector data
+
+-   tmap: used to draw thematic maps
+
+-   tidyverse: inclusive of readr. tidyr and dplyr package
+
+## The Data
+
+For this exercise, we'll be using a dataset called NGA_wp.rds which is a polygon feature data.frame. It contains information on water point fo Nigeria at the LGA level
+
+```{r}
+NGA_wp <- read_rds("data/rds/NGA_wp.rds")
+```
+
+## Create Choropleth Map
+
+In this example, we'll be visualizing distribution of non-functional water point
+
+```{r}
+p2 <- tm_shape(NGA_wp)+
+  tm_polygons("total_wp",
+      fill.scale = tm_scale_intervals(
+        style = "equal",
+        n = 10,
+        values = "brewer.blues"),
+fill.legend = tm_legend(
+        position = c("right", "bottom"))) +
+   tm_borders(lwd = 0.1,
+             fill_alpha = 1) +
+  tm_title("Distribution of Total Water by LGAs")
+```
+
+```{r}
+p1 <- tm_shape(NGA_wp)+
+  tm_polygons("wp_functional",
+      fill.scale = tm_scale_intervals(
+        style = "equal",
+        n = 10,
+        values = "brewer.blues"),
+fill.legend = tm_legend(
+        position = c("right", "bottom"))) +
+   tm_borders(lwd = 0.1,
+             fill_alpha = 1) +
+  tm_title("Distribution of Functional Water by LGAs")
+```
+
+```{r}
+tmap_arrange(p1, p2, nrow = 1)
+```
+
+## Choropleth Map for Rates

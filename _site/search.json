@@ -271,5 +271,47 @@
     "title": "Hands-on Exercise 8b",
     "section": "Drawing Proportional Symbol Map",
     "text": "Drawing Proportional Symbol Map\nTo create interactive proportional symbol map, the view mode of tmap will be used. We can turn the interactive mode of tmap on using tmap_mode() like below.\n\ntmap_mode(\"view\")\n\nThe code below is used to create interactive point symbol map\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"red\",\n           size = 1,\n           col = \"black\",\n           lwd = 1)\n\n\n\n\n\nBut to make it proportional, we can assign a numerical variable to the size visual attribute. In this example, we’ll use the variable Gp1Gp2Winnings to be assigned to size visual attribute\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"red\",\n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1)\n\n\n\n\n\n\nWe can further this plot by changing the color to differentiate between branch and outlet.\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1)\n\n\n\n\n\n\n\nWe can also add tm_facets() into this graph to produce multiple maps with synchronized zoom and pan settings\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1) + \n  tm_facets(by= \"OUTLET TYPE\",\n            nrow = 1,\n            sync = TRUE)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html",
+    "title": "Hands-on Exercise 8c",
+    "section": "",
+    "text": "Objective of this exercise:\n\nImport geospatial data in rds format into R\nCreate cartographic quality choropleth maps using appropriate map function\nCreate rate map\nCreate percentile map\nCreate boxmap"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#getting-started",
+    "title": "Hands-on Exercise 8c",
+    "section": "",
+    "text": "Objective of this exercise:\n\nImport geospatial data in rds format into R\nCreate cartographic quality choropleth maps using appropriate map function\nCreate rate map\nCreate percentile map\nCreate boxmap"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#import-libraries",
+    "title": "Hands-on Exercise 8c",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(tmap, tidyverse, sf)\n\nThe libraries used in this exercise would be:\n\nsf: support for simple feature access, standardized way to encode and analyze spatial vector data\ntmap: used to draw thematic maps\ntidyverse: inclusive of readr. tidyr and dplyr package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#the-data",
+    "title": "Hands-on Exercise 8c",
+    "section": "The Data",
+    "text": "The Data\nFor this exercise, we’ll be using a dataset called NGA_wp.rds which is a polygon feature data.frame. It contains information on water point fo Nigeria at the LGA level\n\nNGA_wp &lt;- read_rds(\"data/rds/NGA_wp.rds\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#create-choropleth-map",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#create-choropleth-map",
+    "title": "Hands-on Exercise 8c",
+    "section": "Create Choropleth Map",
+    "text": "Create Choropleth Map\nIn this example, we’ll be visualizing distribution of non-functional water point\n\np2 &lt;- tm_shape(NGA_wp)+\n  tm_polygons(\"total_wp\",\n      fill.scale = tm_scale_intervals(\n        style = \"equal\",\n        n = 10,\n        values = \"brewer.blues\"),\nfill.legend = tm_legend(\n        position = c(\"right\", \"bottom\"))) +\n   tm_borders(lwd = 0.1,\n             fill_alpha = 1) +\n  tm_title(\"Distribution of Total Water by LGAs\")\n\n\np1 &lt;- tm_shape(NGA_wp)+\n  tm_polygons(\"wp_functional\",\n      fill.scale = tm_scale_intervals(\n        style = \"equal\",\n        n = 10,\n        values = \"brewer.blues\"),\nfill.legend = tm_legend(\n        position = c(\"right\", \"bottom\"))) +\n   tm_borders(lwd = 0.1,\n             fill_alpha = 1) +\n  tm_title(\"Distribution of Functional Water by LGAs\")\n\n\ntmap_arrange(p1, p2, nrow = 1)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#choropleth-map-for-rates",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html#choropleth-map-for-rates",
+    "title": "Hands-on Exercise 8c",
+    "section": "Choropleth Map for Rates",
+    "text": "Choropleth Map for Rates"
   }
 ]
