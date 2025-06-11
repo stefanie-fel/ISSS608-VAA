@@ -3,6 +3,7 @@ title: "Hands-on Exrcise 8a"
 author: "Stefanie Felicia"
 date: "11 June 2025"
 date-modified: "last-modified"
+format: html
 execute: 
   eval: true
   echo: true

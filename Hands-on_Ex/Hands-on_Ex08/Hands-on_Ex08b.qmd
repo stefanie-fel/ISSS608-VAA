@@ -1,8 +1,9 @@
 ---
 title: "Hands-on Exercise 8b"
 author: "Stefanie Felicia"
-date: "11 June 2025"
+date: "12 June 2025"
 date-modified: "last-modified"
+format: html
 execute: 
   eval: true
   echo: true
