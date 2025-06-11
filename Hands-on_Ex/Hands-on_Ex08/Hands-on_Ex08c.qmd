@@ -1,5 +1,12 @@
 ---
-title: "Hands-on_Ex08c"
-format: html
+title: "Hands-on Exercise 8c"
+author: "Stefanie Felicia"
+date: "11 June 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
