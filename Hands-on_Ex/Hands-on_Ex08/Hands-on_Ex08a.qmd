@@ -321,7 +321,7 @@ tm_shape(mpsz_pop2020)+
   tmap_style("classic")
 ```
 
-###  Cartographic Furniture
+### Cartographic Furniture
 
 tmap also provide argument to draw other map furniture (i.e. compass, scale bar and grid line) by using tm_compass(), tm_scale_bar() and tm_grid() respectively.
 
