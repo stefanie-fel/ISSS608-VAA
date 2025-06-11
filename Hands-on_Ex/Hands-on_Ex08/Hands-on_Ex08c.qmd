@@ -48,31 +48,29 @@ NGA_wp <- read_rds("data/rds/NGA_wp.rds")
 In this example, we'll be visualizing distribution of non-functional water point
 
 ```{r}
-p2 <- tm_shape(NGA_wp)+
-  tm_polygons("total_wp",
-      fill.scale = tm_scale_intervals(
-        style = "equal",
-        n = 10,
-        values = "brewer.blues"),
-fill.legend = tm_legend(
-        position = c("right", "bottom"))) +
-   tm_borders(lwd = 0.1,
-             fill_alpha = 1) +
-  tm_title("Distribution of Total Water by LGAs")
+p1 <- tm_shape(NGA_wp) + 
+  tm_polygons(fill = "total_wp",
+              fill.scale = tm_scale_intervals(
+                style = "equal",
+                n = 10,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                position = c("right", "bottom"))) +
+  tm_borders(lwd = 0.1, 
+             fill_alpha = 1) + tm_title("Distribution of Functional Water by LGAs")
 ```
 
 ```{r}
-p1 <- tm_shape(NGA_wp)+
-  tm_polygons("wp_functional",
-      fill.scale = tm_scale_intervals(
-        style = "equal",
-        n = 10,
-        values = "brewer.blues"),
-fill.legend = tm_legend(
-        position = c("right", "bottom"))) +
-   tm_borders(lwd = 0.1,
-             fill_alpha = 1) +
-  tm_title("Distribution of Functional Water by LGAs")
+p2 <- tm_shape(NGA_wp) + 
+  tm_polygons(fill = "total_wp",
+              fill.scale = tm_scale_intervals(
+                style = "equal",
+                n = 10,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                position = c("right", "bottom"))) +
+  tm_borders(lwd = 0.1, 
+             fill_alpha = 1) + tm_title("Distribution of Total Water by LGAs")
 ```
 
 ```{r}
