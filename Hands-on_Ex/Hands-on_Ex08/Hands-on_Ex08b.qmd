@@ -1,0 +1,122 @@
+---
+title: "Hands-on Exercise 8b"
+author: "Stefanie Felicia"
+date: "11 June 2025"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## Getting Started
+
+Objective of this exercise:
+
+-   Import aspatial data file to R
+
+-   Invert it to simple point feature data frame and assign an appropriate projection reference to newly created simple point feature data frame
+
+-   Create proportional symbol map showing the number of wins by Singapore Pools' outlet using tmap
+
+## Import Libraries
+
+```{r}
+pacman::p_load(sf, tmap, tidyverse)
+```
+
+The libraries used in this exercise would be:
+
+-   sf: support for simple feature access, standardized way to encode and analyze spatial vector data
+
+-   tmap: used to draw thematic maps
+
+-   tidyverse: inclusive of readr. tidyr and dplyr package
+
+## The Data
+
+The dataset for this hands-on is from a csv file called SGPools_svy21. The dataset consist of XCOORD and YCOORD, which are the x-coordinate and y-coordinate of SingPools outlets and branches respectively.
+
+```{r}
+sgpools <- read_csv("data/aspatial/SGPools_svy21.csv")
+```
+
+Next, we'll check the data inside the dataset
+
+```{r}
+list(sgpools) 
+```
+
+## Data Preparation
+
+Next, we'll create sf dataframe from aspatial data frame using st_as_sf()
+
+```{r}
+sgpools_sf <- st_as_sf(sgpools, 
+                       coords = c("XCOORD", "YCOORD"),
+                       crs= 3414)
+```
+
+::: {.callout-note title="What the code does"}
+-   The coords argument requires to provide the column name of x-coordinates and then column name of y-coordinates
+
+-   The crs argument is used to provide coordinate system in epsg format. For more info refer to <a href="https://epsg.io/">epsg.io</a>
+:::
+
+Let's check if the newly created sf dataframe has the expected outcome:
+
+```{r}
+list(sgpools_sf)
+```
+
+## Drawing Proportional Symbol Map
+
+To create interactive proportional symbol map, the view mode of tmap will be used. We can turn the interactive mode of tmap on using tmap_mode() like below.
+
+```{r}
+tmap_mode("view")
+```
+
+The code below is used to create interactive point symbol map
+
+```{r}
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "red",
+           size = 1,
+           col = "black",
+           lwd = 1)
+```
+
+But to make it proportional, we can assign a numerical variable to the size visual attribute. In this example, we'll use the variable Gp1Gp2Winnings to be assigned to size visual attribute
+
+```{r}
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "red",
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1)
+```
+
+We can further this plot by changing the color to differentiate between branch and outlet.
+
+```{r}
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "OUTLET TYPE", 
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1)
+```
+
+We can also add tm_facets() into this graph to produce multiple maps with synchronized zoom and pan settings
+
+```{r}
+tm_shape(sgpools_sf) + 
+  tm_bubbles(fill = "OUTLET TYPE", 
+             size = "Gp1Gp2 Winnings",
+             col = "black",
+             lwd = 1) + 
+  tm_facets(by= "OUTLET TYPE",
+            nrow = 1,
+            sync = TRUE)
+```

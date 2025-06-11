@@ -1139,5 +1139,54 @@
     "title": "Hands-on Exrcise 8a",
     "section": "Mapping Spatial Object Meeting a Selection Criterion",
     "text": "Mapping Spatial Object Meeting a Selection Criterion\nInstead of creating multiple small choropleth map like above, we can also use selection function to map spatial object meeting the selection criterion.\n\ntm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N==\"CENTRAL REGION\", ])+\n  tm_fill(\"DEPENDENCY\", \n          style = \"quantile\", \n          palette = \"Blues\", \n          legend.hist = TRUE, \n          legend.is.portrait = TRUE,\n          legend.hist.z = 0.1) +\n  tm_layout(legend.outside = TRUE,\n            legend.height = 0.45, \n            legend.width = 5.0,\n            legend.position = c(\"right\", \"bottom\"),\n            frame = FALSE) +\n  tm_borders(alpha = 0.5)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html",
+    "title": "Hands-on Exercise 8b",
+    "section": "",
+    "text": "Objective of this exercise:\n\nImport aspatial data file to R\nInvert it to simple point feature data frame and assign an appropriate projection reference to newly created simple point feature data frame\nCreate proportional symbol map showing the number of wins by Singapore Pools’ outlet using tmap"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#getting-started",
+    "title": "Hands-on Exercise 8b",
+    "section": "",
+    "text": "Objective of this exercise:\n\nImport aspatial data file to R\nInvert it to simple point feature data frame and assign an appropriate projection reference to newly created simple point feature data frame\nCreate proportional symbol map showing the number of wins by Singapore Pools’ outlet using tmap"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#import-libraries",
+    "title": "Hands-on Exercise 8b",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(sf, tmap, tidyverse)\n\nThe libraries used in this exercise would be:\n\nsf: support for simple feature access, standardized way to encode and analyze spatial vector data\ntmap: used to draw thematic maps\ntidyverse: inclusive of readr. tidyr and dplyr package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#the-data",
+    "title": "Hands-on Exercise 8b",
+    "section": "The Data",
+    "text": "The Data\nThe dataset for this hands-on is from a csv file called SGPools_svy21. The dataset consist of XCOORD and YCOORD, which are the x-coordinate and y-coordinate of SingPools outlets and branches respectively.\n\nsgpools &lt;- read_csv(\"data/aspatial/SGPools_svy21.csv\")\n\nNext, we’ll check the data inside the dataset\n\nlist(sgpools) \n\n[[1]]\n# A tibble: 306 × 7\n   NAME           ADDRESS POSTCODE XCOORD YCOORD `OUTLET TYPE` `Gp1Gp2 Winnings`\n   &lt;chr&gt;          &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;                     &lt;dbl&gt;\n 1 Livewire (Mar… 2 Bayf…    18972 30842. 29599. Branch                        5\n 2 Livewire (Res… 26 Sen…    98138 26704. 26526. Branch                       11\n 3 SportsBuzz (K… Lotus …   738078 20118. 44888. Branch                        0\n 4 SportsBuzz (P… 1 Sele…   188306 29777. 31382. Branch                       44\n 5 Prime Serango… Blk 54…   552542 32239. 39519. Branch                        0\n 6 Singapore Poo… 1A Woo…   731001 21012. 46987. Branch                        3\n 7 Singapore Poo… Blk 64…   370064 33990. 34356. Branch                       17\n 8 Singapore Poo… Blk 88…   370088 33847. 33976. Branch                       16\n 9 Singapore Poo… Blk 30…   540308 33910. 41275. Branch                       21\n10 Singapore Poo… Blk 20…   560202 29246. 38943. Branch                       25\n# ℹ 296 more rows"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#data-preparation",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#data-preparation",
+    "title": "Hands-on Exercise 8b",
+    "section": "Data Preparation",
+    "text": "Data Preparation\nNext, we’ll create sf dataframe from aspatial data frame using st_as_sf()\n\nsgpools_sf &lt;- st_as_sf(sgpools, \n                       coords = c(\"XCOORD\", \"YCOORD\"),\n                       crs= 3414)\n\n\n\n\n\n\n\nWhat the code does\n\n\n\n\nThe coords argument requires to provide the column name of x-coordinates and then column name of y-coordinates\nThe crs argument is used to provide coordinate system in epsg format. For more info refer to epsg.io\n\n\n\nLet’s check if the newly created sf dataframe has the expected outcome:\n\nlist(sgpools_sf)\n\n[[1]]\nSimple feature collection with 306 features and 5 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 7844.194 ymin: 26525.7 xmax: 45176.57 ymax: 47987.13\nProjected CRS: SVY21 / Singapore TM\n# A tibble: 306 × 6\n   NAME                         ADDRESS POSTCODE `OUTLET TYPE` `Gp1Gp2 Winnings`\n * &lt;chr&gt;                        &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;                     &lt;dbl&gt;\n 1 Livewire (Marina Bay Sands)  2 Bayf…    18972 Branch                        5\n 2 Livewire (Resorts World Sen… 26 Sen…    98138 Branch                       11\n 3 SportsBuzz (Kranji)          Lotus …   738078 Branch                        0\n 4 SportsBuzz (PoMo)            1 Sele…   188306 Branch                       44\n 5 Prime Serangoon North        Blk 54…   552542 Branch                        0\n 6 Singapore Pools Woodlands C… 1A Woo…   731001 Branch                        3\n 7 Singapore Pools 64 Circuit … Blk 64…   370064 Branch                       17\n 8 Singapore Pools 88 Circuit … Blk 88…   370088 Branch                       16\n 9 Singapore Pools Anchorvale … Blk 30…   540308 Branch                       21\n10 Singapore Pools Ang Mo Kio … Blk 20…   560202 Branch                       25\n# ℹ 296 more rows\n# ℹ 1 more variable: geometry &lt;POINT [m]&gt;"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#drawing-proptional-symbol-map",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#drawing-proptional-symbol-map",
+    "title": "Hands-on Exercise 8b",
+    "section": "Drawing Proptional Symbol Map",
+    "text": "Drawing Proptional Symbol Map\nTo create interactive proportional symbol map, the view mode of tmap will be used. We can turn the interactive mode of tmap on using tmap_mode() like below.\n\ntmap_mode(\"view\")\n\nThe code below is used to create interactive point symbol map\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"red\",\n           size = 1,\n           col = \"black\",\n           lwd = 1)\n\n\n\n\n\nBut to make it proportional, we can assign a numerical variable to the size visual attribute. In this example, we’ll use the variable Gp1Gp2Winnings to be assigned to size visual attribute\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"red\",\n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1)\n\n\n\n\n\n\nWe can further this plot by changing the color to differentiate between branch and outlet.\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1)\n\n\n\n\n\n\n\nWe can also add tm_facets() into this graph to produce multiple maps with synchronized zoom and pan settings\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1) + \n  tm_facets(by= \"OUTLET TYPE\",\n            nrow = 1,\n            sync = TRUE)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#drawing-proportional-symbol-map",
+    "href": "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html#drawing-proportional-symbol-map",
+    "title": "Hands-on Exercise 8b",
+    "section": "Drawing Proportional Symbol Map",
+    "text": "Drawing Proportional Symbol Map\nTo create interactive proportional symbol map, the view mode of tmap will be used. We can turn the interactive mode of tmap on using tmap_mode() like below.\n\ntmap_mode(\"view\")\n\nThe code below is used to create interactive point symbol map\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"red\",\n           size = 1,\n           col = \"black\",\n           lwd = 1)\n\n\n\n\n\nBut to make it proportional, we can assign a numerical variable to the size visual attribute. In this example, we’ll use the variable Gp1Gp2Winnings to be assigned to size visual attribute\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"red\",\n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1)\n\n\n\n\n\n\nWe can further this plot by changing the color to differentiate between branch and outlet.\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1)\n\n\n\n\n\n\n\nWe can also add tm_facets() into this graph to produce multiple maps with synchronized zoom and pan settings\n\ntm_shape(sgpools_sf) + \n  tm_bubbles(fill = \"OUTLET TYPE\", \n             size = \"Gp1Gp2 Winnings\",\n             col = \"black\",\n             lwd = 1) + \n  tm_facets(by= \"OUTLET TYPE\",\n            nrow = 1,\n            sync = TRUE)"
   }
 ]
