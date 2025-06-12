@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -210,7 +273,12 @@ ul.task-list li input[type="checkbox"] {
    
   <ul class="collapse">
   <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective">1.1 Objective</a></li>
-  <li><a href="#data-cleaning-and-wrangling" id="toc-data-cleaning-and-wrangling" class="nav-link" data-scroll-target="#data-cleaning-and-wrangling">2.1 Data Cleaning and Wrangling</a></li>
+  <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis">2.1 Data Analysis</a></li>
+  <li><a href="#app.r" id="toc-app.r" class="nav-link" data-scroll-target="#app.r">app.R —————————————————————</a></li>
+  <li><a href="#master-colour-map" id="toc-master-colour-map" class="nav-link" data-scroll-target="#master-colour-map">── 1. master colour map ———————————————</a></li>
+  <li><a href="#load-preprocess" id="toc-load-preprocess" class="nav-link" data-scroll-target="#load-preprocess">── 2. load + preprocess ———————————————</a></li>
+  <li><a href="#ui--" id="toc-ui--" class="nav-link" data-scroll-target="#ui--">── 3. UI ————————————————————-</a></li>
+  <li><a href="#server" id="toc-server" class="nav-link" data-scroll-target="#server">── 4. Server ———————————————————</a></li>
   </ul>
 </nav>
     </div>
@@ -263,15 +331,500 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Prepare and test specific R codes and ensure it returns the expected output</p></li>
 <li><p>Select appropriate Shiny UI components for exposing the paremeters</p></li>
 </ul>
+<section id="the-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="the-libraries">1.2. The Libraries</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, SmartEDA, tidygraph, ggraph, knitr, DT, stringr, cronologia, tidytext, dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="data-cleaning-and-wrangling" class="level2">
-<h2 class="anchored" data-anchor-id="data-cleaning-and-wrangling">2.1 Data Cleaning and Wrangling</h2>
+<section id="the-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-data">1.3 The Data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>MC3 <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"data/MC3_graph.json"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>MC3_schema <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"data/MC3_schema.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis">2.1 Data Analysis</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Inspect Knowledge Graph Structure</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">2.2 Extract Edges and Nodes Tables</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">2.3 Initial EDA</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">2.4 Data Cleaning and Wrangling</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">2.5 Build tidygraph Object</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">2.6 Visualize Knowledge Graph</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Before preparing the data, we’ll check the structure of the knowledge graph.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(MC3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 5
+ $ directed  : logi TRUE
+ $ multigraph: logi FALSE
+ $ graph     :List of 4
+  ..$ mode        : chr "static"
+  ..$ edge_default: Named list()
+  ..$ node_default: Named list()
+  ..$ name        : chr "VAST_MC3_Knowledge_Graph"
+ $ nodes     :'data.frame': 1159 obs. of  31 variables:
+  ..$ type             : chr [1:1159] "Entity" "Entity" "Entity" "Entity" ...
+  ..$ label            : chr [1:1159] "Sam" "Kelly" "Nadia Conti" "Elise" ...
+  ..$ name             : chr [1:1159] "Sam" "Kelly" "Nadia Conti" "Elise" ...
+  ..$ sub_type         : chr [1:1159] "Person" "Person" "Person" "Person" ...
+  ..$ id               : chr [1:1159] "Sam" "Kelly" "Nadia Conti" "Elise" ...
+  ..$ timestamp        : chr [1:1159] NA NA NA NA ...
+  ..$ monitoring_type  : chr [1:1159] NA NA NA NA ...
+  ..$ findings         : chr [1:1159] NA NA NA NA ...
+  ..$ content          : chr [1:1159] NA NA NA NA ...
+  ..$ assessment_type  : chr [1:1159] NA NA NA NA ...
+  ..$ results          : chr [1:1159] NA NA NA NA ...
+  ..$ movement_type    : chr [1:1159] NA NA NA NA ...
+  ..$ destination      : chr [1:1159] NA NA NA NA ...
+  ..$ enforcement_type : chr [1:1159] NA NA NA NA ...
+  ..$ outcome          : chr [1:1159] NA NA NA NA ...
+  ..$ activity_type    : chr [1:1159] NA NA NA NA ...
+  ..$ participants     : int [1:1159] NA NA NA NA NA NA NA NA NA NA ...
+  ..$ thing_collected  :'data.frame':   1159 obs. of  2 variables:
+  .. ..$ type: chr [1:1159] NA NA NA NA ...
+  .. ..$ name: chr [1:1159] NA NA NA NA ...
+  ..$ reference        : chr [1:1159] NA NA NA NA ...
+  ..$ date             : chr [1:1159] NA NA NA NA ...
+  ..$ time             : chr [1:1159] NA NA NA NA ...
+  ..$ friendship_type  : chr [1:1159] NA NA NA NA ...
+  ..$ permission_type  : chr [1:1159] NA NA NA NA ...
+  ..$ start_date       : chr [1:1159] NA NA NA NA ...
+  ..$ end_date         : chr [1:1159] NA NA NA NA ...
+  ..$ report_type      : chr [1:1159] NA NA NA NA ...
+  ..$ submission_date  : chr [1:1159] NA NA NA NA ...
+  ..$ jurisdiction_type: chr [1:1159] NA NA NA NA ...
+  ..$ authority_level  : chr [1:1159] NA NA NA NA ...
+  ..$ coordination_type: chr [1:1159] NA NA NA NA ...
+  ..$ operational_role : chr [1:1159] NA NA NA NA ...
+ $ edges     :'data.frame': 3226 obs. of  5 variables:
+  ..$ id         : chr [1:3226] "2" "3" "5" "3013" ...
+  ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
+  ..$ source     : chr [1:3226] "Sam" "Sam" "Sam" "Sam" ...
+  ..$ target     : chr [1:3226] "Relationship_Suspicious_217" "Event_Communication_370" "Event_Assessment_600" "Relationship_Colleagues_430" ...
+  ..$ type       : chr [1:3226] NA "sent" NA NA ...</code></pre>
+</div>
+</div>
+<p>Since the industry column is in list data type, we’ll exclude the column since list data type isn’t acceptable by <code>tbl_graph()</code>.</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>The <code>as_tibble()</code> function is used to extract nodes and links tibble data frame from MC3 tibble data frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mc3_nodes <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(MC3<span class="sc">$</span>nodes) </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mc3_edges <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(MC3<span class="sc">$</span>edges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>We’ll use <code>ExpCatViz()</code> from SmartEDA library to reveal frequency distribution of all categorical fields from mc3_nodes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ExpCatViz</span>(<span class="at">data=</span>mc3_nodes, <span class="at">col=</span><span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[2]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[3]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[4]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[5]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[6]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[7]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[8]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-8.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[9]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-9.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[10]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-10.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[11]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-11.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[12]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-12.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[13]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-13.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[[14]]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-5-14.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p>The following steps are taken to clean the <strong>nodes</strong>:</p>
+<ul>
+<li><p>Convert values in id into character data type</p></li>
+<li><p>Exclude record with id thunique(c(mc3_edges_indexed$fromat are missing</p></li>
+<li><p>Exclude records with similar id values</p></li>
+<li><p>Exclude <em>thing_collected</em> field</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mc3_nodes_cleaned <span class="ot">&lt;-</span> mc3_nodes <span class="sc">%&gt;%</span>   <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">as.character</span>(id)) <span class="sc">%&gt;%</span>   <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(id)) <span class="sc">%&gt;%</span>   <span class="fu">distinct</span>(id, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span>   <span class="fu">select</span>(<span class="sc">-</span>thing_collected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, the following steps are taken to clean the <strong>edges</strong>:</p>
+<ul>
+<li><p>Rename source <em>column</em> into <em>from_id</em> and <em>target</em> column into <em>to_id</em></p></li>
+<li><p>Convert values in <em>from_id</em> and <em>to_id</em> column into character data type</p></li>
+<li><p>Exclude values in from_id and to_id that’s not found in the id column from <em>mc3_nodes_cleaned</em></p></li>
+<li><p>Exclude records where <em>from_id</em> and <em>to_id</em>, or <em>from_id</em> or <em>to_id</em> is missing</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mc3_edges_cleaned <span class="ot">&lt;-</span> mc3_edges <span class="sc">%&gt;%</span>       <span class="fu">rename</span>(<span class="at">from_id =</span> source,               <span class="at">to_id =</span> target) <span class="sc">%&gt;%</span>       <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(from_id, to_id),                      as.character)) <span class="sc">%&gt;%</span>       <span class="fu">filter</span>(from_id <span class="sc">%in%</span> mc3_nodes_cleaned<span class="sc">$</span>id,               to_id <span class="sc">%in%</span> mc3_nodes_cleaned<span class="sc">$</span>id) <span class="sc">%&gt;%</span>       <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(from_id), <span class="sc">!</span><span class="fu">is.na</span>(to_id))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A new dataframe from the existing data frame (<em>mc3_nodes_cleaned</em>) and <em>.row_id</em> column is added which assigns unique row number to each row number (works like row index). Then we select <em>id</em> and .<em>row_id</em> columns whereas other columns are dropped.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>node_index_lookup <span class="ot">&lt;-</span> mc3_nodes_cleaned <span class="sc">%&gt;%</span>   <span class="fu">mutate</span>(<span class="at">.row_id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span>   <span class="fu">select</span>(id, .row_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then from_id and to_id columns in mc_edges_indexed are converted it to integer indices. The rows with unmatched nodes are also dropped.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mc3_edges_indexed <span class="ot">&lt;-</span> mc3_edges_cleaned <span class="sc">%&gt;%</span>   <span class="fu">left_join</span>(node_index_lookup,              <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"from_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) <span class="sc">%&gt;%</span>   <span class="fu">rename</span>(<span class="at">from =</span> .row_id) <span class="sc">%&gt;%</span>   <span class="fu">left_join</span>(node_index_lookup,              <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"to_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) <span class="sc">%&gt;%</span>   <span class="fu">rename</span>(<span class="at">to =</span> .row_id) <span class="sc">%&gt;%</span>   <span class="fu">select</span>(from, to, is_inferred, type) <span class="sc">%&gt;%</span>   <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(from) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(to))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, the node list will only include nodes that are used in the edge list and new indices are assigned</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>used_node_indices <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(<span class="fu">c</span>(mc3_edges_indexed<span class="sc">$</span>from, mc3_edges_indexed<span class="sc">$</span>to)))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mc3_nodes_final <span class="ot">&lt;-</span> mc3_nodes_cleaned <span class="sc">%&gt;%</span>   </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(used_node_indices) <span class="sc">%&gt;%</span>   </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_index =</span> <span class="fu">row_number</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The lookup is rebuild from old index to new index.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>old_to_new_index <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">old_index =</span> used_node_indices, <span class="at">new_index =</span> <span class="fu">seq_along</span>(used_node_indices))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then, we’ll update edge indices to match new node table</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mc3_edges_final <span class="ot">&lt;-</span> mc3_edges_indexed <span class="sc">%&gt;%</span>   <span class="fu">left_join</span>(old_to_new_index,              <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"from"</span> <span class="ot">=</span> <span class="st">"old_index"</span>)) <span class="sc">%&gt;%</span>   <span class="fu">rename</span>(<span class="at">from_new =</span> new_index) <span class="sc">%&gt;%</span>   <span class="fu">left_join</span>(old_to_new_index,              <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"to"</span> <span class="ot">=</span> <span class="st">"old_index"</span>)) <span class="sc">%&gt;%</span>   <span class="fu">rename</span>(<span class="at">to_new =</span> new_index) <span class="sc">%&gt;%</span>   <span class="fu">select</span>(<span class="at">from =</span> from_new, <span class="at">to =</span> to_new,           is_inferred, type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>mc3_graph <span class="ot">&lt;-</span> <span class="fu">tbl_graph</span>(<span class="at">nodes =</span> mc3_nodes_final,   <span class="at">edges =</span> mc3_edges_final,   <span class="at">directed =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mc3_graph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Classes 'tbl_graph', 'igraph'  hidden list of 10
+ $ : num 1159
+ $ : logi TRUE
+ $ : num [1:3226] 0 0 0 0 0 0 0 1 1 1 ...
+ $ : num [1:3226] 1137 356 746 894 875 ...
+ $ : NULL
+ $ : NULL
+ $ : NULL
+ $ : NULL
+ $ :List of 4
+  ..$ : num [1:3] 1 0 1
+  ..$ : Named list()
+  ..$ :List of 31
+  .. ..$ type             : chr [1:1159] "Entity" "Entity" "Entity" "Entity" ...
+  .. ..$ label            : chr [1:1159] "Sam" "Kelly" "Nadia Conti" "Elise" ...
+  .. ..$ name             : chr [1:1159] "Sam" "Kelly" "Nadia Conti" "Elise" ...
+  .. ..$ sub_type         : chr [1:1159] "Person" "Person" "Person" "Person" ...
+  .. ..$ id               : chr [1:1159] "Sam" "Kelly" "Nadia Conti" "Elise" ...
+  .. ..$ timestamp        : chr [1:1159] NA NA NA NA ...
+  .. ..$ monitoring_type  : chr [1:1159] NA NA NA NA ...
+  .. ..$ findings         : chr [1:1159] NA NA NA NA ...
+  .. ..$ content          : chr [1:1159] NA NA NA NA ...
+  .. ..$ assessment_type  : chr [1:1159] NA NA NA NA ...
+  .. ..$ results          : chr [1:1159] NA NA NA NA ...
+  .. ..$ movement_type    : chr [1:1159] NA NA NA NA ...
+  .. ..$ destination      : chr [1:1159] NA NA NA NA ...
+  .. ..$ enforcement_type : chr [1:1159] NA NA NA NA ...
+  .. ..$ outcome          : chr [1:1159] NA NA NA NA ...
+  .. ..$ activity_type    : chr [1:1159] NA NA NA NA ...
+  .. ..$ participants     : int [1:1159] NA NA NA NA NA NA NA NA NA NA ...
+  .. ..$ reference        : chr [1:1159] NA NA NA NA ...
+  .. ..$ date             : chr [1:1159] NA NA NA NA ...
+  .. ..$ time             : chr [1:1159] NA NA NA NA ...
+  .. ..$ friendship_type  : chr [1:1159] NA NA NA NA ...
+  .. ..$ permission_type  : chr [1:1159] NA NA NA NA ...
+  .. ..$ start_date       : chr [1:1159] NA NA NA NA ...
+  .. ..$ end_date         : chr [1:1159] NA NA NA NA ...
+  .. ..$ report_type      : chr [1:1159] NA NA NA NA ...
+  .. ..$ submission_date  : chr [1:1159] NA NA NA NA ...
+  .. ..$ jurisdiction_type: chr [1:1159] NA NA NA NA ...
+  .. ..$ authority_level  : chr [1:1159] NA NA NA NA ...
+  .. ..$ coordination_type: chr [1:1159] NA NA NA NA ...
+  .. ..$ operational_role : chr [1:1159] NA NA NA NA ...
+  .. ..$ new_index        : int [1:1159] 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ :List of 2
+  .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
+  .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
+ $ :&lt;environment: 0x00000200ee645820&gt; 
+ - attr(*, "active")= chr "nodes"</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<p>Next, we’ll set a seed to ensure reproducibility and visualize the knowledge graph.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(mc3_graph, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">layout =</span> <span class="st">"fr"</span>) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="st">`</span><span class="at">type</span><span class="st">`</span>), </span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> type), </span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_Ex03_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>The analytical visualisation must be prepared by using R and appropriate R packages. The report must provide detail discussion and explanation of:</p>
-<pre><code>the data preparation process,
-the selection of data visualisation techniques used,
-and the data visualisation design and interactivity principles and best practices implemented.</code></pre>
+<p>the data preparation process, the selection of data visualisation techniques used, and the data visualisation design and interactivity principles and best practices implemented.</p>
 <p>Storyboard of Visualization</p>
 <p><a href="https://giniceseah.netlify.app/posts/2021-07-31-storyboard/" class="uri">https://giniceseah.netlify.app/posts/2021-07-31-storyboard/</a></p>
+</section>
+<section id="app.r" class="level1">
+<h1>app.R —————————————————————</h1>
+<p>library(shiny) library(jsonlite) library(dplyr) library(purrr) library(visNetwork) library(DT) library(tidygraph) library(ggraph) library(patchwork) library(grid)</p>
+</section>
+<section id="master-colour-map" class="level1">
+<h1>── 1. master colour map ———————————————</h1>
+<p>legend_cols &lt;- c( Person = “#1b9e77”, Vessel = “#d95f02”, Organization = “#7570b3”, Relationship = “#e7298a”, Group = “#e6ab02”, Location = “#66a61e” )</p>
+</section>
+<section id="load-preprocess" class="level1">
+<h1>── 2. load + preprocess ———————————————</h1>
+<p>graph &lt;- read_json(“Data/MC3_graph.json”, simplifyVector = TRUE)</p>
+<p>events_df &lt;- graph$nodes %&gt;% filter(type == “Event”, !is.na(timestamp)) %&gt;% mutate(date = as.Date(timestamp)) %&gt;% filter(date &gt;= as.Date(“2040-10-01”), date &lt;= as.Date(“2040-10-15”))</p>
+<p>min_date &lt;- min(events_df<span class="math inline">\(date)
+max_date &lt;- max(events_df\)</span>date)</p>
+<p>nodes_all &lt;- graph$nodes %&gt;% mutate(category = if_else(type == “Relationship”, “Relationship”, sub_type)) %&gt;% filter(category %in% names(legend_cols)) %&gt;% mutate(color = legend_cols[category])</p>
+<p>edges_all &lt;- graph$edges %&gt;% transmute(from = source, to = target, type = type, # ‘sent’, ‘received’, etc. arrows = “to”)</p>
+<p>edges_all &lt;- edges_all %&gt;% left_join(events_df %&gt;% select(id, date), by = c(“from” = “id”)) %&gt;% rename(date_from = date) %&gt;% left_join(events_df %&gt;% select(id, date), by = c(“to” = “id”)) %&gt;% rename(date_to = date) %&gt;% mutate(event_date = coalesce(date_from, date_to)) %&gt;% select(-date_from, -date_to)</p>
+</section>
+<section id="ui--" class="level1">
+<h1>── 3. UI ————————————————————-</h1>
+<p>ui &lt;- fluidPage( titlePanel(“MC3 Entity &amp; Relationship Network”), sidebarLayout( sidebarPanel( selectInput(“classes”, “Show node classes:”, choices = names(legend_cols), selected = c(“Person”, “Vessel”), multiple = TRUE), sliderInput(“dateRange”, “Event-date window:”, min = min_date, max = max_date, value = c(min_date, max_date), timeFormat = “%Y-%m-%d”), checkboxInput(“isolates”, “Keep isolated nodes”, FALSE), tags<span class="math inline">\(hr(), tags\)</span>h5(“Legend”), ## dynamic legend based on legend_cols ————————- tagList(lapply(names(legend_cols), function(cat) { tags<span class="math inline">\(div(style="display:flex; align-items:center; margin-bottom:4px;",
+                 tags\)</span>span(style=sprintf( “display:inline-block;width:14px;height:14px;border-radius:50%%;<br>
+background:%s;margin-right:6px;”, legend_cols[cat])), tags$span(cat) ) })), width = 3 ), mainPanel( tabsetPanel(id = “tabs”, tabPanel(“Interactive Network”, visNetworkOutput(“net”, height = “800px”), br(), tabsetPanel(type = “tabs”, tabPanel(“Nodes”, DTOutput(“nodes_table”)), tabPanel(“Edges”, DTOutput(“edges_table”)) ) ), tabPanel(“Daily Communication Graph”, plotOutput(“dailyPlot”, height = “1400px”) ) ) ) ) )</p>
+</section>
+<section id="server" class="level1">
+<h1>── 4. Server ———————————————————</h1>
+<p>server &lt;- function(input, output, session) {</p>
+<p>edges_date &lt;- reactive({ edges_all %&gt;% filter(is.na(event_date) | (event_date &gt;= input<span class="math inline">\(dateRange[1] &amp;
+                  event_date &lt;= input\)</span>dateRange[2])) })</p>
+<p>nodes_r &lt;- reactive({ req(input<span class="math inline">\(classes)
+    ids &lt;- unique(c(edges_date()\)</span>from, edges_date()<span class="math inline">\(to))
+    n &lt;- nodes_all %&gt;%
+      filter(category %in% input\)</span>classes, id %in% ids)</p>
+<pre><code>if (!isTRUE(input$isolates)) {
+  n &lt;- n %&gt;% filter(id %in% ids)
+}
+n</code></pre>
+<p>})</p>
+<p>edges_r &lt;- reactive({ ids &lt;- nodes_r()$id edges_date() %&gt;% filter(from %in% ids &amp; to %in% ids) })</p>
+<p># —- visNetwork —————————————————- output$net &lt;- renderVisNetwork({ net_nodes &lt;- nodes_r() %&gt;% transmute(id, label, group = category, color) net_edges &lt;- edges_r() %&gt;% transmute(from, to, arrows = “to”, label = type)</p>
+<pre><code>if (nrow(net_nodes) == 0)
+  return(visNetwork(data.frame(), data.frame()))
+
+visNetwork(net_nodes, net_edges) %&gt;%
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %&gt;%
+  visPhysics(stabilization = FALSE)</code></pre>
+<p>})</p>
+<p># —- Daily graph (still Person ↔︎ Vessel) ————————– # ——————————————————————— # Daily communication graph (interactive with class selection) # ——————————————————————— # ——————————————————————— # Daily communication graph – responds to ANY mix of classes chosen # ——————————————————————— daily_plot &lt;- reactive({</p>
+<pre><code>keep_cls &lt;- input$classes
+if (length(keep_cls) &lt; 2) return(NULL)       # need at least two classes
+
+## 1  communication edges inside the date window ---------------------
+e_full &lt;- edges_date() %&gt;%
+  filter(type %in% c("sent","received"),
+         !is.na(event_date))
+if (nrow(e_full) == 0) return(NULL)
+
+## 2  build sender → receiver pairs via the comm node ---------------
+es &lt;- e_full %&gt;% filter(type == "sent")      %&gt;%
+  transmute(comm = to,   sender = from,  event_date)
+er &lt;- e_full %&gt;% filter(type == "received")  %&gt;%
+  transmute(comm = from, receiver = to,  event_date)
+
+pv_edges &lt;- inner_join(es, er,
+                       by = c("comm","event_date")) %&gt;%
+  transmute(from = sender, to = receiver, event_date)
+
+if (nrow(pv_edges) == 0) return(NULL)
+
+## 3  look up the categories of each endpoint -----------------------
+cat_lookup &lt;- nodes_all %&gt;% select(id, category)
+
+pv_edges &lt;- pv_edges %&gt;%
+  left_join(cat_lookup, by = c("from" = "id")) %&gt;%
+  rename(cat_from = category) %&gt;%
+  left_join(cat_lookup, by = c("to" = "id")) %&gt;%
+  rename(cat_to   = category) %&gt;%
+  filter(cat_from %in% keep_cls,                   # keep ONLY selected classes
+         cat_to   %in% keep_cls)
+
+if (nrow(pv_edges) == 0) return(NULL)
+
+## 4  node table limited to kept classes ----------------------------
+node_ids &lt;- unique(c(pv_edges$from, pv_edges$to))
+pv_nodes &lt;- nodes_all %&gt;%
+  filter(id %in% node_ids, category %in% keep_cls) %&gt;%
+  select(id, label, category)
+
+## 5  one facet per day ---------------------------------------------
+plots &lt;- lapply(sort(unique(pv_edges$event_date)), function(d){
+  
+  g &lt;- tbl_graph(
+    nodes = pv_nodes %&gt;% filter(id %in% c(
+      pv_edges$from[pv_edges$event_date == d],
+      pv_edges$to  [pv_edges$event_date == d] )),
+    edges = pv_edges %&gt;% filter(event_date == d),
+    directed = TRUE)
+  
+  ggraph(g, layout = "fr") +
+    geom_edge_link(
+      arrow       = grid::arrow(length = grid::unit(2, "mm")),
+      edge_colour = "#666666", edge_alpha = 0.5) +
+    geom_node_point(aes(color = category), size = 3) +
+    geom_node_text(aes(label = label), repel = TRUE, size = 3) +
+    scale_color_manual(values = legend_cols, breaks = names(legend_cols)) +
+    ggtitle(as.character(d)) +
+    theme_void() +
+    theme(legend.position = "none",
+          plot.title = element_text(size = 10, hjust = 0.5),
+          plot.margin     = margin(t = 10, r = 5, b = 20, l = 5))
+})
+
+wrap_plots(plots, ncol = 2)</code></pre>
+<p>})</p>
+<p>output$dailyPlot &lt;- renderPlot({ daily_plot() }, res = 96)</p>
+<p># —- Tables ——————————————————– output$nodes_table &lt;- renderDT( nodes_r() %&gt;% select(id, label, category, color), options = list(pageLength = 10), rownames = FALSE)</p>
+<p>output$edges_table &lt;- renderDT( edges_r() %&gt;% select(from, to, type, event_date), options = list(pageLength = 10), rownames = FALSE) }</p>
+<p>shinyApp(ui, server)</p>
 
 
 </section>
