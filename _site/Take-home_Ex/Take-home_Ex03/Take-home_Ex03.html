@@ -103,35 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -274,11 +245,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective">1.1 Objective</a></li>
   <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis">2.1 Data Analysis</a></li>
-  <li><a href="#app.r" id="toc-app.r" class="nav-link" data-scroll-target="#app.r">app.R —————————————————————</a></li>
-  <li><a href="#master-colour-map" id="toc-master-colour-map" class="nav-link" data-scroll-target="#master-colour-map">── 1. master colour map ———————————————</a></li>
-  <li><a href="#load-preprocess" id="toc-load-preprocess" class="nav-link" data-scroll-target="#load-preprocess">── 2. load + preprocess ———————————————</a></li>
-  <li><a href="#ui--" id="toc-ui--" class="nav-link" data-scroll-target="#ui--">── 3. UI ————————————————————-</a></li>
-  <li><a href="#server" id="toc-server" class="nav-link" data-scroll-target="#server">── 4. Server ———————————————————</a></li>
   </ul>
 </nav>
     </div>
@@ -311,7 +277,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 12, 2025</p>
+      <p class="date-modified">June 13, 2025</p>
     </div>
   </div>
     
@@ -672,7 +638,7 @@ window.Quarto = {
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x00000143418b07b0&gt; 
+ $ :&lt;environment: 0x000002b608940a88&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -706,125 +672,7 @@ window.Quarto = {
 <p>the data preparation process, the selection of data visualisation techniques used, and the data visualisation design and interactivity principles and best practices implemented.</p>
 <p>Storyboard of Visualization</p>
 <p><a href="https://giniceseah.netlify.app/posts/2021-07-31-storyboard/" class="uri">https://giniceseah.netlify.app/posts/2021-07-31-storyboard/</a></p>
-</section>
-<section id="app.r" class="level1">
-<h1>app.R —————————————————————</h1>
-<p>library(shiny) library(jsonlite) library(dplyr) library(purrr) library(visNetwork) library(DT) library(tidygraph) library(ggraph) library(patchwork) library(grid)</p>
-</section>
-<section id="master-colour-map" class="level1">
-<h1>── 1. master colour map ———————————————</h1>
-<p>legend_cols &lt;- c( Person = “#1b9e77”, Vessel = “#d95f02”, Organization = “#7570b3”, Relationship = “#e7298a”, Group = “#e6ab02”, Location = “#66a61e” )</p>
-</section>
-<section id="load-preprocess" class="level1">
-<h1>── 2. load + preprocess ———————————————</h1>
-<p>graph &lt;- read_json(“Data/MC3_graph.json”, simplifyVector = TRUE)</p>
-<p>events_df &lt;- graph$nodes %&gt;% filter(type == “Event”, !is.na(timestamp)) %&gt;% mutate(date = as.Date(timestamp)) %&gt;% filter(date &gt;= as.Date(“2040-10-01”), date &lt;= as.Date(“2040-10-15”))</p>
-<p>min_date &lt;- min(events_df<span class="math inline">\(date)
-max_date &lt;- max(events_df\)</span>date)</p>
-<p>nodes_all &lt;- graph$nodes %&gt;% mutate(category = if_else(type == “Relationship”, “Relationship”, sub_type)) %&gt;% filter(category %in% names(legend_cols)) %&gt;% mutate(color = legend_cols[category])</p>
-<p>edges_all &lt;- graph$edges %&gt;% transmute(from = source, to = target, type = type, # ‘sent’, ‘received’, etc. arrows = “to”)</p>
-<p>edges_all &lt;- edges_all %&gt;% left_join(events_df %&gt;% select(id, date), by = c(“from” = “id”)) %&gt;% rename(date_from = date) %&gt;% left_join(events_df %&gt;% select(id, date), by = c(“to” = “id”)) %&gt;% rename(date_to = date) %&gt;% mutate(event_date = coalesce(date_from, date_to)) %&gt;% select(-date_from, -date_to)</p>
-</section>
-<section id="ui--" class="level1">
-<h1>── 3. UI ————————————————————-</h1>
-<p>ui &lt;- fluidPage( titlePanel(“MC3 Entity &amp; Relationship Network”), sidebarLayout( sidebarPanel( selectInput(“classes”, “Show node classes:”, choices = names(legend_cols), selected = c(“Person”, “Vessel”), multiple = TRUE), sliderInput(“dateRange”, “Event-date window:”, min = min_date, max = max_date, value = c(min_date, max_date), timeFormat = “%Y-%m-%d”), checkboxInput(“isolates”, “Keep isolated nodes”, FALSE), tags<span class="math inline">\(hr(), tags\)</span>h5(“Legend”), ## dynamic legend based on legend_cols ————————- tagList(lapply(names(legend_cols), function(cat) { tags<span class="math inline">\(div(style="display:flex; align-items:center; margin-bottom:4px;",
-                 tags\)</span>span(style=sprintf( “display:inline-block;width:14px;height:14px;border-radius:50%%;<br>
-background:%s;margin-right:6px;”, legend_cols[cat])), tags$span(cat) ) })), width = 3 ), mainPanel( tabsetPanel(id = “tabs”, tabPanel(“Interactive Network”, visNetworkOutput(“net”, height = “800px”), br(), tabsetPanel(type = “tabs”, tabPanel(“Nodes”, DTOutput(“nodes_table”)), tabPanel(“Edges”, DTOutput(“edges_table”)) ) ), tabPanel(“Daily Communication Graph”, plotOutput(“dailyPlot”, height = “1400px”) ) ) ) ) )</p>
-</section>
-<section id="server" class="level1">
-<h1>── 4. Server ———————————————————</h1>
-<p>server &lt;- function(input, output, session) {</p>
-<p>edges_date &lt;- reactive({ edges_all %&gt;% filter(is.na(event_date) | (event_date &gt;= input<span class="math inline">\(dateRange[1] &amp;
-                  event_date &lt;= input\)</span>dateRange[2])) })</p>
-<p>nodes_r &lt;- reactive({ req(input<span class="math inline">\(classes)
-    ids &lt;- unique(c(edges_date()\)</span>from, edges_date()<span class="math inline">\(to))
-    n &lt;- nodes_all %&gt;%
-      filter(category %in% input\)</span>classes, id %in% ids)</p>
-<pre><code>if (!isTRUE(input$isolates)) {
-  n &lt;- n %&gt;% filter(id %in% ids)
-}
-n</code></pre>
-<p>})</p>
-<p>edges_r &lt;- reactive({ ids &lt;- nodes_r()$id edges_date() %&gt;% filter(from %in% ids &amp; to %in% ids) })</p>
-<p># —- visNetwork —————————————————- output$net &lt;- renderVisNetwork({ net_nodes &lt;- nodes_r() %&gt;% transmute(id, label, group = category, color) net_edges &lt;- edges_r() %&gt;% transmute(from, to, arrows = “to”, label = type)</p>
-<pre><code>if (nrow(net_nodes) == 0)
-  return(visNetwork(data.frame(), data.frame()))
-
-visNetwork(net_nodes, net_edges) %&gt;%
-  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %&gt;%
-  visPhysics(stabilization = FALSE)</code></pre>
-<p>})</p>
-<p># —- Daily graph (still Person ↔︎ Vessel) ————————– # ——————————————————————— # Daily communication graph (interactive with class selection) # ——————————————————————— # ——————————————————————— # Daily communication graph – responds to ANY mix of classes chosen # ——————————————————————— daily_plot &lt;- reactive({</p>
-<pre><code>keep_cls &lt;- input$classes
-if (length(keep_cls) &lt; 2) return(NULL)       # need at least two classes
-
-## 1  communication edges inside the date window ---------------------
-e_full &lt;- edges_date() %&gt;%
-  filter(type %in% c("sent","received"),
-         !is.na(event_date))
-if (nrow(e_full) == 0) return(NULL)
-
-## 2  build sender → receiver pairs via the comm node ---------------
-es &lt;- e_full %&gt;% filter(type == "sent")      %&gt;%
-  transmute(comm = to,   sender = from,  event_date)
-er &lt;- e_full %&gt;% filter(type == "received")  %&gt;%
-  transmute(comm = from, receiver = to,  event_date)
-
-pv_edges &lt;- inner_join(es, er,
-                       by = c("comm","event_date")) %&gt;%
-  transmute(from = sender, to = receiver, event_date)
-
-if (nrow(pv_edges) == 0) return(NULL)
-
-## 3  look up the categories of each endpoint -----------------------
-cat_lookup &lt;- nodes_all %&gt;% select(id, category)
-
-pv_edges &lt;- pv_edges %&gt;%
-  left_join(cat_lookup, by = c("from" = "id")) %&gt;%
-  rename(cat_from = category) %&gt;%
-  left_join(cat_lookup, by = c("to" = "id")) %&gt;%
-  rename(cat_to   = category) %&gt;%
-  filter(cat_from %in% keep_cls,                   # keep ONLY selected classes
-         cat_to   %in% keep_cls)
-
-if (nrow(pv_edges) == 0) return(NULL)
-
-## 4  node table limited to kept classes ----------------------------
-node_ids &lt;- unique(c(pv_edges$from, pv_edges$to))
-pv_nodes &lt;- nodes_all %&gt;%
-  filter(id %in% node_ids, category %in% keep_cls) %&gt;%
-  select(id, label, category)
-
-## 5  one facet per day ---------------------------------------------
-plots &lt;- lapply(sort(unique(pv_edges$event_date)), function(d){
-  
-  g &lt;- tbl_graph(
-    nodes = pv_nodes %&gt;% filter(id %in% c(
-      pv_edges$from[pv_edges$event_date == d],
-      pv_edges$to  [pv_edges$event_date == d] )),
-    edges = pv_edges %&gt;% filter(event_date == d),
-    directed = TRUE)
-  
-  ggraph(g, layout = "fr") +
-    geom_edge_link(
-      arrow       = grid::arrow(length = grid::unit(2, "mm")),
-      edge_colour = "#666666", edge_alpha = 0.5) +
-    geom_node_point(aes(color = category), size = 3) +
-    geom_node_text(aes(label = label), repel = TRUE, size = 3) +
-    scale_color_manual(values = legend_cols, breaks = names(legend_cols)) +
-    ggtitle(as.character(d)) +
-    theme_void() +
-    theme(legend.position = "none",
-          plot.title = element_text(size = 10, hjust = 0.5),
-          plot.margin     = margin(t = 10, r = 5, b = 20, l = 5))
-})
-
-wrap_plots(plots, ncol = 2)</code></pre>
-<p>})</p>
-<p>output$dailyPlot &lt;- renderPlot({ daily_plot() }, res = 96)</p>
-<p># —- Tables ——————————————————– output$nodes_table &lt;- renderDT( nodes_r() %&gt;% select(id, label, category, color), options = list(pageLength = 10), rownames = FALSE)</p>
-<p>output$edges_table &lt;- renderDT( edges_r() %&gt;% select(from, to, type, event_date), options = list(pageLength = 10), rownames = FALSE) }</p>
-<p>shinyApp(ui, server)</p>
+<p>```</p>
 
 
 </section>
