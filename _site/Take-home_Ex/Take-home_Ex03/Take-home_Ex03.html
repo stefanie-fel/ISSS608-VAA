@@ -104,6 +104,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <link href="../../site_libs/cronologia-0.1.0/cronologia.min.css" rel="stylesheet">
 
+<link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+<script src="../../site_libs/datatables-binding-0.33/datatables.js"></script>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+<script src="../../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+<link href="../../site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="../../site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -285,7 +305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 13, 2025</p>
+      <p class="date-modified">June 14, 2025</p>
     </div>
   </div>
     
@@ -671,7 +691,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ..$ :List of 2
   .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...
   .. ..$ type       : chr [1:3226] NA "sent" NA NA ...
- $ :&lt;environment: 0x0000025fd1755008&gt; 
+ $ :&lt;environment: 0x000001eca07a9540&gt; 
  - attr(*, "active")= chr "nodes"</code></pre>
 </div>
 </div>
@@ -844,14 +864,500 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insight from the timeline
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>There are a lot of individuals which she talks to over the past 2 weeks: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter’s Team, The Middleman, Ramora, Harbor Master and even the superstar Sailor Shift</li>
+<li>Code names that are mentioned in her exchanges: NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844</li>
+<li>There are couple of striking message mentioned in the exchanges e.g.&nbsp;“keep tourism appearance”, “keep operations discreet”, “destroy all related documentation”, “ensure Harbor Master remains cooperative” or “we need to stay under radar”, which sounds sounds suspicious, so we should look deeper into it.</li>
+</ul>
+</div>
+</div>
+<p>In the timeline, there was a frequent mention of <strong>#CR-7844</strong>, so let’s look into it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_any</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">str_detect</span>(<span class="fu">as.character</span>(.), <span class="st">"#CR-7844"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>timeline_table <span class="ot">&lt;-</span> comm_about_cr <span class="sc">%&gt;%</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(content))</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>timeline_cr <span class="ot">&lt;-</span><span class="fu">create_tml</span>(<span class="at">df=</span>timeline_table, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#2E8BC0"</span>, <span class="at">dsc_col =</span> <span class="st">"#2E8BC0"</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>timeline_cr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="chronologia-wrapper">
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Monday, October 08 2040, 10:24</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Neptune to Mako. Our operations are fully authorized under V. Miesel's special marine research permit #CR-7844, approved by Oceanus City Council. Blake isn't privy to classified research permits. Continue equipment transport as scheduled. Documentation available if needed.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Monday, October 08 2040, 10:27</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Davis, Mako here. Need your navigation expertise for tonight's equipment run to Nemo Reef. Neptune confirmed we're operating under V. Miesel's marine research permit #CR-7844. Prepare for extended night operations to meet the 5-day deadline.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Monday, October 08 2040, 10:30</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Remora, Mako here. Neptune confirmed we're operating under valid permit #CR-7844. We'll be delivering equipment at 0600 tomorrow via eastern reef route. What installation challenges are you facing that might affect our 5-day deadline?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Monday, October 08 2040, 11:14</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Sentinel, Mako here. Your allegations are unfounded. We're operating under permit #CR-7844, not NR-1045. Our transponder issues were genuine technical problems, now resolved. We're conducting authorized marine research equipment transport, nothing more.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Monday, October 08 2040, 11:21</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Nadia, Davis here. I'll be at the marina office at 7PM with all shipping manifests. Could you bring copies of permit #CR-7844? Marlin's asking about unusual vessel routes near eastern shoals - might need to address this.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Monday, October 08 2040, 11:28</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Rodriguez, Davis here. Continue with Mako at Nemo Reef. We're operating under permit #CR-7844, meeting with Nadia tonight to finalize documentation. No need for alternative site preparations at this time. Keep operations discreet.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Tuesday, October 09 2040, 11:53</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">V. Miesel, Mako here. Requesting authorization for extended night operations to meet accelerated timeline. Need additional crew rotation approval for 24-hour operations over next 5 days. Permit #CR-7844 activities require increased tempo.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Thursday, October 11 2040, 09:57</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Neptune. Understood your urgent staffing concerns. We're authorizing immediate priority for critical path elements involving permit #CR-7844. Redirect 30% of Remora's crew to support your operations. Additional overtime budget approved.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Thursday, October 11 2040, 10:05</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Remora. Be advised 30% of your crew is being reassigned to Neptune effective immediately to support permit #CR-7844 operations. Maintain discretion and limited communications. Report any operational impacts within 12 hours.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 09:24</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Rodriguez, Davis here. Maintain current position with Mako at Nemo Reef. Security team arriving at 0600. Continue operating under permit #CR-7844 and keep tourism appearance. I'll update after meeting with Nadia tonight.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 09:24</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Rodriguez, Davis here. Maintain current position with Mako at Nemo Reef. Security team arriving at 0600. Continue operating under permit #CR-7844 and keep tourism appearance. I'll update after meeting with Nadia tonight.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 10:01</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">V. Miesel Shipping to Davis. Need you to oversee crew reallocation from Remora to Neptune immediately. Ensure strict confidentiality regarding permit #CR-7844 operations. Report any resistance or operational concerns directly to management.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 11:09</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Rodriguez. Need immediate verification of all permits for Nemo Reef operations before 0600 closure. Double-check #CR-7844 documentation and ensure Neptune has everything necessary. Report any discrepancies within 3 hours.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 11:11</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Davis, Small Fry here. Have verified permit #CR-7844 per V. Miesel request. All documentation appears in order for tomorrow's operation. Will you be confirming final details with the Boss tonight? Need anything from me for the 0600 security team?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 11:14</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Davis here to V. Miesel Shipping. Crew reallocation from Remora to Neptune underway as requested. Will maintain confidentiality regarding permit #CR-7844. Security team arrives 0600 tomorrow. Meeting Nadia tonight to finalize documentation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 11:14</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">Davis here to V. Miesel Shipping. Crew reallocation from Remora to Neptune underway as requested. Will maintain confidentiality regarding permit #CR-7844. Security team arrives 0600 tomorrow. Meeting Nadia tonight to finalize documentation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 11:17</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Nadia. Need your immediate confirmation that all documentation for permit #CR-7844 is finalized before tomorrow's 0600 Nemo Reef closure. Davis mentioned meeting you tonight. Any complications we should be aware of?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 11:19</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">This is Nadia. Documentation for permit #CR-7844 is complete. Meeting The Middleman at 2100 to handle final details. Recommend accelerating timeline due to EcoVigil's ROV approval. Shifting operations from southwest immediately. Will update after meeting.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #2E8BC0;">Friday, October 12 2040, 12:52</summary>
+<p style="color: #2E8BC0; background: #FFFFFF; font-size: 14px;">V. Miesel HQ to Neptune. Harbor closure timeline confirmed for 0600 tomorrow, lasting 3 days. Maintain Delta-3 encryption. Nadia securing final documentation for permit #CR-7844. Davis bringing additional crew and security team. Proceed as planned.</p>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>comm_about_cr <span class="ot">&lt;-</span> comm_about_cr <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(content)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>timestamp)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(comm_about_cr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1b4ff99564eb6e8884a5" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1b4ff99564eb6e8884a5">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["Event","Relationship"],["Monitoring","Operates"],[null,null],["Monitoring","Operates"],["Event_Monitoring_803","Relationship_Operates_474"],["surveillance",null],["Davis Rodriguez maintaining position with Mako at Nemo Reef. Operating under permit #CR-7844 while maintaining tourism appearance. Security team expected to arrive at 0600.",null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,"2040-10-11 10:05:00"],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,"permit #CR-7844 operations"],[122,1113],["Friday, October 12 2040, 09:24",null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>type<\/th>\n      <th>label<\/th>\n      <th>name<\/th>\n      <th>sub_type<\/th>\n      <th>id<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>content<\/th>\n      <th>assessment_type<\/th>\n      <th>results<\/th>\n      <th>movement_type<\/th>\n      <th>destination<\/th>\n      <th>enforcement_type<\/th>\n      <th>outcome<\/th>\n      <th>activity_type<\/th>\n      <th>participants<\/th>\n      <th>reference<\/th>\n      <th>date<\/th>\n      <th>time<\/th>\n      <th>friendship_type<\/th>\n      <th>permission_type<\/th>\n      <th>start_date<\/th>\n      <th>end_date<\/th>\n      <th>report_type<\/th>\n      <th>submission_date<\/th>\n      <th>jurisdiction_type<\/th>\n      <th>authority_level<\/th>\n      <th>coordination_type<\/th>\n      <th>operational_role<\/th>\n      <th>new_index<\/th>\n      <th>timestamp_desc<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[16,30]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"type","targets":1},{"name":"label","targets":2},{"name":"name","targets":3},{"name":"sub_type","targets":4},{"name":"id","targets":5},{"name":"monitoring_type","targets":6},{"name":"findings","targets":7},{"name":"content","targets":8},{"name":"assessment_type","targets":9},{"name":"results","targets":10},{"name":"movement_type","targets":11},{"name":"destination","targets":12},{"name":"enforcement_type","targets":13},{"name":"outcome","targets":14},{"name":"activity_type","targets":15},{"name":"participants","targets":16},{"name":"reference","targets":17},{"name":"date","targets":18},{"name":"time","targets":19},{"name":"friendship_type","targets":20},{"name":"permission_type","targets":21},{"name":"start_date","targets":22},{"name":"end_date","targets":23},{"name":"report_type","targets":24},{"name":"submission_date","targets":25},{"name":"jurisdiction_type","targets":26},{"name":"authority_level","targets":27},{"name":"coordination_type","targets":28},{"name":"operational_role","targets":29},{"name":"new_index","targets":30},{"name":"timestamp_desc","targets":31}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline and table">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insight from the timeline and table
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>#CR-7844 is a special marine research permit created for the V. Miesel to conduct marine research equipment transport into the Nemo Reef, approved by Oceanus City Council. This indicates that V. Miesel is aware and is involved in the operation</li>
+<li>Similar to the last timeline built, there are frequent messages about transferring equipment through eastern reef routes and bringing security team and extra crew for the operation.</li>
+<li>The permit was officially used on 11 October for operation. On one of the message from Small Fry to Davis on 12 October 2040, he said that all documentation seem to be in order for tomorrow’s operation.</li>
+</ul>
+</div>
+</div>
+<p>There will be an operation that happens on 13 October 29240, so let’s filter the records to see what we can find.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>comm_13_oct <span class="ot">&lt;-</span> mc3_graph <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">activate</span>(nodes) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_any</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">str_detect</span>(timestamp, <span class="st">"2040-10-13"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">active =</span> <span class="st">"nodes"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp =</span> <span class="fu">as.POSIXct</span>(timestamp, <span class="at">format =</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>),</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">timestamp_desc =</span> <span class="fu">format</span>(timestamp, <span class="st">"%A, %B %d %Y, %H:%M"</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>timeline_table_comm <span class="ot">&lt;-</span> comm_13_oct <span class="sc">%&gt;%</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(content))</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>timeline_13_oct <span class="ot">&lt;-</span><span class="fu">create_tml</span>(<span class="at">df=</span>timeline_table_comm, <span class="at">smr=</span><span class="st">"timestamp_desc"</span>, <span class="at">dsc=</span><span class="st">"content"</span>, <span class="at">smr_bgcol =</span> <span class="st">"#aa1945"</span>, <span class="at">dsc_col =</span> <span class="st">"#aa1945"</span>)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>timeline_13_oct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="chronologia-wrapper">
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:10</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout here! Just spotted a pod of dolphins near the reef this morning - absolutely incredible! The conservation vessels are still monitoring, but the wildlife seems undisturbed. Are we still meeting for birdwatching tomorrow? Heard there might be some rare shearwaters passing through.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:12</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout, it's The Intern. I'll be there for our birdwatching session tomorrow. Excited about those shearwaters! I've packed my underwater camera too - might catch some dolphin footage if we're lucky. Conservation activity updates?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:15</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout here! Conservation vessels have increased activity - they're deploying underwater microphones around Nemo Reef now. Perfect conditions for our birdwatching tomorrow though! I've spotted three different osprey families near our usual spot. See you at 7!</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:17</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mrs. Money, The Intern reporting. Conservation vessels have deployed underwater microphones around Nemo Reef. I've compiled all financial projections and photographic evidence as requested. Will arrive at our 0500 meeting with complete documentation. Anything else needed urgently?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:19</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Boss, The Accountant here. Conservation vessels deploying underwater microphones around Nemo Reef. Meeting V. Miesel management at 10AM tomorrow. The Middleman confirms our 0500 meeting with enhanced encryption. Southwest clearance urgent after council pressure increased.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:19</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Boss, The Accountant here. Conservation vessels deploying underwater microphones around Nemo Reef. Meeting V. Miesel management at 10AM tomorrow. The Middleman confirms our 0500 meeting with enhanced encryption. Southwest clearance urgent after council pressure increased.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:21</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Davis, Nadia here. Need you to verify final equipment transport tonight at Nemo Reef. The Middleman reports increased surveillance. Ensure all operations follow encrypted protocols. Meet me at V. Miesel HQ tomorrow at 0900 to discuss contingency plans.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:40</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Remora, Mako here. Security team integration point confirmed at south dock maintenance entrance. Use clearance code Delta-3-Coral at 0600. Tourism facade remains priority during final equipment transfer. Weather conditions remain favorable for operation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 08:42</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Davis, Remora here. Confirming night operations proceeding smoothly. Minimal comms maintained during equipment transfers. Conservation vessels at safe distance. Ready to receive your support team at south dock. Need your ETA for final coordination.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:05</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Reef Guardian, Horizon here. Detecting unusual encrypted radio frequencies near Nemo Reef - appears to be coordinated vessel communications outside standard channels. Can you confirm similar signals from your position in east quadrant?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:07</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Horizon, Reef Guardian responding. Confirming similar encrypted communications in southeast quadrant. This validates our suspicions of unauthorized activity during closure. Will triangulate signals and add to our documentation. Can you record frequency patterns for evidence?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:08</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Seawatch, Horizon here. Have recorded frequency patterns of encrypted communications as requested. Detecting multiple transmission clusters near west reef edge. Can coordinate triangulation with your position to pinpoint source vessels. Maintain radio silence except on secure channel.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:57</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Council, Liam Thorne here. I've redirected EcoVigil to the northern quadrant as requested. ROV deployment delayed until tomorrow afternoon. Western quadrant access remains restricted per protocol. Will provide full status report by 2200 hours.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 09:59</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Green Guardians, Oceanus City Council here. Your allegations are serious and unfounded. Tomorrow's meeting is postponed pending internal review. All documentation must be submitted through official channels for verification before any public discussion.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:44</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Haacklee Harbor to Knowles. Your vessel is scheduled for departure at 22:00. Special clearance code Alpha-7-Delta has been issued for tonight's operation. Maintain radio silence after leaving the harbor. Confirm receipt.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:45</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Knowles to Haacklee Harbor. Confirming receipt of special clearance code Alpha-7-Delta. We will depart at 22:00 and maintain radio silence as instructed. All systems ready for tonight's operation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:47</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Haacklee Harbor to Oceanus City Council. Update on Nemo Reef situation: Multiple vessels with special clearance codes departing tonight. Knowles confirmed 22:00 departure with radio silence protocol. Awaiting further instructions regarding increased night operations.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:48</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Himark Harbor to Neptune. Your personnel transport is scheduled for 0400 hours tomorrow. Please use clearance code ALPHA-937 for after-hours departure. Maintain radio silence during exit. Berth 14 reserved for your equipment loading.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:51</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Neptune to Davis. Berth 14 is secured for equipment loading at 0400 hours. Your security team's arrival is confirmed. Use clearance code ALPHA-937 for harbor access. Delta-3 encryption mandatory for all communications.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 11:55</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Rodriguez, Remora here. Need your navigation expertise for tonight's equipment transfer. Maintain radio silence during operation, using only essential hand signals. Conservation vessels observed at perimeter. Meet at south dock at 0200.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:14</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, Reef Guardian here. Thank you for your surveillance report. Are these vessels displaying any identification? Request you continue monitoring and document any cargo transfers. This evidence is crucial for our case against this suspicious closure.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:15</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mako, Sentinel here. Currently tracking four vessels operating near Nemo Reef at 02:30 hours despite closure. No identifying markers, running dark with minimal wake. Exchanging large equipment containers. Do you have aerial visibility to confirm identities?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:17</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, Mako here. No aerial visibility available. Those vessels are NOT part of our authorized operation. Maintain distance and continue observation only. Do not approach or make contact. Report any additional activity immediately.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:20</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Reef Guardian, Sentinel here. Update on suspicious vessels: Four vessels now operating, still unidentified. They're transferring what appears to be drilling equipment. Water samples near their location show trace amounts of diesel fuel. Continuing documentation with night-vision photography.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:22</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Green Guardians, Reef Guardian reporting. Compiling evidence from multiple vessels shows unauthorized activity at Nemo Reef during closure - encrypted communications, equipment transfers, and fuel contamination. Request immediate regulatory intervention and press conference to challenge this clearly suspicious closure.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:24</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Oceanus City Council, Green Guardians leadership here. We strongly protest the meeting postponement. Our evidence is substantial and time-sensitive. We demand an emergency session within 24 hours and will pursue legal action if environmental violations continue unaddressed.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:27</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Paackland Harbor, Oceanus City Council here. Implement immediate night operation protocols for vessels with special clearance codes. Maintain strict radio silence and expedite departures. Report any conservation vessels attempting documentation near Nemo Reef.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:29</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, Paackland Harbor here. Be advised of night operations protocol now in effect. Vessels with special clearance codes will be departing after hours. Maintain distance from these authorized operations per council directive.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:31</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Green Guardians, Sentinel here. Night observation reveals five vessels now at Nemo Reef. Special clearance codes mentioned by Harbor Master. Water samples show increased diesel contamination. Documented activity with thermal imaging. Request guidance on next steps.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:34</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Seawatch, Green Guardians HQ here. We need you to coordinate with Sentinel and Horizon to gather additional evidence at Nemo Reef. Focus on water sample collection and documenting vessel movements. Council meeting postponed, but we're pressing for emergency session.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:36</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Sentinel, The Lookout here. Using long-range equipment to document west reef activity. Spotted what appears to be a music video shoot with lighting rigs and camera equipment. Can't confirm details at this distance. Can you get closer for verification?</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:38</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mako, Sentinel here. Following your instruction to maintain distance. Five vessels now operating at Nemo Reef with Paackland Harbor's special clearance. They've installed temporary lighting structures and large cylindrical equipment. Continuing documentation.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:40</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Davis, Mako here. Unauthorized vessels detected at Nemo Reef operating with Paackland clearance. Possible security breach. Proceed with heightened caution during our operation. Maintain radio silence except for emergencies. Will await your assessment.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:41</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mako, Reef Guardian here. We're gathering substantial evidence of unauthorized activity at Nemo Reef during this suspicious closure. Can you patrol the western boundary and document any vessel movements or equipment transfers? Need comprehensive coverage for our case.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:44</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Reef Guardian, Mako here. Negative on your request. We operate strictly as a tourism vessel and cannot assist with surveillance. Suggest contacting proper authorities if you suspect illegal activities. Maintaining our scheduled route.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:45</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Intern here, Lookout. I'm packed for our 7AM birdwatching. Have you noticed any unusual vessel movements during dawn hours? I'll bring coffee and those specialty binoculars Mrs. Money lent me. Excited about those shearwaters!</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:48</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">The Lookout here, Intern! Just spotted those conservation vessels moving equipment to the eastern side of Nemo Reef. Perfect morning for our birdwatching! I've brought my special spotting scope - those shearwaters should be visible from our usual spot. See you at 7!</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:49</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Mrs. Money, The Intern here. I'll bring special binoculars to our 0500 meeting. The Lookout reports conservation vessels moving equipment to eastern Nemo Reef. Should I conduct reconnaissance before our meeting? All documentation ready as requested.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 12:57</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Horizon, The Lookout here. Regarding that music video activity - can you use your signal equipment to verify? Strange to see lighting rigs and cameras at this hour. Could be cover for something else. Need better visuals than my equipment can provide.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 13:18</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Oceanus City Council, Paackland Harbor reporting. Night operations proceeding as directed with minimal radio communication. Two special clearance vessels departed at 0200 hours. No conservation vessels detected in proximity to operations. Awaiting further instructions.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 13:20</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Liam, Oceanus City Council here. Require immediate status report on EcoVigil positioning. Ensure Western quadrant remains completely restricted through next 48 hours. Prioritize monitoring any unauthorized conservation vessels near restricted zones. Report directly to me.</p>
+</details>
+</div>
+<div class="chronologia-detail-wrapper">
+<details>
+<summary style="color: white; background: #aa1945;">Saturday, October 13 2040, 13:23</summary>
+<p style="color: #aa1945; background: #FFFFFF; font-size: 14px;">Council, Liam Thorne reporting. Western quadrant restriction confirmed for 48 hours. EcoVigil redirected north as instructed. Unauthorized vessel monitoring in place. Will submit detailed report by 2200 hours as promised.</p>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>comm_13_oct <span class="ot">&lt;-</span> comm_13_oct <span class="sc">%&gt;%</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(content)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>timestamp)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(comm_13_oct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-8f836166d559454ecd73" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8f836166d559454ecd73">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"],["Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event","Event"],["Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","VesselMovement","VesselMovement","VesselMovement","VesselMovement","Enforcement","TourActivity","TourActivity"],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],["Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","Monitoring","VesselMovement","VesselMovement","VesselMovement","VesselMovement","Enforcement","TourActivity","TourActivity"],["Event_Monitoring_878","Event_Monitoring_900","Event_Monitoring_909","Event_Monitoring_911","Event_Monitoring_917","Event_Monitoring_922","Event_Monitoring_929","Event_Monitoring_932","Event_VesselMovement_806","Event_VesselMovement_883","Event_VesselMovement_887","Event_VesselMovement_892","Event_Enforcement_839","Event_TourActivity_814","Event_TourActivity_816"],["surveillance","surveillance","water quality testing","surveillance","patrol activity","surveillance","surveillance","surveillance",null,null,null,null,null,null,null],["Detected multiple transmission clusters near west reef edge. Recording frequency patterns of encrypted communications. Able to triangulate source vessels.","Unauthorized activity at Nemo Reef during closure - encrypted communications, equipment transfers, and fuel contamination","Need to gather additional evidence at Nemo Reef, including water sample collection and documenting vessel movements","Spotted what appears to be a music video shoot with lighting rigs and camera equipment on west reef. Unable to confirm details due to distance.","Unauthorized activity at Nemo Reef during closure, requiring patrol of western boundary to document vessel movements and equipment transfers","Conservation vessels moving equipment to the eastern side of Nemo Reef","EcoVigil positioning required. Western quadrant to remain completely restricted for 48 hours. Unauthorized conservation vessels near restricted zones to be monitored.","Western quadrant restriction confirmed for 48 hours. EcoVigil redirected north as instructed. Unauthorized vessel monitoring in place.",null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,"departure","departure","departure","rendezvous",null,null,null],[null,null,null,null,null,null,null,null,null,"Knowles",null,"south dock",null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,"enforcement operations",null,null],[null,null,null,null,null,null,null,null,null,null,null,null,"mandatory closure of Nemo Reef with 500-meter buffer zone",null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,"reef tour",null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[126,127,128,129,130,131,132,133,798,800,801,802,824,839,840],["Saturday, October 13 2040, 09:08","Saturday, October 13 2040, 12:22","Saturday, October 13 2040, 12:34","Saturday, October 13 2040, 12:36","Saturday, October 13 2040, 12:41","Saturday, October 13 2040, 07:00","Saturday, October 13 2040, 13:20","Saturday, October 13 2040, 13:23","Saturday, October 13 2040, 08:00","Saturday, October 13 2040, 22:00","Saturday, October 13 2040, 22:00","Saturday, October 13 2040, 02:00","Saturday, October 13 2040, 06:00","Saturday, October 13 2040, 08:00","Saturday, October 13 2040, 08:00"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>type<\/th>\n      <th>label<\/th>\n      <th>name<\/th>\n      <th>sub_type<\/th>\n      <th>id<\/th>\n      <th>monitoring_type<\/th>\n      <th>findings<\/th>\n      <th>content<\/th>\n      <th>assessment_type<\/th>\n      <th>results<\/th>\n      <th>movement_type<\/th>\n      <th>destination<\/th>\n      <th>enforcement_type<\/th>\n      <th>outcome<\/th>\n      <th>activity_type<\/th>\n      <th>participants<\/th>\n      <th>reference<\/th>\n      <th>date<\/th>\n      <th>time<\/th>\n      <th>friendship_type<\/th>\n      <th>permission_type<\/th>\n      <th>start_date<\/th>\n      <th>end_date<\/th>\n      <th>report_type<\/th>\n      <th>submission_date<\/th>\n      <th>jurisdiction_type<\/th>\n      <th>authority_level<\/th>\n      <th>coordination_type<\/th>\n      <th>operational_role<\/th>\n      <th>new_index<\/th>\n      <th>timestamp_desc<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[16,30]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"type","targets":1},{"name":"label","targets":2},{"name":"name","targets":3},{"name":"sub_type","targets":4},{"name":"id","targets":5},{"name":"monitoring_type","targets":6},{"name":"findings","targets":7},{"name":"content","targets":8},{"name":"assessment_type","targets":9},{"name":"results","targets":10},{"name":"movement_type","targets":11},{"name":"destination","targets":12},{"name":"enforcement_type","targets":13},{"name":"outcome","targets":14},{"name":"activity_type","targets":15},{"name":"participants","targets":16},{"name":"reference","targets":17},{"name":"date","targets":18},{"name":"time","targets":19},{"name":"friendship_type","targets":20},{"name":"permission_type","targets":21},{"name":"start_date","targets":22},{"name":"end_date","targets":23},{"name":"report_type","targets":24},{"name":"submission_date","targets":25},{"name":"jurisdiction_type","targets":26},{"name":"authority_level","targets":27},{"name":"coordination_type","targets":28},{"name":"operational_role","targets":29},{"name":"new_index","targets":30},{"name":"timestamp_desc","targets":31}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Insight from the timeline and table">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insight from the timeline and table
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>From the timeline, we can see that the conservation vessel were still monitoring the activities of people with permits. However, what’s more surprising is that we found evidence the Oceanus City Council is actually involved in the operation as they told Green Guardians to hold the investigation when there may be potential fuel contamination in the Nemo Reef</li>
+<li>It seems that there is another operation planned as Nadia asks David to verify the final equipment transport at Nemo Reef.</li>
+<li>Incidents happening on the day: there was also a music video shooting, equipment transfers and possible fuel contamination on the Nemo Reef</li>
+</ul>
+</div>
+</div>
+<p>Conclusion from the timeline: - Nadia Conti was working together with V. Miesel to create special permits under the guise of equipment research, but it was misused.</p>
+<ul>
+<li>There is also bribery done by Nadia as she told Liam that she needed his services to ensure that Harbor Master remains “cooperative” through next week and investigation on Nemo Reef permits were brewing.</li>
+</ul>
+<p>Although, there was no evidence apart from her exchanges that she was directly involved in the illegal activities. It seemed like she worked behind the scene in getting the permit and authorizing operations, thus justifying Clepper’s suspicions. Through her exchanges, there should also be a deeper investigations done towards those whom she exchanges messages with, as they are also involved in illegal activities and some of them are in high position(e.g.&nbsp;City Council, Liam Thorne, Davis, and V. Miesel)</p>
 </section>
 <section id="storyboard-from-data-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="storyboard-from-data-analysis">4.1 Storyboard from Data Analysis</h3>
-<p>Input</p>
+<p>Input For Shiny App</p>
+<p>The following libraries will be used:</p>
+<ul>
+<li><p>Filtering content based on pattern given: <code>stringr</code></p></li>
+<li><p>Advanced examining… : <code>cronologia</code> (for timeline building) and <code>datatable</code> (for supplementary information that wasn’t covered by the timeline)</p></li>
+</ul>
 <p>Output</p>
 <p>Storyboard</p>
 <p><a href="https://giniceseah.netlify.app/posts/2021-07-31-storyboard/" class="uri">https://giniceseah.netlify.app/posts/2021-07-31-storyboard/</a></p>
-<p>```</p>
 
 
 </section>

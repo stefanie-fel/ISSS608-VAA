@@ -176,8 +176,10 @@ set.seed(1234)
 
 ### 3.2 Interaction and Relationship of Entities to Each Other
 
-### 3.3 Nadia Conti Communications 
-To know if Nadia is involved in illegal activities, we can check her exchanges with other people, organization and organization. Who does she frequently communicate with and what do they frequently talk about. 
+### 3.3 Nadia Conti Communications
+
+To know if Nadia is involved in illegal activities, we can check her exchanges with other people, organization and organization. Who does she frequently communicate with and what do they frequently talk about.
+
 ```{r}
 comm_about_nadia <- mc3_graph %>%
   activate(nodes) %>%
@@ -196,14 +198,92 @@ timeline_nadia <- create_tml(df=timeline_nadia_comm, smr="timestamp_desc", dsc="
 timeline_nadia
 ```
 
+::: {.callout-note title="Insight from the timeline"}
+-   There are a lot of individuals which she talks to over the past 2 weeks: Rodriquez, Mako, Davis, Haackle Harbor, Oceanus City Council, Neptune, Elise, Marlin, Liam, V. Miesel Shipping, V. Miesel HQ, Glitter's Team, The Middleman, Ramora, Harbor Master and even the superstar Sailor Shift
+-   Code names that are mentioned in her exchanges: NR-1045, Delta-3 encryption, Berth 14, ALPHA-937, #CR-7844
+-   There are couple of striking message mentioned in the exchanges e.g. "keep tourism appearance", "keep operations discreet", "destroy all related documentation", "ensure Harbor Master remains cooperative" or "we need to stay under radar", which sounds sounds suspicious, so we should look deeper into it.
+:::
+
+In the timeline, there was a frequent mention of **#CR-7844**, so let's look into it.
+
+```{r}
+comm_about_cr <- mc3_graph %>%
+  activate(nodes) %>%
+  filter(if_any(everything(), ~ str_detect(as.character(.), "#CR-7844"))) %>%
+  as_tibble(active = "nodes") %>%
+  mutate(
+    timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
+    timestamp_desc = format(timestamp, "%A, %B %d %Y, %H:%M")
+  )
+
+timeline_table <- comm_about_cr %>%
+  filter(!is.na(content))
+timeline_cr <-create_tml(df=timeline_table, smr="timestamp_desc", dsc="content", smr_bgcol = "#2E8BC0", dsc_col = "#2E8BC0")
+timeline_cr
+```
+
+```{r}
+comm_about_cr <- comm_about_cr %>%
+  filter(is.na(content)) %>%
+  select(-timestamp)
+datatable(comm_about_cr)
+```
+
+::: {.callout-note title="Insight from the timeline and table"}
+-   #CR-7844 is a special marine research permit created for the V. Miesel to conduct marine research equipment transport into the Nemo Reef, approved by Oceanus City Council. This indicates that V. Miesel is aware and is involved in the operation
+-   Similar to the last timeline built, there are frequent messages about transferring equipment through eastern reef routes and bringing security team and extra crew for the operation.
+-   The permit was officially used on 11 October for operation. On one of the message from Small Fry to Davis on 12 October 2040, he said that all documentation seem to be in order for tomorrow's operation.
+:::
+
+There will be an operation that happens on 13 October 29240, so let's filter the records to see what we can find.
+
+```{r}
+comm_13_oct <- mc3_graph %>%
+  activate(nodes) %>%
+  filter(if_any(everything(), ~ str_detect(timestamp, "2040-10-13"))) %>%
+  as_tibble(active = "nodes") %>%
+  mutate(
+    timestamp = as.POSIXct(timestamp, format = "%Y-%m-%d %H:%M:%S"),
+    timestamp_desc = format(timestamp, "%A, %B %d %Y, %H:%M")
+  )
+
+timeline_table_comm <- comm_13_oct %>%
+  filter(!is.na(content))
+timeline_13_oct <-create_tml(df=timeline_table_comm, smr="timestamp_desc", dsc="content", smr_bgcol = "#aa1945", dsc_col = "#aa1945")
+timeline_13_oct
+```
+
+```{r}
+comm_13_oct <- comm_13_oct %>%
+  filter(is.na(content)) %>%
+  select(-timestamp)
+datatable(comm_13_oct)
+```
+
+::: {.callout-note title="Insight from the timeline and table"}
+-   From the timeline, we can see that the conservation vessel were still monitoring the activities of people with permits. However, what's more surprising is that we found evidence the Oceanus City Council is actually involved in the operation as they told Green Guardians to hold the investigation when there may be potential fuel contamination in the Nemo Reef
+-   It seems that there is another operation planned as Nadia asks David to verify the final equipment transport at Nemo Reef.
+-   Incidents happening on the day: there was also a music video shooting, equipment transfers and possible fuel contamination on the Nemo Reef
+:::
+
+Conclusion from the timeline: - Nadia Conti was working together with V. Miesel to create special permits under the guise of equipment research, but it was misused.
+
+-   There is also bribery done by Nadia as she told Liam that she needed his services to ensure that Harbor Master remains "cooperative" through next week and investigation on Nemo Reef permits were brewing.
+
+Although, there was no evidence apart from her exchanges that she was directly involved in the illegal activities. It seemed like she worked behind the scene in getting the permit and authorizing operations, thus justifying Clepper's suspicions. Through her exchanges, there should also be a deeper investigations done towards those whom she exchanges messages with, as they are also involved in illegal activities and some of them are in high position(e.g. City Council, Liam Thorne, Davis, and V. Miesel)
+
 ### 4.1 Storyboard from Data Analysis
 
-Input
+Input For Shiny App
+
+The following libraries will be used:
+
+-   Filtering content based on pattern given: `stringr`
+
+-   Advanced examining... : `cronologia` (for timeline building) and `datatable` (for supplementary information that wasn't covered by the timeline)
 
 Output
 
 Storyboard
 
 <https://giniceseah.netlify.app/posts/2021-07-31-storyboard/>
-
-\`\`\`
