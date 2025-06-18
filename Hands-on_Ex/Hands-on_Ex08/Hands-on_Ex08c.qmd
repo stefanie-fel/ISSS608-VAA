@@ -78,3 +78,208 @@ tmap_arrange(p1, p2, nrow = 1)
 ```
 
 ## Choropleth Map for Rates
+
+We'll first organize the proportion of functional water points and the proportion of non-functional waterpoints in each LGA to rates rather than just the count of it since water points are not equally distributed in space. So w'll use mutate to derive *pct_functional* and *pct_nonfunctional*.
+
+```{r}
+NGA_wp <- NGA_wp %>%
+  mutate(pct_functional = wp_functional/total_wp) %>%
+  mutate(pct_nonfunctional = wp_nonfunctional/total_wp)
+```
+
+```{r}
+tm_shape(NGA_wp) + 
+  tm_polygons(fill = "pct_functional",
+              fill.scale = tm_scale_intervals(
+                style = "equal",
+                n = 10,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                position = c("right", "bottom"))) +
+  tm_borders(lwd = 0.1, 
+             fill_alpha = 1) + tm_title("Rate map of functional water point by LGAs")
+```
+
+## Extreme Value Maps
+
+Extreme value maps are variations of choropleth maps that detects outlines by classification hat's designed to highlight extreme values.
+
+### Percentile Map
+
+Percentile a is a special type of quantile map with 6 specific categories: 0-1%, 1-10%, 10-50%, 50-90%, 90-99% and 99-100%. The breakpoint can also be specified as cumulative probabilities `c(0, .01, .1, .5, .9, .99, 1)` in R.
+
+#### Data Preparation
+
+We can exclude records with NA
+
+```{r}
+NGA_wp <- NGA_wp %>%
+  drop_na()
+```
+
+Then we can create customized classification and extracting values
+
+```{r}
+percent <- c(0,.01,.1,.5,.9,.99,1)
+var <- NGA_wp["pct_functional"] %>%
+  st_set_geometry(NULL)
+quantile(var[,1], percent)
+```
+
+::: {callout-tip}
+When we extract data from sf dataframe, we extract the geometries too. However many base R functions can't deal with geometries, which includes the quantile() function. So the geometry field should be dropped with this function `st_set_geomet(NULL)`
+:::
+
+#### Create get.var Function
+
+```{r}
+get.var <- function(vname,df) {
+  v <- df[vname] %>% 
+    st_set_geometry(NULL)
+  v <- unname(v[,1])
+  return(v)
+}
+```
+
+::: {.callout-note}
+-   We'll extract a variable (wp_nonfunctional) as a vector from sf dataframe
+
+-   The function takes vname (variable name) and df (name of dataframe) as input
+
+-   The function return v, which is the vector with values
+:::
+
+####  Percentile Mapping Function 
+
+```{r}
+percentmap <- function(vnam, df, legtitle=NA, mtitle="Percentile Map"){
+  percent <- c(0,.01,.1,.5,.9,.99,1)
+  var <- get.var(vnam, df)
+  bperc <- quantile(var, percent)
+  tm_shape(df) +
+  tm_polygons() +
+  tm_shape(df) +
+     tm_polygons(vnam,
+             title=legtitle,
+             breaks=bperc,
+             palette="Blues",
+          labels=c("< 1%", "1% - 10%", "10% - 50%", "50% - 90%", "90% - 99%", "> 99%"))  +
+  tm_borders() +
+  tm_layout(main.title = mtitle)
+}
+```
+
+Next, we can plot the percentile map
+
+```{r}
+percentmap("total_wp", NGA_wp)
+```
+
+### Box Map
+
+Box map is an augmented quantile map with additional lower and upper category. The starting point for the breaks is the minimum value and the second break would be the lower fence. If there's no lower outlier, ten the starting point would be the lower fence and second break would be on the minimum value.
+
+```{r}
+ggplot(data = NGA_wp,
+       aes(x = "",
+           y = wp_nonfunctional)) +
+  geom_boxplot()
+```
+
+It displays summary statistics on a choropleth map using boxplot. When we create box map, a custom specification will be used. However the break points for the box map will vary depending on whether lower or upper outlier are present.
+
+#### Create Box Breaks Function
+
+```{r}
+boxbreaks <- function(v,mult=1.5) {
+  qv <- unname(quantile(v))
+  iqr <- qv[4] - qv[2]
+  upfence <- qv[4] + mult * iqr
+  lofence <- qv[2] - mult * iqr
+  # initialize break points vector
+  bb <- vector(mode="numeric",length=7)
+  # logic for lower and upper fences
+  if (lofence < qv[1]) {  # no lower outliers
+    bb[1] <- lofence
+    bb[2] <- floor(qv[1])
+  } else {
+    bb[2] <- lofence
+    bb[1] <- qv[1]
+  }
+  if (upfence > qv[5]) { # no upper outliers
+    bb[7] <- upfence
+    bb[6] <- ceiling(qv[5])
+  } else {
+    bb[6] <- upfence
+    bb[7] <- qv[5]
+  }
+  bb[3:5] <- qv[2:4]
+  return(bb)
+}
+```
+
+::: {.callout-note}
+-   the function creates box break function
+
+-   The function takes in input of: v (vector with observations) and mult (multiplier for IQR)
+
+-   Returns bb (vector with 7 break points compute quartile and fences)
+:::
+
+#### Create get.var Function
+
+```{r}
+get.var <- function(vname,df) {
+  v <- df[vname] %>% st_set_geometry(NULL)
+  v <- unname(v[,1])
+  return(v)
+}
+```
+
+::: {.callout-note}
+-   The function extract a variable as a vector from sf dataframe
+
+-   The function takes in these two input: vname (variable name) and df (dataframe name)
+
+-   The function returns v, which is the vector with value
+:::
+
+#### Boxmap Function
+
+```{r}
+var <- get.var("wp_nonfunctional", NGA_wp) 
+boxbreaks(var)
+```
+
+```{r}
+boxmap <- function(vnam, df, 
+                   legtitle=NA,
+                   mtitle="Box Map",
+                   mult=1.5){
+  var <- get.var(vnam,df)
+  bb <- boxbreaks(var)
+  tm_shape(df) +
+    tm_polygons() +
+  tm_shape(df) +
+     tm_fill(vnam,title=legtitle,
+             breaks=bb,
+             palette="Blues",
+          labels = c("lower outlier", 
+                     "< 25%", 
+                     "25% - 50%", 
+                     "50% - 75%",
+                     "> 75%", 
+                     "upper outlier"))  +
+  tm_borders() +
+  tm_layout(main.title = mtitle, 
+            title.position = c("left",
+                               "top"))
+}
+```
+
+Next we will plot the box map
+
+```{r}
+tmap_mode("plot")
+boxmap("wp_nonfunctional", NGA_wp)
+```
