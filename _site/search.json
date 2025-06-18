@@ -418,5 +418,117 @@
     "title": "Hands-on Exercise 8c",
     "section": "Extreme Value Maps",
     "text": "Extreme Value Maps\nExtreme value maps are variations of choropleth maps that detects outlines by classification hat’s designed to highlight extreme values.\n\nPercentile Map\nPercentile a is a special type of quantile map with 6 specific categories: 0-1%, 1-10%, 10-50%, 50-90%, 90-99% and 99-100%. The breakpoint can also be specified as cumulative probabilities c(0, .01, .1, .5, .9, .99, 1) in R.\n\nData Preparation\nWe can exclude records with NA\n\nNGA_wp &lt;- NGA_wp %&gt;%\n  drop_na()\n\nThen we can create customized classification and extracting values\n\npercent &lt;- c(0,.01,.1,.5,.9,.99,1)\nvar &lt;- NGA_wp[\"pct_functional\"] %&gt;%\n  st_set_geometry(NULL)\nquantile(var[,1], percent)\n\n       0%        1%       10%       50%       90%       99%      100% \n0.0000000 0.0000000 0.2169811 0.4791667 0.8611111 1.0000000 1.0000000 \n\n\n\nWhen we extract data from sf dataframe, we extract the geometries too. However many base R functions can’t deal with geometries, which includes the quantile() function. So the geometry field should be dropped with this function st_set_geomet(NULL)\n\n\n\nCreate get.var Function\n\nget.var &lt;- function(vname,df) {\n  v &lt;- df[vname] %&gt;% \n    st_set_geometry(NULL)\n  v &lt;- unname(v[,1])\n  return(v)\n}\n\n\n\n\n\n\n\nNote\n\n\n\n\nWe’ll extract a variable (wp_nonfunctional) as a vector from sf dataframe\nThe function takes vname (variable name) and df (name of dataframe) as input\nThe function return v, which is the vector with values\n\n\n\n\n\nPercentile Mapping Function\n\npercentmap &lt;- function(vnam, df, legtitle=NA, mtitle=\"Percentile Map\"){\n  percent &lt;- c(0,.01,.1,.5,.9,.99,1)\n  var &lt;- get.var(vnam, df)\n  bperc &lt;- quantile(var, percent)\n  tm_shape(df) +\n  tm_polygons() +\n  tm_shape(df) +\n     tm_polygons(vnam,\n             title=legtitle,\n             breaks=bperc,\n             palette=\"Blues\",\n          labels=c(\"&lt; 1%\", \"1% - 10%\", \"10% - 50%\", \"50% - 90%\", \"90% - 99%\", \"&gt; 99%\"))  +\n  tm_borders() +\n  tm_layout(main.title = mtitle)\n}\n\nNext, we can plot the percentile map\n\npercentmap(\"total_wp\", NGA_wp)\n\n\n\n\n\n\n\n\n\n\n\nBox Map\nBox map is an augmented quantile map with additional lower and upper category. The starting point for the breaks is the minimum value and the second break would be the lower fence. If there’s no lower outlier, ten the starting point would be the lower fence and second break would be on the minimum value.\n\nggplot(data = NGA_wp,\n       aes(x = \"\",\n           y = wp_nonfunctional)) +\n  geom_boxplot()\n\n\n\n\n\n\n\n\nIt displays summary statistics on a choropleth map using boxplot. When we create box map, a custom specification will be used. However the break points for the box map will vary depending on whether lower or upper outlier are present.\n\nCreate Box Breaks Function\n\nboxbreaks &lt;- function(v,mult=1.5) {\n  qv &lt;- unname(quantile(v))\n  iqr &lt;- qv[4] - qv[2]\n  upfence &lt;- qv[4] + mult * iqr\n  lofence &lt;- qv[2] - mult * iqr\n  # initialize break points vector\n  bb &lt;- vector(mode=\"numeric\",length=7)\n  # logic for lower and upper fences\n  if (lofence &lt; qv[1]) {  # no lower outliers\n    bb[1] &lt;- lofence\n    bb[2] &lt;- floor(qv[1])\n  } else {\n    bb[2] &lt;- lofence\n    bb[1] &lt;- qv[1]\n  }\n  if (upfence &gt; qv[5]) { # no upper outliers\n    bb[7] &lt;- upfence\n    bb[6] &lt;- ceiling(qv[5])\n  } else {\n    bb[6] &lt;- upfence\n    bb[7] &lt;- qv[5]\n  }\n  bb[3:5] &lt;- qv[2:4]\n  return(bb)\n}\n\n\n\n\n\n\n\nNote\n\n\n\n\nthe function creates box break function\nThe function takes in input of: v (vector with observations) and mult (multiplier for IQR)\nReturns bb (vector with 7 break points compute quartile and fences)\n\n\n\n\n\nCreate get.var Function\n\nget.var &lt;- function(vname,df) {\n  v &lt;- df[vname] %&gt;% st_set_geometry(NULL)\n  v &lt;- unname(v[,1])\n  return(v)\n}\n\n\n\n\n\n\n\nNote\n\n\n\n\nThe function extract a variable as a vector from sf dataframe\nThe function takes in these two input: vname (variable name) and df (dataframe name)\nThe function returns v, which is the vector with value\n\n\n\n\n\nBoxmap Function\n\nvar &lt;- get.var(\"wp_nonfunctional\", NGA_wp) \nboxbreaks(var)\n\n[1] -56.5   0.0  14.0  34.0  61.0 131.5 278.0\n\n\n\nboxmap &lt;- function(vnam, df, \n                   legtitle=NA,\n                   mtitle=\"Box Map\",\n                   mult=1.5){\n  var &lt;- get.var(vnam,df)\n  bb &lt;- boxbreaks(var)\n  tm_shape(df) +\n    tm_polygons() +\n  tm_shape(df) +\n     tm_fill(vnam,title=legtitle,\n             breaks=bb,\n             palette=\"Blues\",\n          labels = c(\"lower outlier\", \n                     \"&lt; 25%\", \n                     \"25% - 50%\", \n                     \"50% - 75%\",\n                     \"&gt; 75%\", \n                     \"upper outlier\"))  +\n  tm_borders() +\n  tm_layout(main.title = mtitle, \n            title.position = c(\"left\",\n                               \"top\"))\n}\n\nNext we will plot the box map\n\ntmap_mode(\"plot\")\nboxmap(\"wp_nonfunctional\", NGA_wp)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html",
+    "title": "Hands-on Exercise 9a",
+    "section": "",
+    "text": "Objective of this exercise:\n\nDerive 3 different measures using mutate() function\nBuild static ternary plot using ggtern() from ggtern package\nBuild interactive ternary lot using plot-ly() from Plotly R"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#getting-started",
+    "title": "Hands-on Exercise 9a",
+    "section": "",
+    "text": "Objective of this exercise:\n\nDerive 3 different measures using mutate() function\nBuild static ternary plot using ggtern() from ggtern package\nBuild interactive ternary lot using plot-ly() from Plotly R"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-libraries",
+    "title": "Hands-on Exercise 9a",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(plotly, ggtern, tidyverse)\n\nThe libraries used in this exercise would be:\n\nggtern: plots ternary diagrams using ggplot2 geometries\nPlotly R: creates interactive graphs\ntidyverse: inclusive of readr. tidyr and dplyr package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#the-data",
+    "title": "Hands-on Exercise 9a",
+    "section": "The Data",
+    "text": "The Data\nWe’ll be using te Singapore Residents by Planning Area Subzone, Age Group, Sex and Type of Dwelling, June 2000-2018 from the &lt;a href =“https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data&gt;Singstat website."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-data",
+    "title": "Hands-on Exercise 9a",
+    "section": "Import Data",
+    "text": "Import Data\n\npop_data &lt;- read_csv(\"data/respopagsex2000to2018_tidy.csv\") \n\n\nData Preparation\nNext, we’ll derive 3 new variables called young, active and active.\n\n#Deriving the young, economy active and old measures\nagpop_mutated &lt;- pop_data %&gt;%\n  mutate(`Year` = as.character(Year))%&gt;%\n  spread(AG, Population) %&gt;%\n  mutate(YOUNG = rowSums(.[4:8]))%&gt;%\n  mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%\n  mutate(OLD = rowSums(.[17:21])) %&gt;%\n  mutate(TOTAL = rowSums(.[22:24])) %&gt;%\n  filter(Year == 2018)%&gt;%\n  filter(TOTAL &gt; 0)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-ternary-diagram-with-r",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-ternary-diagram-with-r",
+    "title": "Hands-on Exercise 9a",
+    "section": "Plotting Ternary Diagram with R",
+    "text": "Plotting Ternary Diagram with R\nNext, we’ll build a static ternary plot using ggtern() to plot the variables we’ve created in the data preparation steps.\n\nggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point()\n\n\n\n\n\n\n\n\nBut we can add colors and title to make it clearer what we’re plotting by adding theme_rgbw() to differentiate between variables and labs(title...).\n\nggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point() +\n  labs(title=\"Population structure, 2015\") +\n  theme_rgbw()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-interactive-ternary-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-interactive-ternary-plot",
+    "title": "Hands-on Exercise 9a",
+    "section": "Plotting Interactive Ternary Plot",
+    "text": "Plotting Interactive Ternary Plot\nWe’ll plot interactive ternary plot using plot-ly()\n\n# reusable function for creating annotation object\nlabel &lt;- function(txt) {\n  list(\n    text = txt, \n    x = 0.1, y = 1,\n    ax = 0, ay = 0,\n    xref = \"paper\", yref = \"paper\", \n    align = \"center\",\n    font = list(family = \"serif\", size = 15, color = \"white\"),\n    bgcolor = \"#b3b3b3\", bordercolor = \"black\", borderwidth = 2\n  )\n}\n\n# reusable function for axis formatting\naxis &lt;- function(txt) {\n  list(\n    title = txt, tickformat = \".0%\", tickfont = list(size = 10)\n  )\n}\n\nternaryAxes &lt;- list(\n  aaxis = axis(\"Young\"), \n  baxis = axis(\"Active\"), \n  caxis = axis(\"Old\")\n)\n\n# Initiating a plotly visualization \nplot_ly(\n  agpop_mutated, \n  a = ~YOUNG, \n  b = ~ACTIVE, \n  c = ~OLD, \n  color = I(\"black\"), \n  type = \"scatterternary\"\n) %&gt;%\n  layout(\n    annotations = label(\"Ternary Markers\"), \n    ternary = ternaryAxes\n  )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html",
+    "title": "Hands-on Exercise 9b",
+    "section": "",
+    "text": "Objective of this exercise is to learn how to plot data visualization for visualizing correlation matrix with R:\n\nCreate correlation matrix using pairs(()\nLearn to plot corrgram using corrplot package\nCreate interactive matrix using Plotly R"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#getting-started",
+    "title": "Hands-on Exercise 9b",
+    "section": "",
+    "text": "Objective of this exercise is to learn how to plot data visualization for visualizing correlation matrix with R:\n\nCreate correlation matrix using pairs(()\nLearn to plot corrgram using corrplot package\nCreate interactive matrix using Plotly R"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#import-libraries",
+    "title": "Hands-on Exercise 9b",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(corrplot, ggstatsplot, tidyverse)\n\nThe libraries used in this exercise would be:\n\ncorrplot: provides visual exploratory tool on correlation matrix that support automatic variable reordering\nggstatsplot: extension of ggplot2 for creating details from statistical tests included in the plots themselves.\ntidyverse: inclusive of readr. tidyr and dplyr package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#the-data",
+    "title": "Hands-on Exercise 9b",
+    "section": "The Data",
+    "text": "The Data\nIn this hands-on, we’ll be using he Wine Qulality Data Set from UCI Machine Learning Repository, which consist of 13 variables and 6K observations."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#import-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#import-data",
+    "title": "Hands-on Exercise 9b",
+    "section": "Import Data",
+    "text": "Import Data\n\nwine &lt;- read_csv(\"data/wine_quality.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#building-correlation-matrix-using-pairs",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#building-correlation-matrix-using-pairs",
+    "title": "Hands-on Exercise 9b",
+    "section": "Building Correlation Matrix using pairs()",
+    "text": "Building Correlation Matrix using pairs()\nIn this example, we’ll be building a scaterplot matrix of Wine Quality Data with dimension of 11 x 11.\n\npairs(wine[,1:11])\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n\nIt takes in the input from the wine dataframe and create the pairwise scatterplot\nIt takes column 2 to 12 of the wine dataframe, namely fixed acidity, volatile acidity, citric acid, residual sugar, chlorides, free sulfur dioxide, total sulfur dioxide, density pH, sulphates and alcohol.\n\n\n\n\npairs(wine[,2:12])\n\n\n\n\n\n\n\n\n\nDrawing the Lower Corner\npairs function has many customization (e.g. show only upper or lower half of the matrix instead of both). We can show only pper half of the correlation matrix sing uper.panel() argument.\n\npairs(wine[,2:12], upper.panel = NULL)\n\n\n\n\n\n\n\n\nOr the lower half using lower.panel() argument like below.\n\npairs(wine[,2:12], lower.panel = NULL)\n\n\n\n\n\n\n\n\nInclude Correlation Coefficient in Correlation Matrix\nWe can show the correlation matrix in the correlation matrix instead of scatter plot using panel.cor function.\n\npanel.cor &lt;- function(x, y, digits=2, prefix=\"\", cex.cor, ...) {\nusr &lt;- par(\"usr\")\non.exit(par(usr))\npar(usr = c(0, 1, 0, 1))\nr &lt;- abs(cor(x, y, use=\"complete.obs\"))\ntxt &lt;- format(c(r, 0.123456789), digits=digits)[1]\ntxt &lt;- paste(prefix, txt, sep=\"\")\nif(missing(cex.cor)) cex.cor &lt;- 0.8/strwidth(txt)\ntext(0.5, 0.5, txt, cex = cex.cor * (1 + r) / 2)\n}\n\npairs(wine[,2:12], \n      upper.panel = panel.cor)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#visualizing-correlation-matrix-using-ggcormat",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#visualizing-correlation-matrix-using-ggcormat",
+    "title": "Hands-on Exercise 9b",
+    "section": "Visualizing Correlation Matrix using ggcormat()",
+    "text": "Visualizing Correlation Matrix using ggcormat()\nWhen we plot using correlation matrix, it can look cluttered especially when the dataset has high number of observations. But by using corrgram, this problem is solved as it only displays the graphical representation of the cell of a matrix correlation (be it in different shapes or just display the correlation coefficient). There are at least 3 different packages that can plot corrgram in R:\n\ncorrgram: can display correlation matrix in points, shading, ellipses and correlation values with confidence intervals\nelipse: drawing ellipses and ellipse-like confidence regionss\ncorrplot: provides visual exploratory tool on correlation matrix that support automatic variable reordering\n\nIn the next section, we’ll plot correlation matrix using ggormat().\n\nPlotting Basic Correlation Matrix\n\nggstatsplot::ggcorrmat(\n  data = wine, \n  cor.vars = 1:11)\n\n\n\n\n\n\n\n\nWe can also add title and subtitle for the graph and reorder the variables like so.\n\nggstatsplot::ggcorrmat(\n  data = wine, \n  cor.vars = 1:11,\n  ggcorrplot.args = list(outline.color = \"black\", \n                         hc.order = TRUE,\n                         tl.cex = 10),\n  title    = \"Correlogram for wine dataset\",\n  subtitle = \"Four pairs are no significant at p &lt; 0.05\"\n)\n\n\n\n\n\n\n\n\nAdditionally, the ggcorplot.args is used to control the additional (antithetic) arguments which will be passed to ggcorrplot::ggcorrplot function. These arguments should be avoided being used: corr, method, p.mat, sig.level, ggtheme, colors, lab, pch, legend.title, digits ."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#building-multiple-plots",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#building-multiple-plots",
+    "title": "Hands-on Exercise 9b",
+    "section": "Building Multiple Plots",
+    "text": "Building Multiple Plots\nggstatsplot also support faceting, but using the grouped_ggcormat() function\n\ngrouped_ggcorrmat(\n  data = wine,\n  cor.vars = 1:11,\n  grouping.var = type,\n  type = \"robust\",\n  p.adjust.method = \"holm\",\n  plotgrid.args = list(ncol = 2),\n  ggcorrplot.args = list(outline.color = \"black\", \n                         hc.order = TRUE,\n                         tl.cex = 10),\n  annotation.args = list(\n    tag_levels = \"a\",\n    title = \"Correlogram for wine dataset\",\n    subtitle = \"The measures are: alcohol, sulphates, fixed acidity, citric acid, chlorides, residual sugar, density, free sulfur dioxide and volatile acidity\",\n    caption = \"Dataset: UCI Machine Learning Repository\"\n  )\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat does the code do\n\n\n\n\nThe only argument needed is grouping.varto build facet plot\nannotation.args calls plot annotation argument from patchwork package. Similarly, the group_ggcorrmat() uses patchwork to plot multiplot"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#visualizing-correlation-matrix-using-corrplot",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html#visualizing-correlation-matrix-using-corrplot",
+    "title": "Hands-on Exercise 9b",
+    "section": "Visualizing Correlation Matrix using corrplot",
+    "text": "Visualizing Correlation Matrix using corrplot\nBefore we can plot a corrgram using corrplot() we need to compute correlation matrix.\n\nwine.cor &lt;- cor(wine[, 1:11])\n\nNow we can plot the corrgram.\n\ncorrplot(wine.cor)\n\n\n\n\n\n\n\n\nAs can be seen, the default visual object for the corrgram is a circle, whereas the default layout is a symmetric matrix. The color scheme is blue-red (blue indicating positive correlation, whereas red denotes negative correlation).\n\nCustomize the Visual Geometric in corrplot\nIn corrplot, there are a few visual geometric that can be used to encde attribute values: circle, ellipse, number, shade, color and pie. The argument that is used to change it is method .\n\ncorrplot(wine.cor, \n         method = \"ellipse\") \n\n\n\n\n\n\n\n\n\nLayout in corrplot\nThere are 3 layout types inn corrplot() such as “full”, “upper” and “lower”. The deaultis full matrix, but it can be changed using type argument.\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\")\n\n\n\n\n\n\n\n\nWe can also customize the color of text in the plot by specifying the color in tl.col argument and turn off diagonal cells by using diag argument.\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\",\n         diag = FALSE,\n         tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n\nWorking with Mixed Layout\nWe can also design the corrgram with mixed visual matrix (one diagonal sows the shape of correlation matrix and the other diagram the numerical matrix) using corrplot.mixed() argument.\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat does the code do\n\n\n\n\nThe lower argument is used to define visualization used for lower diagonal, whereas upper is used to define visualization used for upper diagonal\ntl.pos is used to specify the placement of the axis label\ndiag argument is used too specify glyph on the principal diagonal of te corrgram\n\n\n\n\n\nCombining corrgram with Significant Test\nIn statistical analysis, we want to know which pair of variables have statistically significant correlation coefficient. In which we can use cor.mtest() to compute for p-value and confidence interval fr each par of variables.\n\nwine.sig = cor.mtest(wine.cor, conf.level= .95)\n\nWe can incorporate it into our corrplot like so\n\ncorrplot(wine.cor,\n         method = \"number\",\n         type = \"lower\",\n         diag = FALSE,\n         tl.col = \"black\",\n         tl.srt = 45,\n         p.mat = wine.sig$p,\n         sig.level = .05)\n\n\n\n\n\n\n\n\nThe pairwise variable whose correlation coefficient isn’t statistically significant have the x mark like above.\n\n\nReorder the corrgram\nBy default the order of attributes of corrgram is sorted according to the correlation matrix. But this can be changed using order argument. There are a few sorting methods:\n\nAOE: angular order of eignevectors\nFPC: the first principal component order\nhclust: hierarchical clustering order (there are choices such as “ward”, “single”, “complete”, “average”, “mcquitty”, “median” or “centroid”\n\nIn this example, we’ll be using eigenvector sorting method\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               order=\"AOE\",\n               tl.col = \"black\")\n\n\n\n\n\n\n\n\nIf we uses hclust, we can draw rectangles around corrgram based on results of hierarchical clustering\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         tl.pos = \"lt\",\n         tl.col = \"black\",\n         order=\"hclust\",\n         hclust.method = \"ward.D\",\n         addrect = 3)"
   }
 ]
