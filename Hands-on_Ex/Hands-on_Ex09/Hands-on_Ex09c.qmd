@@ -1,0 +1,112 @@
+---
+title: "Hands-on_Ex09c"
+author: "Stefanie Felicia"
+date: "19 June 2025"
+date-modified: "last-modified"
+format: html
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## Getting Started
+
+Objective of this exercise is to plot static and iteractive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variabels are similar to each other and if there's any correlations that exist in-between them.
+
+## Import Libraries
+
+```{r}
+pacman::p_load(seriation, dendextend, heatmaply, tidyverse)
+```
+
+The libraries used in this exercise would be:
+
+-   seriation: infrastructure for ordering objects with an implementation of several seriazation or sequencing or ordination techniques to reorder matrices, dendograms and dissimilarity matrices.
+
+-   dendextend: offer set of functions for extending dendrogram object in R, to visualize and compare trees of hierarchical clustering
+
+-   heatmaply: create interactive heatmaps that can be standalone HTML file
+
+-   tidyverse: inclusive of readr. tidyr and dplyr package
+
+## The Data
+
+In this hands-on, we'll be using the World Happiness 2018 report dataset.
+
+## Import Data
+
+```{r}
+wh <- read_csv("data/WHData-2018.csv")
+```
+
+## Data Preparation
+
+We want to change the rows by country name instead of row number
+
+```{r}
+row.names(wh) <- wh$Country
+```
+
+Next, we want to change the dataframe into data matrix to create the heatmap.
+
+```{r}
+wh1 <- dplyr::select(wh, c(3, 7:12))
+wh_matrix <- data.matrix(wh)
+```
+
+## Static Heatmap Plot inR
+
+There re a few R paccakages that can be used to plot static heatmap:
+
+-   heatmap(): build a simple heatmap
+
+-   heatmap.2(): is enhanced heatmap (more advanced than heatmap())
+
+-   heatmap() from pheatmap package: has monroe control over the aesthetics parts
+
+-   ComplexHeatmap: draws, annotate and arrange complex heatmap
+
+-   Superheat package: exploring complex dataset using heatmap (even big data with different data types
+
+-   Heatmaply: package to build interactive heatmap (can be shared as HTML standalone file)
+
+## Visualize heatmap using heatmap()
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      Rowv=NA, Colv=NA)
+```
+
+::: callout-note
+-   By default, heatmap() plots a cluster heatmap. The arguments Rowv=NA and Colv=NA are used to switch off the option of plotting the row and column of dendogram
+:::
+
+If we want to change to visualize cluster heatmap we can use the default code without any changes like below
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix)
+```
+
+::: callout-note
+-   We can see that the order of the dendogram is different from the heatmap we create earlier because heatmap reorder using clusterization (calculate the distance between each pair of rows and columns and try to order them by similarity).
+-   The red cell denotes high values, whereas yellow cells represent low value, this can be quite confusing especially when most of the heatmap and dendogram shows the yellow cells. We need to normalize the matrix by using `scale` argument, which can be applied to rows or columns.
+:::
+
+In this example, we'll normalize the matrix (column wise)
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      scale="column",
+                      cexRow = 0.6, 
+                      cexCol = 0.8,
+                      margins = c(10, 4))
+```
+
+::: {.callout-note title="What does the code do"}
+-   `margin` argument is used to ensure the entire x-axis labels are displayed completely
+-   `cexRow` and `cexCol` argument are used to define font size used for y-axis and x-axis
+:::
+
+## Create Interactive Heatmap
