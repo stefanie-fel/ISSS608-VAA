@@ -19,7 +19,7 @@ Objective of this exercise:
 
 -   Build static ternary plot using ggtern() from ggtern package
 
--    Build interactive ternary lot using plot-ly() from Plotly R
+-   Build interactive ternary lot using plot-ly() from Plotly R
 
 ## Import Libraries
 

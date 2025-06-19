@@ -592,6 +592,6 @@
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#create-interactive-heatmap",
     "title": "Hands-on_Ex09c",
     "section": "Create Interactive Heatmap",
-    "text": "Create Interactive Heatmap"
+    "text": "Create Interactive Heatmap\nIn this example, we’ll create interactive heatmap using heatmaply().\n\nheatmaply(mtcars)\n\n\n\n\n\nNow, let’s create another heatmap using the basic syntax to create n interactive heatmap\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)])\n\n\n\n\n\n\nData Transformation\nIn order to ensure that all variable have comparable values (same range throughout all variables so that the comparison is fair between all variable), so data transformation are applied before clustering.\nIn heatmaply(), there are 3 main data transformations supported: scale, normalise and percentile.\n\nScaling method"
   }
 ]
