@@ -11,6 +11,8 @@ execute:
   freeze: true
 ---
 
+
+
 ## Getting Started
 
 Objective of this exercise is:
@@ -23,9 +25,13 @@ Objective of this exercise is:
 
 ## Import Libraries
 
+
+
 ```{r}
 pacman::p_load(treemap, treemapify, tidyverse) 
 ```
+
+
 
 The libraries used in this exercise would be:
 
@@ -41,9 +47,13 @@ In this exercsie, we'll be using the REALIS2018.csv data which comprise of priva
 
 ## Import Data
 
+
+
 ```{r}
 realis2018 <- read_csv("data/realis2018.csv")
 ```
+
+
 
 ## Data Wrangling
 
@@ -61,6 +71,8 @@ We'll be using two functions to all the steps:
 
 ### Grouped summaries without the Pipe
 
+
+
 ```{r}
 realis2018_grouped <- group_by(realis2018, `Project Name`,
                                `Planning Region`, `Planning Area`, 
@@ -72,7 +84,11 @@ realis2018_summarised <- summarise(realis2018_grouped,
                           `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))
 ```
 
+
+
 ### Grouped Summaries with the Pipe
+
+
 
 ```{r}
 realis2018_summarised <- realis2018 %>% 
@@ -84,6 +100,8 @@ realis2018_summarised <- realis2018 %>%
             `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),
             `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))
 ```
+
+
 
 ::: {.callout-note title="What's the difference between both code"}
 -   The pipe (%\>%) chains together the multiple methods calls, which in this case chains together the group_by() function and summarise() function that they don't need to be stored in separate variables.
@@ -99,10 +117,14 @@ In this example, we'll be plotting a treemap showing the distribution of median 
 
 So. we'll select records that are resale condominium property type.
 
+
+
 ```{r}
 realis2018_selected <- realis2018_summarised %>%
   filter(`Property Type` == "Condominium", `Type of Sale` == "Resale")
 ```
+
+
 
 Next, we'll use the following arguments to draw the treemap:
 
@@ -111,6 +133,8 @@ Next, we'll use the following arguments to draw the treemap:
 -   vSize: column that determines the rectangle area size, this means that column must not contain negative values
 
 -   vColor: column that determine the rectangle's color, used in combination with type argument.
+
+
 
 ```{r}
 treemap(realis2018_selected,
@@ -122,7 +146,11 @@ treemap(realis2018_selected,
             )
 ```
 
+
+
 ### Working with vColor and type arguments
+
+
 
 ```{r}
 treemap(realis2018_selected,
@@ -135,6 +163,8 @@ treemap(realis2018_selected,
         )
 ```
 
+
+
 As can be seen, the type argument changes the color scheme and arrangement of the treemap.
 
 ### Colors in the treemap package
@@ -142,6 +172,8 @@ As can be seen, the type argument changes the color scheme and arrangement of th
 Arguments that determine the mapping to color palattes are: mapping and palette. The difefrence between "value" and "manual" is the default value for mapping. The "value" treemap considers palette to be a diverging color palette (e.g. RdYIBu) and map it in a way that 0 corresponds to the middle color (usually white or yellow), -max(abs(values)) to the left-end color and max(abs(values)) to the left-end color, max(values) to the right-end color and mean(range(values)) to the middle color.
 
 #### The "value" type treemap
+
+
 
 ```{r}
 treemap(realis2018_selected,
@@ -155,12 +187,16 @@ treemap(realis2018_selected,
         )
 ```
 
+
+
 ::: {.callout-note title="Points on the code"}
 -   The color palette used RdYIBu palette, but there's no red rectangle in the treemap because the median unit prices are positive
 -   The median Unit Price is from 5000 - 45000 in the legends because the range argument by default c(min(values,max(values)) with rounding.
 :::
 
 #### The "manual" type treemap
+
+
 
 ```{r}
 treemap(realis2018_selected,
@@ -174,9 +210,13 @@ treemap(realis2018_selected,
         )
 ```
 
+
+
 The color schemes of the two type of treemap is completely different even though they use the same palette. this is because "manual" type doesn't interpret values like "values" does. The value range is mapped linearly to the color palette. In "values", the mapping is (min(values, mean(range(values)), max(values)). In this example, we don't need to use diverging color palette because the values are all positive (this works too if values are all negative).
 
 We can change the color palette to blues, which only uses single color palette.
+
+
 
 ```{r}
 treemap(realis2018_selected,
@@ -190,6 +230,8 @@ treemap(realis2018_selected,
         )
 ```
 
+
+
 ### Treemap Layout
 
 There are two popular treemap layout in treemap(): "squarified" and "pivotSize" (default).
@@ -199,6 +241,8 @@ The squarified treemap algorithm produces godo aspect ratios, but ignores the so
 #### Working with algorithm argument
 
 In this example, we'll plot the squarified treemap by changing the algorithm argument.
+
+
 
 ```{r}
 treemap(realis2018_selected,
@@ -213,9 +257,13 @@ treemap(realis2018_selected,
         )
 ```
 
+
+
 #### Using sortID
 
 When the pivotSize algorithm is used, sortID argument can be used to determine order (the rectangles are placed from top left to bottom right).
+
+
 
 ```{r}
 treemap(realis2018_selected,
@@ -231,9 +279,13 @@ treemap(realis2018_selected,
         )
 ```
 
+
+
 ## Design Treemap using treemapify
 
 treemapify uses ggplot2 to plot the treemap. In this example, we can create basic treemap like so.
+
+
 
 ```{r}
 ggplot(data=realis2018_selected, 
@@ -245,7 +297,11 @@ ggplot(data=realis2018_selected,
   scale_fill_gradient(low = "light blue", high = "blue")
 ```
 
+
+
 Next, we can define the hierarchy (group them by planning region)
+
+
 
 ```{r}
 ggplot(data=realis2018_selected, 
@@ -256,7 +312,11 @@ ggplot(data=realis2018_selected,
   geom_treemap()
 ```
 
+
+
 If we also group by planning area, the layout will look vastly different.
+
+
 
 ```{r}
 ggplot(data=realis2018_selected, 
@@ -267,7 +327,11 @@ ggplot(data=realis2018_selected,
   geom_treemap()
 ```
 
+
+
 Next, we want to add boundary line
+
+
 
 ```{r}
 ggplot(data=realis2018_selected, 
@@ -281,22 +345,34 @@ ggplot(data=realis2018_selected,
   geom_treemap_subgroup_border(colour = "gray20")
 ```
 
+
+
 ## Designing Interactive Treemap using d3treeR
 
 Make sure that you already have devtools package installed. If not download using this code
+
+
 
 ```{r eval=FALSE}
 install.packages("devtools")
 ```
 
+
+
 Next, we'll install the d3treeR package using this code:
+
+
 
 ```{r eval=FALSE}
 library(devtools)
 install_github("timelyportfolio/d3treeR")
 ```
 
+
+
 Now, we can create the interactive treemap by using treemap() to build treemap using selected variables in condominium dataframe.
+
+
 
 ```{r}
 library(d3treeR)
@@ -310,8 +386,13 @@ tm <- treemap(realis2018_summarised,
         )
 ```
 
+
+
 Then, use the d3tree() function to make it interactive.
+
+
 
 ```{r}
 d3tree(tm,rootname = "Singapore" )
 ```
+
