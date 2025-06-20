@@ -536,14 +536,14 @@
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html",
     "title": "Hands-on_Ex09c",
     "section": "",
-    "text": "Objective of this exercise is to plot static and iteractive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variabels are similar to each other and if there’s any correlations that exist in-between them."
+    "text": "Objective of this exercise is to plot static and interactive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variables are similar to each other and if there’s any correlations that exist in-between them."
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#getting-started",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#getting-started",
     "title": "Hands-on_Ex09c",
     "section": "",
-    "text": "Objective of this exercise is to plot static and iteractive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variabels are similar to each other and if there’s any correlations that exist in-between them."
+    "text": "Objective of this exercise is to plot static and interactive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variables are similar to each other and if there’s any correlations that exist in-between them."
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#import-libraries",
@@ -593,5 +593,54 @@
     "title": "Hands-on_Ex09c",
     "section": "Create Interactive Heatmap",
     "text": "Create Interactive Heatmap\nIn this example, we’ll create interactive heatmap using heatmaply().\n\nheatmaply(mtcars)\n\n\n\n\n\nNow, let’s create another heatmap using the basic syntax to create n interactive heatmap\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)])\n\n\n\n\n\n\nData Transformation\nIn order to ensure that all variable have comparable values (same range throughout all variables so that the comparison is fair between all variable), so data transformation are applied before clustering.\nIn heatmaply(), there are 3 main data transformations supported: scale, normalise and percentile.\n\nScaling method"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html",
+    "title": "Hands-on_Ex09e",
+    "section": "",
+    "text": "Objective of this exercise is:\n\nLearn how to manipulate transaction data into treemap structure by using dplyr package\nPlot static treemap using treemap package\nHow to design interactive treemap with d3treeR package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#getting-started",
+    "title": "Hands-on_Ex09e",
+    "section": "",
+    "text": "Objective of this exercise is:\n\nLearn how to manipulate transaction data into treemap structure by using dplyr package\nPlot static treemap using treemap package\nHow to design interactive treemap with d3treeR package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#import-libraries",
+    "title": "Hands-on_Ex09e",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(treemap, treemapify, tidyverse) \n\nThe libraries used in this exercise would be:\n\ntreemap: space-filling visualization of hierarchical strudctures\ntreemapify: draw treemap using ggplot2\ntidyverse: inclusive of readr. tidyr and dplyr package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#the-data",
+    "title": "Hands-on_Ex09e",
+    "section": "The Data",
+    "text": "The Data\nIn this exercsie, we’ll be using the REALIS2018.csv data which comprise of private property transaction record in 2018."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#import-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#import-data",
+    "title": "Hands-on_Ex09e",
+    "section": "Import Data",
+    "text": "Import Data\n\nrealis2018 &lt;- read_csv(\"data/realis2018.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#data-wrangling",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#data-wrangling",
+    "title": "Hands-on_Ex09e",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nCurrently, the dataset is in transaction record form, which need manipulation and preparation to plot a treemap. The following steps will be taken to prepare the dataset:\n\nGroup transaction records by Project Name, Planning Region, Planning Area, Property Type and Type of Sale\nCompute Total Unit Sold, Total Area, Median Unit Price and Median Transacted Price by applying appropriate summary statistics on No. of Units, Area (sqm), Unit Price ($ psm) and Transacted Price ($)\n\nWe’ll be using two functions to all the steps:\n\ngroup_by() breaks dataframe into specified group of rows\nsummarize() to derive summary of each group\n\n\nGrouped summaries without the Pipe\n\nrealis2018_grouped &lt;- group_by(realis2018, `Project Name`,\n                               `Planning Region`, `Planning Area`, \n                               `Property Type`, `Type of Sale`)\nrealis2018_summarised &lt;- summarise(realis2018_grouped, \n                          `Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE),\n                          `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n                          `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE), \n                          `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))\n\n\n\nGrouped Summaries with the Pipe\n\nrealis2018_summarised &lt;- realis2018 %&gt;% \n  group_by(`Project Name`,`Planning Region`, \n           `Planning Area`, `Property Type`, \n           `Type of Sale`) %&gt;%\n  summarise(`Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE), \n            `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n            `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),\n            `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))\n\n\n\n\n\n\n\nWhat’s the difference between both code\n\n\n\n\nThe pipe (%&gt;%) chains together the multiple methods calls, which in this case chains together the group_by() function and summarise() function that they don’t need to be stored in separate variables."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#design-treemap-using-treemap-package",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html#design-treemap-using-treemap-package",
+    "title": "Hands-on_Ex09e",
+    "section": "Design Treemap using treemap Package",
+    "text": "Design Treemap using treemap Package\nThe treemap() function offers 43 different arguments, which can be found here. However, we’ll only be exploring the major arguments to design elegant and truthful treemaps\n\nDesign static treemap\nIn this example, we’ll be plotting a treemap showing the distribution of median unit prices and total unit sold of resale condominium by geographic hierarchy in 2017.\nSo. we’ll select records that are resale condominium property type.\n\nrealis2018_selected &lt;- realis2018_summarised %&gt;%\n  filter(`Property Type` == \"Condominium\", `Type of Sale` == \"Resale\")\n\nNext, we’ll use the following arguments to draw the treemap:\n\nindex: The index vector must consist of at least 2 column names or else the plot will be empty. If multiple columns are provided, the first name is the highest aggregation level and then the second name, to the third, and so on.\nvSize: column that determines the rectangle area size, this means that column must not contain negative values\nvColor: column that determine the rectangle’s color, used in combination with type argument.\n\n\ntreemap(realis2018_selected,\n            index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n            vSize=\"Total Unit Sold\",\n            vColor=\"Median Unit Price ($ psm)\",\n            title=\"Resale Condominium by Planning Region and Area, 2017\",\n            title.legend = \"Median Unit Price (S$ per sq. m)\"\n            )\n\n\n\n\n\n\n\n\n\n\nWorking with vColor and type arguments\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type = \"value\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\nAs can be seen, the type argument changes the color scheme and arrangement of the treemap.\n\n\nColors in the treemap package\nArguments that determine the mapping to color palattes are: mapping and palette. The difefrence between “value” and “manual” is the default value for mapping. The “value” treemap considers palette to be a diverging color palette (e.g. RdYIBu) and map it in a way that 0 corresponds to the middle color (usually white or yellow), -max(abs(values)) to the left-end color and max(abs(values)) to the left-end color, max(values) to the right-end color and mean(range(values)) to the middle color.\nThe “value” type treemap\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        palette=\"RdYlBu\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPoints on the code\n\n\n\n\nThe color palette used RdYIBu palette, but there’s no red rectangle in the treemap because the median unit prices are positive\nThe median Unit Price is from 5000 - 45000 in the legends because the range argument by default c(min(values,max(values)) with rounding."
   }
 ]

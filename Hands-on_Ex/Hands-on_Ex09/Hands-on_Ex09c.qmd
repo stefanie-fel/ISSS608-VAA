@@ -13,7 +13,7 @@ execute:
 
 ## Getting Started
 
-Objective of this exercise is to plot static and iteractive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variabels are similar to each other and if there's any correlations that exist in-between them.
+Objective of this exercise is to plot static and interactive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variables are similar to each other and if there's any correlations that exist in-between them.
 
 ## Import Libraries
 
@@ -123,7 +123,7 @@ Now, let's create another heatmap using the basic syntax to create n interactive
 heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
 ```
 
-###  Data Transformation
+### Data Transformation
 
 In order to ensure that all variable have comparable values (same range throughout all variables so that the comparison is fair between all variable), so data transformation are applied before clustering.
 
