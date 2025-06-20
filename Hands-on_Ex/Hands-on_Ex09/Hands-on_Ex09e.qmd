@@ -285,13 +285,13 @@ ggplot(data=realis2018_selected,
 
 Make sure that you already have devtools package installed. If not download using this code
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
 install.packages("devtools")
 ```
 
 Next, we'll install the d3treeR package using this code:
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
 library(devtools)
 install_github("timelyportfolio/d3treeR")
 ```
