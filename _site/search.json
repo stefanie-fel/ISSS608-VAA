@@ -656,5 +656,40 @@
     "title": "Hands-on_Ex09e",
     "section": "Designing Interactive Treemap using d3treeR",
     "text": "Designing Interactive Treemap using d3treeR\nMake sure that you already have devtools package installed. If not download using this code\n\ninstall.packages(\"devtools\")\n\nNext, we’ll install the d3treeR package using this code:\n\nlibrary(devtools)\ninstall_github(\"timelyportfolio/d3treeR\")\n\nNow, we can create the interactive treemap by using treemap() to build treemap using selected variables in condominium dataframe.\n\nlibrary(d3treeR)\ntm &lt;- treemap(realis2018_summarised,\n        index=c(\"Planning Region\", \"Planning Area\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        title=\"Private Residential Property Sold, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\nThen, use the d3tree() function to make it interactive.\n\nd3tree(tm,rootname = \"Singapore\" )"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex09/In-class_Ex09.html",
+    "href": "In-class_Ex/In-class_Ex09/In-class_Ex09.html",
+    "title": "In-class Exercise 9",
+    "section": "",
+    "text": "Refer to the following link: https://public.tableau.com/views/inclass9_17504908694900/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#in-class-exercise-9a",
+    "href": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#in-class-exercise-9a",
+    "title": "In-class Exercise 9",
+    "section": "",
+    "text": "&lt;script type='text/javascript'&gt;                    var divElement = document.getElementById('viz1750603894500');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                &lt;/script&gt;"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#in-class-exercise-9b",
+    "href": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#in-class-exercise-9b",
+    "title": "In-class Exercise 9",
+    "section": "In-class Exercise 9b",
+    "text": "In-class Exercise 9b\n\n\n\n\n\n    \n\n\n            &lt;script type='text/javascript'&gt;                    var divElement = document.getElementById('viz1750603686921');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth &gt; 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth &gt; 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='1377px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                &lt;/script&gt;"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#exercise-9b",
+    "href": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#exercise-9b",
+    "title": "In-class Exercise 9",
+    "section": "Exercise 9b",
+    "text": "Exercise 9b\nRefer to the following link: https://public.tableau.com/views/in-class9b/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#exercise-9a",
+    "href": "In-class_Ex/In-class_Ex09/In-class_Ex09.html#exercise-9a",
+    "title": "In-class Exercise 9",
+    "section": "",
+    "text": "Refer to the following link: https://public.tableau.com/views/inclass9_17504908694900/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
   }
 ]

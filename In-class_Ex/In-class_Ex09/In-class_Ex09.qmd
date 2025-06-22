@@ -1,0 +1,20 @@
+---
+title: "In-class Exercise 9"
+author: "Stefanie Felicia"
+date: "22 June 2025"
+date-modified: "last-modified"
+format:
+  html:
+    embed-resources: true
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+## Exercise 9a
+Refer to the following link: https://public.tableau.com/views/inclass9_17504908694900/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+
+## Exercise 9b
+Refer to the following link: https://public.tableau.com/views/in-class9b/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link

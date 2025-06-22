@@ -1,0 +1,12 @@
+{
+  "hash": "71570d2b0a2463bd287f557e6e07ec69",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"In-class Exercise 9\"\nauthor: \"Stefanie Felicia\"\ndate: \"22 June 2025\"\ndate-modified: \"last-modified\"\nformat: html\nexecute: \n  eval: true\n  echo: true\n  warning: false\n  freeze: true\n---\n\n\n## Exercise 9a\n\n```{html}\n<iframe src=\"https://public.tableau.com/views/in-class9b/Dashboard1?:embed=true&:showVizHome=no\"\n        width=\"100%\" height=\"800px\" frameborder=\"0\"></iframe>\n```\n\n\n## Exercise 9b\n\n",
+    "supporting": [
+      "In-class_Ex09_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}
