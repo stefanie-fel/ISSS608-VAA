@@ -27,7 +27,7 @@ The libraries used in this exercise would be:
 
 -   dendextend: offer set of functions for extending dendrogram object in R, to visualize and compare trees of hierarchical clustering
 
--   heatmaply: create interactive heatmaps that can be standalone HTML file
+-   heatmaply: create interactive heatmaps that can be standalone HTML file 
 
 -   tidyverse: inclusive of readr. tidyr and dplyr package
 
