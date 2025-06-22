@@ -534,65 +534,65 @@
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "",
     "text": "Objective of this exercise is to plot static and interactive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variables are similar to each other and if there’s any correlations that exist in-between them."
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#getting-started",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#getting-started",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "",
     "text": "Objective of this exercise is to plot static and interactive heatmap to visualize and analyze multivariate data, as heatmaps are useful to reveal patterns, display whether any variables are similar to each other and if there’s any correlations that exist in-between them."
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#import-libraries",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#import-libraries",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "Import Libraries",
     "text": "Import Libraries\n\npacman::p_load(seriation, dendextend, heatmaply, tidyverse)\n\nThe libraries used in this exercise would be:\n\nseriation: infrastructure for ordering objects with an implementation of several seriazation or sequencing or ordination techniques to reorder matrices, dendograms and dissimilarity matrices.\ndendextend: offer set of functions for extending dendrogram object in R, to visualize and compare trees of hierarchical clustering\nheatmaply: create interactive heatmaps that can be standalone HTML file\ntidyverse: inclusive of readr. tidyr and dplyr package"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#the-data",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#the-data",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "The Data",
     "text": "The Data\nIn this hands-on, we’ll be using the World Happiness 2018 report dataset."
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#import-data",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#import-data",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "Import Data",
     "text": "Import Data\n\nwh &lt;- read_csv(\"data/WHData-2018.csv\")"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#data-preparation",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#data-preparation",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "Data Preparation",
     "text": "Data Preparation\nWe want to change the rows by country name instead of row number\n\nrow.names(wh) &lt;- wh$Country\n\nNext, we want to change the dataframe into data matrix to create the heatmap.\n\nwh1 &lt;- dplyr::select(wh, c(3, 7:12))\nwh_matrix &lt;- data.matrix(wh)"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#static-heatmap-plot-inr",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#static-heatmap-plot-inr",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "Static Heatmap Plot inR",
     "text": "Static Heatmap Plot inR\nThere re a few R paccakages that can be used to plot static heatmap:\n\nheatmap(): build a simple heatmap\nheatmap.2(): is enhanced heatmap (more advanced than heatmap())\nheatmap() from pheatmap package: has monroe control over the aesthetics parts\nComplexHeatmap: draws, annotate and arrange complex heatmap\nSuperheat package: exploring complex dataset using heatmap (even big data with different data types\nHeatmaply: package to build interactive heatmap (can be shared as HTML standalone file)"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#visualize-heatmap-using-heatmap",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#visualize-heatmap-using-heatmap",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "Visualize heatmap using heatmap()",
     "text": "Visualize heatmap using heatmap()\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      Rowv=NA, Colv=NA)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n\nBy default, heatmap() plots a cluster heatmap. The arguments Rowv=NA and Colv=NA are used to switch off the option of plotting the row and column of dendogram\n\n\n\nIf we want to change to visualize cluster heatmap we can use the default code without any changes like below\n\nwh_heatmap &lt;- heatmap(wh_matrix)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n\nWe can see that the order of the dendogram is different from the heatmap we create earlier because heatmap reorder using clusterization (calculate the distance between each pair of rows and columns and try to order them by similarity).\nThe red cell denotes high values, whereas yellow cells represent low value, this can be quite confusing especially when most of the heatmap and dendogram shows the yellow cells. We need to normalize the matrix by using scale argument, which can be applied to rows or columns.\n\n\n\nIn this example, we’ll normalize the matrix (column wise)\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      scale=\"column\",\n                      cexRow = 0.6, \n                      cexCol = 0.8,\n                      margins = c(10, 4))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat does the code do\n\n\n\n\nmargin argument is used to ensure the entire x-axis labels are displayed completely\ncexRow and cexCol argument are used to define font size used for y-axis and x-axis"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#create-interactive-heatmap",
     "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html#create-interactive-heatmap",
-    "title": "Hands-on_Ex09c",
+    "title": "Hands-on Exercise 9c",
     "section": "Create Interactive Heatmap",
-    "text": "Create Interactive Heatmap\nIn this example, we’ll create interactive heatmap using heatmaply().\n\nheatmaply(mtcars)\n\n\n\n\n\nNow, let’s create another heatmap using the basic syntax to create n interactive heatmap\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)])\n\n\n\n\n\n\nData Transformation\nIn order to ensure that all variable have comparable values (same range throughout all variables so that the comparison is fair between all variable), so data transformation are applied before clustering.\nIn heatmaply(), there are 3 main data transformations supported: scale, normalise and percentile.\n\nScaling method"
+    "text": "Create Interactive Heatmap\nIn this example, we’ll create interactive heatmap using heatmaply().\n\nheatmaply(mtcars)\n\n\n\n\n\nNow, let’s create another heatmap using the basic syntax to create n interactive heatmap\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)])\n\n\n\n\n\n\nData Transformation\nIn order to ensure that all variable have comparable values (same range throughout all variables so that the comparison is fair between all variable), so data transformation are applied before clustering.\nIn heatmaply(), there are 3 main data transformations supported: scale, normalise and percentile.\n\nScaling Method\n\nThis method is used when all variables come form some normal distribution. Scaling would bring them all close to normal standard distribution by subtracting the mean and divide by standard deviation.\nEach value would reflect the distance from the means in its units of standard deviation\nThe scale argument in heatmaply() supports column and row scaling\n\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)],\n          scale = \"column\")\n\n\n\n\n\n\n\nNormalizing Method\nThis method is used when variables in data come from non-normal distributions, the normalize function can be used to bring data from 0 to 1 scale by subtracting the minimum and dividing by the maximum of all observations. This implies that the shape of each variable’s distribution while making them comparable on the same scale\nIn this example, the normalize method is performed on the input data set like below\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))\n\n\n\n\n\n\n\nPercentizing Method\n\nIt works by ranking the variables and divide them by the maximal rank (instead of keeping the rank values). By using the ecdf of the variables on their own values, each value is brought to its empirical percentile\nBenefit of the percentile function is that each value has relatively clear interpretation and it is the percent of observations that got that value or below it. In this example, the percentize method is performed on the input data like below.\n\n\nheatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))\n\n\n\n\n\n\n\n\nClustering Algorithm\nheatmaply supports different hierarchical clustering algorithm. The main arguments are:\n\ndistfun: used to compute the distance (dissimilarity) between both rows and columns. There are “pearson”, “spearman” and “kendall” options to be used for correlation-based clustering. It uses as.dist(1-cor(t(x))) as the distance metric using the specified correlation option.\nhclustfun: used to compute hierarchical clustering when Rowv or Colv are not dendograms\ndist_method: its default is NULL and results are in “euclidean”. It can accept alternative character strings indicating the method to be passed to distfun. By default distfun is “dist”, so it can be one of “euclidean”, “maximum”, “manhattan”, “canberra” or “minkowski”\nhclust_method: its default is NULL and results in “complete” method. It can accept alternative character strings indicating the method to be passed to hclust_fun. By default hclustfun is hclust, so it can be one of “ward.D”, “ward.D2”, “single”, “complete”, “average” (UPGMA), “mcquitty” (WPGMA), “median” (WPGMC) or “centroid” (UPGMC)\n\nClustering model can be produced manually or statistically.\n\nManual Approach\nIn this example, the heatmap is plotted using hierarchical clustering algorithm with euclidean distance and ward.D method\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          dist_method = \"euclidean\",\n          hclust_method = \"ward.D\")\n\n\n\n\n\n\n\nStatistical Approach\nWe can use dend_expend() to find the best clustering method.\n\nwh_d &lt;- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = \"euclidean\")\ndend_expend(wh_d)[[3]]\n\n  dist_methods hclust_methods     optim\n1      unknown         ward.D 0.6137851\n2      unknown        ward.D2 0.6289186\n3      unknown         single 0.4774362\n4      unknown       complete 0.6434009\n5      unknown        average 0.6701688\n6      unknown       mcquitty 0.5020102\n7      unknown         median 0.5901833\n8      unknown       centroid 0.6338734\n\n\nThen use find_k() to find best number of cluster.\n\nwh_clust &lt;- hclust(wh_d, method = \"average\")\nnum_k &lt;- find_k(wh_clust)\nplot(num_k)\n\n\n\n\n\n\n\n\nWe can see that 3 would be the best number of cluster and plot the heatmap\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          dist_method = \"euclidean\",\n          hclust_method = \"average\",\n          k_row = 3)\n\n\n\n\n\n\n\n\nSeriation\nSeriation package is used to find optimal ordering of rows and columns since hierarchical clustering doesn’t place rows in a definite order, it only give you possible ordering (not which one would lead to the best clearer-looking heatmap). It optimizes by minimizing the Hamiltonian path length that is restricted by dendogram structure.\nSeriation algorithm:\n\nOptimal Leaf Ordering (OLO), which start with the output of agglomerative clustering algorithm and produce unique ordering. It flips the various branches of the dendogram around to minimize the sum of dissimilarities between adjacent leaves. The algorithm optimizes in O(n^4). The example below applies OLO algorithm:\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"OLO\")\n\n\n\n\n\n\nGruvaeus and Wainer (GW): similar to OLO algorithm, but uses potentially faster heuristic\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"GW\")\n\n\n\n\n\n\nmean: gives default results from heatmap function from other packages (gplots::heatmap.2)\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"mean\")\n\n\n\n\n\n\nnone: dendogram without any rotation based on data matrix\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"none\")\n\n\n\n\n\n\n\nWorking with Color Palette\nColor palette in heatmaply by default uses viridis. But there are more color palette we can use. In this example, we use the Blues color palette of rColorBrewer\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"none\",\n          colors = Blues)\n\n\n\n\n\nExtra information\nHeatmaply also provide many plotting features to ensure cartographic quality is ensured. In this example, k_row is used to produced 5 rows, whereas margins is used to change top margin and row margin. fontsize_row and fontsize_col are used to change font size for row and columns, while main is used to write the main title fo the plot and xlab and ylab are used to write x-xis adn y-axis label\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          Colv=NA,\n          seriate = \"none\",\n          colors = Blues,\n          k_row = 5,\n          margins = c(NA,200,60,NA),\n          fontsize_row = 4,\n          fontsize_col = 5,\n          main=\"World Happiness Score and Variables by Country, 2018 \\nDataTransformation using Normalise Method\",\n          xlab = \"World Happiness Indicators\",\n          ylab = \"World Countries\"\n          )"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html",
@@ -691,5 +691,61 @@
     "title": "In-class Exercise 9",
     "section": "",
     "text": "Refer to the following link: Singapore Population Structure over Planning Subzone"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html",
+    "title": "Hands-on Exercise 9d",
+    "section": "",
+    "text": "Objective of this exercise is:\n\nPlot static parallel coordinate plot using ggparcoord() of GGally package\nPlot interactive parallel coordinate plot using ParallelPlot package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#getting-started",
+    "title": "Hands-on Exercise 9d",
+    "section": "",
+    "text": "Objective of this exercise is:\n\nPlot static parallel coordinate plot using ggparcoord() of GGally package\nPlot interactive parallel coordinate plot using ParallelPlot package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#import-libraries",
+    "title": "Hands-on Exercise 9d",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(GGally, parallelPlot, tidyverse)\n\nThe libraries used in this exercise would be:\n\nGGally: plotting system extended from ggplot2\nparallelPlot: create parallel coordinates ploy\ntidyverse: inclusive of readr. tidyr and dplyr package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#the-data",
+    "title": "Hands-on Exercise 9d",
+    "section": "The Data",
+    "text": "The Data\nIn this hands-on, we’ll be usig the World Hapiness 2018 datataset."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#import-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#import-data",
+    "title": "Hands-on Exercise 9d",
+    "section": "Import Data",
+    "text": "Import Data\n\nwh &lt;- read_csv(\"data/WHData-2018.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#plotting-static-parallel-coordinates-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#plotting-static-parallel-coordinates-plot",
+    "title": "Hands-on Exercise 9d",
+    "section": "Plotting Static Parallel Coordinates Plot",
+    "text": "Plotting Static Parallel Coordinates Plot\nThe below shows the basic syntax needed to build parallel coordinate plot using ggparcoord().\n\nggparcoord(data = wh, \n           columns = c(7:12))\n\n\n\n\n\n\n\n\nThe data argument is used to map the data object, whereas columns argument is used to select the columns to prepare the parallel coordinate plot."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#plotting-parallel-coordinates-with-boxplot",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#plotting-parallel-coordinates-with-boxplot",
+    "title": "Hands-on Exercise 9d",
+    "section": "Plotting Parallel Coordinates with boxplot",
+    "text": "Plotting Parallel Coordinates with boxplot\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Parallel Coordinates Plot of World Happines Variables\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat does the code do\n\n\n\n\ngroupColumn argument is used to group the observations (parallel lines) by using single variable (region) and color the parallel coordinates lines by region name\nscale argument is used to scale the variables in the parallel coordinate plot by using uniminmax method. The method univariately scale each variable so the min of the variable is 0 and the max is 1\nalphaLines argument is used to reduce the intensity of the line color to 0.2. The permissible value range is from 0 to 1.\nboxplot argument is used to turn on the boxplot by using logical TRUE, which the default value is FALSE.\ntitle argument is used to provide the parallel coordinates boxplot a title\n\n\n\nParallel Coordinates with Facet We can combine some of the ggplot2 function when plotting parallel coordinate plot. In thisexample, we use facet_wrap() to plot 10 small multiple coordinate plots. Each plot represent one region.\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region)\n\n\n\n\n\n\n\n\n\nRotating x-axis Text Label\nAs can be seen from the plot above, some of the variable names overlap on x-axis. So we can rotate the them by 30 degrees. This can be done using theme() (axis.text.x)\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30))\n\n\n\n\n\n\n\n\n\n\nAdjust Rotated x-axis Text Label\nThe plot above still show overlapping if x-axis text label with the plot. We can adjust text location by using hjust argument to theme’s text element with element_text() on top of the existing axis.text.x argument.\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30, hjust=1))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#plotting-interactive-parallel-coordinate-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html#plotting-interactive-parallel-coordinate-plot",
+    "title": "Hands-on Exercise 9d",
+    "section": "Plotting Interactive Parallel Coordinate Plot",
+    "text": "Plotting Interactive Parallel Coordinate Plot\nThe code shows the basic syntax to plot interactive parallel coordinate plot with parallelPlot().\n\nwh &lt;- wh %&gt;%\n  select(\"Happiness score\", c(7:12))\nparallelPlot(wh,\n             width = 320,\n             height = 250)\n\n\n\n\n\n\nRotate Axis Label\nAs can be seen from the previous plot, some of the axis label are too long which we can resolve by adding rotateTitle=TRUE\n\nparallelPlot(wh,\n             rotateTitle = TRUE)\n\n\n\n\n\n\n\nChange Color Scheme\nBy default the color scheme is blue, but we can change that by using continuousCS argument.\n\nparallelPlot(wh,\n             continuousCS = \"YlOrRd\",\n             rotateTitle = TRUE)\n\n\n\n\n\n\n\nParallel Coordinate Plot with Histogram\nIn this example, we plot histogram alongside the axis of each variable using histoVisibility argument.\n\nhistoVisibility &lt;- rep(TRUE, ncol(wh))\nparallelPlot(wh,\n             rotateTitle = TRUE,\n             histoVisibility = histoVisibility)"
   }
 ]

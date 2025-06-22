@@ -1,5 +1,5 @@
 ---
-title: "Hands-on_Ex09c"
+title: "Hands-on Exercise 9c"
 author: "Stefanie Felicia"
 date: "19 June 2025"
 date-modified: "last-modified"
@@ -27,7 +27,7 @@ The libraries used in this exercise would be:
 
 -   dendextend: offer set of functions for extending dendrogram object in R, to visualize and compare trees of hierarchical clustering
 
--   heatmaply: create interactive heatmaps that can be standalone HTML file 
+-   heatmaply: create interactive heatmaps that can be standalone HTML file
 
 -   tidyverse: inclusive of readr. tidyr and dplyr package
 
@@ -129,4 +129,145 @@ In order to ensure that all variable have comparable values (same range througho
 
 In heatmaply(), there are 3 main data transformations supported: scale, normalise and percentile.
 
-#### Scaling method
+#### Scaling Method
+
+-   This method is used when all variables come form some normal distribution. Scaling would bring them all close to normal standard distribution by subtracting the mean and divide by standard deviation.
+-   Each value would reflect the distance from the means in its units of standard deviation
+-   The scale argument in heatmaply() supports column and row scaling
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)],
+          scale = "column")
+```
+
+#### Normalizing Method
+
+This method is used when variables in data come from non-normal distributions, the normalize function can be used to bring data from 0 to 1 scale by subtracting the minimum and dividing by the maximum of all observations. This implies that the shape of each variable's distribution while making them comparable on the same scale
+
+In this example, the normalize method is performed on the input data set like below
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+#### Percentizing Method
+
+-   It works by ranking the variables and divide them by the maximal rank (instead of keeping the rank values). By using the ecdf of the variables on their own values, each value is brought to its empirical percentile
+-   Benefit of the percentile function is that each value has relatively clear interpretation and it is the percent of observations that got that value or below it. In this example, the percentize method is performed on the input data like below.
+
+```{r}
+heatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+### Clustering Algorithm
+
+heatmaply supports different hierarchical clustering algorithm. The main arguments are:
+
+-   distfun: used to compute the distance (dissimilarity) between both rows and columns. There are "pearson", "spearman" and "kendall" options to be used for correlation-based clustering. It uses as.dist(1-cor(t(x))) as the distance metric using the specified correlation option.
+
+-   hclustfun: used to compute hierarchical clustering when Rowv or Colv are not dendograms
+
+-   dist_method: its default is NULL and results are in "euclidean". It can accept alternative character strings indicating the method to be passed to distfun. By default distfun is "dist", so it can be one of "euclidean", "maximum", "manhattan", "canberra" or "minkowski"
+
+-   hclust_method: its default is NULL and results in "complete" method. It can accept alternative character strings indicating the method to be passed to hclust_fun. By default hclustfun is hclust, so it can be one of "ward.D", "ward.D2", "single", "complete", "average" (UPGMA), "mcquitty" (WPGMA), "median" (WPGMC) or "centroid" (UPGMC)
+
+Clustering model can be produced manually or statistically.
+
+#### Manual Approach
+
+In this example, the heatmap is plotted using hierarchical clustering algorithm with euclidean distance and ward.D method
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "ward.D")
+```
+
+#### Statistical Approach
+
+We can use dend_expend() to find the best clustering method.
+
+```{r}
+wh_d <- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = "euclidean")
+dend_expend(wh_d)[[3]]
+```
+
+Then use find_k() to find best number of cluster.
+
+```{r}
+wh_clust <- hclust(wh_d, method = "average")
+num_k <- find_k(wh_clust)
+plot(num_k)
+```
+
+We can see that 3 would be the best number of cluster and plot the heatmap
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "average",
+          k_row = 3)
+```
+
+### Seriation
+
+Seriation package is used to find optimal ordering of rows and columns since hierarchical clustering doesn't place rows in a definite order, it only give you possible ordering (not which one would lead to the best clearer-looking heatmap). It optimizes by minimizing the Hamiltonian path length that is restricted by dendogram structure.
+
+Seriation algorithm:
+
+-   Optimal Leaf Ordering (OLO), which start with the output of agglomerative clustering algorithm and produce unique ordering. It flips the various branches of the dendogram around to minimize the sum of dissimilarities between adjacent leaves. The algorithm optimizes in O(n\^4). The example below applies OLO algorithm:
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "OLO")
+```
+
+-   Gruvaeus and Wainer (GW): similar to OLO algorithm, but uses potentially faster heuristic
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "GW")
+```
+
+-   mean: gives default results from heatmap function from other packages (gplots::heatmap.2)
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "mean")
+```
+
+-   none: dendogram without any rotation based on data matrix
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none")
+```
+
+### Working with Color Palette
+
+Color palette in heatmaply by default uses viridis. But there are more color palette we can use. In this example, we use the Blues color palette of rColorBrewer
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none",
+          colors = Blues)
+```
+
+Extra information
+
+Heatmaply also provide many plotting features to ensure cartographic quality is ensured. In this example, k_row is used to produced 5 rows, whereas margins is used to change top margin and row margin. fontsize_row and fontsize_col are used to change font size for row and columns, while main is used to write the main title fo the plot and xlab and ylab are used to write x-xis adn y-axis label
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          Colv=NA,
+          seriate = "none",
+          colors = Blues,
+          k_row = 5,
+          margins = c(NA,200,60,NA),
+          fontsize_row = 4,
+          fontsize_col = 5,
+          main="World Happiness Score and Variables by Country, 2018 \nDataTransformation using Normalise Method",
+          xlab = "World Happiness Indicators",
+          ylab = "World Countries"
+          )
+```
