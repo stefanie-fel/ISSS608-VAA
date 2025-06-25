@@ -29,7 +29,7 @@ The libraries used in this exercise would be:
 
 -   heatmaply: create interactive heatmaps that can be standalone HTML file
 
--   tidyverse: inclusive of readr. tidyr and dplyr package
+-   tidyverse: inclusive of readr, tidyr and dplyr package
 
 ## The Data
 

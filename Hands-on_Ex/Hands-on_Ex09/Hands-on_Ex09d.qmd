@@ -87,7 +87,7 @@ ggparcoord(data = wh,
   facet_wrap(~ Region)
 ```
 
-### Rotating x-axis Text Label 
+### Rotating x-axis Text Label
 
 As can be seen from the plot above, some of the variable names overlap on x-axis. So we can rotate the them by 30 degrees. This can be done using `theme()` (axis.text.x)
 
