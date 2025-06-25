@@ -65,7 +65,6 @@ website:
     right:    
       - href: index.qmd
         text: Home
-      - about.qmd
       - icon: github
         href: https://github.com/stefanie-fel
       
