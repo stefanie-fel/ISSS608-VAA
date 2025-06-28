@@ -1,0 +1,14 @@
+---
+title: "In-class Exercise 10"
+author: "Stefanie Felicia"
+date: "28 June 2025"
+date-modified: "last-modified"
+format: html
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+---
+
+Refer to the following link for my in-class exercise: <a href="https://public.tableau.com/views/TrendandPerformanceofSalesperStateU_S_/SalesTrendperState?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link">Sales Trend and Performance of Coffee Chain per State (U.S.)</a>
