@@ -8,7 +8,7 @@ execute:
   echo: true
   warning: false
   freeze: true
-format: docx
+format: html
 ---
 
 ## 1.1 Background
