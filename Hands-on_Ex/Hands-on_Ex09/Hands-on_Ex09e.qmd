@@ -139,7 +139,7 @@ As can be seen, the type argument changes the color scheme and arrangement of th
 
 ### Colors in the treemap package
 
-Arguments that determine the mapping to color palattes are: mapping and palette. The difefrence between "value" and "manual" is the default value for mapping. The "value" treemap considers palette to be a diverging color palette (e.g. RdYIBu) and map it in a way that 0 corresponds to the middle color (usually white or yellow), -max(abs(values)) to the left-end color and max(abs(values)) to the left-end color, max(values) to the right-end color and mean(range(values)) to the middle color.
+Arguments that determine the mapping to color palettes are: mapping and palette. The difference between "value" and "manual" is the default value for mapping. The "value" treemap considers palette to be a diverging color palette (e.g. RdYIBu) and map it in a way that 0 corresponds to the middle color (usually white or yellow), -max(abs(values)) to the left-end color and max(abs(values)) to the left-end color, max(values) to the right-end color and mean(range(values)) to the middle color.
 
 #### The "value" type treemap
 
