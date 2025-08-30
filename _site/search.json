@@ -249,7 +249,7 @@
     "href": "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html#build-tidygraph-object",
     "title": "Take-home Exercise 2",
     "section": "2.5 Build tidygraph Object",
-    "text": "2.5 Build tidygraph Object\nNext, we’ll build the tidygraph object\n\nmc3_graph &lt;- tbl_graph(\n  nodes = mc3_nodes_final,\n  edges = mc3_edges_final,\n  directed = TRUE\n)\n\n\nstr(mc3_graph)\n\nClasses 'tbl_graph', 'igraph'  hidden list of 10\n $ : num 1159\n $ : logi TRUE\n $ : num [1:3226] 0 0 0 0 0 0 0 1 1 1 ...\n $ : num [1:3226] 1137 356 746 894 875 ...\n $ : NULL\n $ : NULL\n $ : NULL\n $ : NULL\n $ :List of 4\n  ..$ : num [1:3] 1 0 1\n  ..$ : Named list()\n  ..$ :List of 31\n  .. ..$ type             : chr [1:1159] \"Entity\" \"Entity\" \"Entity\" \"Entity\" ...\n  .. ..$ label            : chr [1:1159] \"Sam\" \"Kelly\" \"Nadia Conti\" \"Elise\" ...\n  .. ..$ name             : chr [1:1159] \"Sam\" \"Kelly\" \"Nadia Conti\" \"Elise\" ...\n  .. ..$ sub_type         : chr [1:1159] \"Person\" \"Person\" \"Person\" \"Person\" ...\n  .. ..$ id               : chr [1:1159] \"Sam\" \"Kelly\" \"Nadia Conti\" \"Elise\" ...\n  .. ..$ timestamp        : chr [1:1159] NA NA NA NA ...\n  .. ..$ monitoring_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ findings         : chr [1:1159] NA NA NA NA ...\n  .. ..$ content          : chr [1:1159] NA NA NA NA ...\n  .. ..$ assessment_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ results          : chr [1:1159] NA NA NA NA ...\n  .. ..$ movement_type    : chr [1:1159] NA NA NA NA ...\n  .. ..$ destination      : chr [1:1159] NA NA NA NA ...\n  .. ..$ enforcement_type : chr [1:1159] NA NA NA NA ...\n  .. ..$ outcome          : chr [1:1159] NA NA NA NA ...\n  .. ..$ activity_type    : chr [1:1159] NA NA NA NA ...\n  .. ..$ participants     : int [1:1159] NA NA NA NA NA NA NA NA NA NA ...\n  .. ..$ reference        : chr [1:1159] NA NA NA NA ...\n  .. ..$ date             : chr [1:1159] NA NA NA NA ...\n  .. ..$ time             : chr [1:1159] NA NA NA NA ...\n  .. ..$ friendship_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ permission_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ start_date       : chr [1:1159] NA NA NA NA ...\n  .. ..$ end_date         : chr [1:1159] NA NA NA NA ...\n  .. ..$ report_type      : chr [1:1159] NA NA NA NA ...\n  .. ..$ submission_date  : chr [1:1159] NA NA NA NA ...\n  .. ..$ jurisdiction_type: chr [1:1159] NA NA NA NA ...\n  .. ..$ authority_level  : chr [1:1159] NA NA NA NA ...\n  .. ..$ coordination_type: chr [1:1159] NA NA NA NA ...\n  .. ..$ operational_role : chr [1:1159] NA NA NA NA ...\n  .. ..$ new_index        : int [1:1159] 1 2 3 4 5 6 7 8 9 10 ...\n  ..$ :List of 2\n  .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...\n  .. ..$ type       : chr [1:3226] NA \"sent\" NA NA ...\n $ :&lt;environment: 0x0000018f784273b8&gt; \n - attr(*, \"active\")= chr \"nodes\""
+    "text": "2.5 Build tidygraph Object\nNext, we’ll build the tidygraph object\n\nmc3_graph &lt;- tbl_graph(\n  nodes = mc3_nodes_final,\n  edges = mc3_edges_final,\n  directed = TRUE\n)\n\n\nstr(mc3_graph)\n\nClasses 'tbl_graph', 'igraph'  hidden list of 10\n $ : num 1159\n $ : logi TRUE\n $ : num [1:3226] 0 0 0 0 0 0 0 1 1 1 ...\n $ : num [1:3226] 1137 356 746 894 875 ...\n $ : NULL\n $ : NULL\n $ : NULL\n $ : NULL\n $ :List of 4\n  ..$ : num [1:3] 1 0 1\n  ..$ : Named list()\n  ..$ :List of 31\n  .. ..$ type             : chr [1:1159] \"Entity\" \"Entity\" \"Entity\" \"Entity\" ...\n  .. ..$ label            : chr [1:1159] \"Sam\" \"Kelly\" \"Nadia Conti\" \"Elise\" ...\n  .. ..$ name             : chr [1:1159] \"Sam\" \"Kelly\" \"Nadia Conti\" \"Elise\" ...\n  .. ..$ sub_type         : chr [1:1159] \"Person\" \"Person\" \"Person\" \"Person\" ...\n  .. ..$ id               : chr [1:1159] \"Sam\" \"Kelly\" \"Nadia Conti\" \"Elise\" ...\n  .. ..$ timestamp        : chr [1:1159] NA NA NA NA ...\n  .. ..$ monitoring_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ findings         : chr [1:1159] NA NA NA NA ...\n  .. ..$ content          : chr [1:1159] NA NA NA NA ...\n  .. ..$ assessment_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ results          : chr [1:1159] NA NA NA NA ...\n  .. ..$ movement_type    : chr [1:1159] NA NA NA NA ...\n  .. ..$ destination      : chr [1:1159] NA NA NA NA ...\n  .. ..$ enforcement_type : chr [1:1159] NA NA NA NA ...\n  .. ..$ outcome          : chr [1:1159] NA NA NA NA ...\n  .. ..$ activity_type    : chr [1:1159] NA NA NA NA ...\n  .. ..$ participants     : int [1:1159] NA NA NA NA NA NA NA NA NA NA ...\n  .. ..$ reference        : chr [1:1159] NA NA NA NA ...\n  .. ..$ date             : chr [1:1159] NA NA NA NA ...\n  .. ..$ time             : chr [1:1159] NA NA NA NA ...\n  .. ..$ friendship_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ permission_type  : chr [1:1159] NA NA NA NA ...\n  .. ..$ start_date       : chr [1:1159] NA NA NA NA ...\n  .. ..$ end_date         : chr [1:1159] NA NA NA NA ...\n  .. ..$ report_type      : chr [1:1159] NA NA NA NA ...\n  .. ..$ submission_date  : chr [1:1159] NA NA NA NA ...\n  .. ..$ jurisdiction_type: chr [1:1159] NA NA NA NA ...\n  .. ..$ authority_level  : chr [1:1159] NA NA NA NA ...\n  .. ..$ coordination_type: chr [1:1159] NA NA NA NA ...\n  .. ..$ operational_role : chr [1:1159] NA NA NA NA ...\n  .. ..$ new_index        : int [1:1159] 1 2 3 4 5 6 7 8 9 10 ...\n  ..$ :List of 2\n  .. ..$ is_inferred: logi [1:3226] TRUE FALSE TRUE TRUE TRUE TRUE ...\n  .. ..$ type       : chr [1:3226] NA \"sent\" NA NA ...\n $ :&lt;environment: 0x0000027e98b525b0&gt; \n - attr(*, \"active\")= chr \"nodes\""
   },
   {
     "objectID": "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html#visualize-knowledge-graph",
@@ -480,7 +480,7 @@
     "href": "Hands-on_Ex/Hands-on_Ex10/Hands-on_Ex10.html#import-libraries",
     "title": "Hands-on_Ex10",
     "section": "Import Libraries",
-    "text": "Import Libraries\n\npacman::p_load(tidyverse, lubridate, ggthemes, gtExtras, reactable, reactablefmtr, )\n\nThe libraries used in this exercise would be:\n\ntidyverse: inclusive of readr, tidyr and dplyr package\nlubridate: makes it easier to work with dates and times.\nggthemes: provide extra themes, geoms and scales from ggplot2\ngtExtras: extension of the gt package for more customizable gt tables\nreactable: create interactive data table based on React Table library\nreactablefmtr: provide various features to streamline and enhance the styling of interactive tables"
+    "text": "Import Libraries\n\npacman::p_load(tidyverse, lubridate, ggthemes, gtExtras, reactable, reactablefmtr)\n\nThe libraries used in this exercise would be:\n\ntidyverse: inclusive of readr, tidyr and dplyr package\nlubridate: makes it easier to work with dates and times.\nggthemes: provide extra themes, geoms and scales from ggplot2\ngtExtras: extension of the gt package for more customizable gt tables\nreactable: create interactive data table based on React Table library\nreactablefmtr: provide various features to streamline and enhance the styling of interactive tables"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex10/Hands-on_Ex10.html#the-data",
@@ -663,5 +663,54 @@
     "title": "Hands-on Exercise 5",
     "section": "Interactivity",
     "text": "Interactivity\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visOptions(highlightNearest = TRUE,\n             nodesIdSelection = TRUE) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)\n\n\n\n\n\n\n\n\n\n\n\nWhat the code does\n\n\n\n\nvisoptions() is used to symbolize the edges\nhighlightNearest highlight nearest when clicking a node\nnodesIdSelection adds an id node selection by creating HTML select element"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html",
+    "title": "Hands-on Exercise 9a",
+    "section": "",
+    "text": "Objective of this exercise:\n\nDerive 3 different measures using mutate() function\nBuild static ternary plot using ggtern() from ggtern package\nBuild interactive ternary lot using plot-ly() from Plotly R"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#getting-started",
+    "title": "Hands-on Exercise 9a",
+    "section": "",
+    "text": "Objective of this exercise:\n\nDerive 3 different measures using mutate() function\nBuild static ternary plot using ggtern() from ggtern package\nBuild interactive ternary lot using plot-ly() from Plotly R"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-libraries",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-libraries",
+    "title": "Hands-on Exercise 9a",
+    "section": "Import Libraries",
+    "text": "Import Libraries\n\npacman::p_load(plotly, ggtern, tidyverse)\n\nThe libraries used in this exercise would be:\n\nggtern: plots ternary diagrams using ggplot2 geometries\nPlotly R: creates interactive graphs\ntidyverse: inclusive of readr. tidyr and dplyr package"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#the-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#the-data",
+    "title": "Hands-on Exercise 9a",
+    "section": "The Data",
+    "text": "The Data\nWe’ll be using te Singapore Residents by Planning Area Subzone, Age Group, Sex and Type of Dwelling, June 2000-2018 from the &lt;a href =“https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data&gt;Singstat website."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-data",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#import-data",
+    "title": "Hands-on Exercise 9a",
+    "section": "Import Data",
+    "text": "Import Data\n\npop_data &lt;- read_csv(\"data/respopagsex2000to2018_tidy.csv\") \n\n\nData Preparation\nNext, we’ll derive 3 new variables called young, active and active.\n\n#Deriving the young, economy active and old measures\nagpop_mutated &lt;- pop_data %&gt;%\n  mutate(`Year` = as.character(Year))%&gt;%\n  spread(AG, Population) %&gt;%\n  mutate(YOUNG = rowSums(.[4:8]))%&gt;%\n  mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%\n  mutate(OLD = rowSums(.[17:21])) %&gt;%\n  mutate(TOTAL = rowSums(.[22:24])) %&gt;%\n  filter(Year == 2018)%&gt;%\n  filter(TOTAL &gt; 0)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-ternary-diagram-with-r",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-ternary-diagram-with-r",
+    "title": "Hands-on Exercise 9a",
+    "section": "Plotting Ternary Diagram with R",
+    "text": "Plotting Ternary Diagram with R\nNext, we’ll build a static ternary plot using ggtern() to plot the variables we’ve created in the data preparation steps.\n\nggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point()\n\n\n\n\n\n\n\n\nBut we can add colors and title to make it clearer what we’re plotting by adding theme_rgbw() to differentiate between variables and labs(title...).\n\nggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point() +\n  labs(title=\"Population structure, 2015\") +\n  theme_rgbw()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-interactive-ternary-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html#plotting-interactive-ternary-plot",
+    "title": "Hands-on Exercise 9a",
+    "section": "Plotting Interactive Ternary Plot",
+    "text": "Plotting Interactive Ternary Plot\nWe’ll plot interactive ternary plot using plot-ly()\n\n# reusable function for creating annotation object\nlabel &lt;- function(txt) {\n  list(\n    text = txt, \n    x = 0.1, y = 1,\n    ax = 0, ay = 0,\n    xref = \"paper\", yref = \"paper\", \n    align = \"center\",\n    font = list(family = \"serif\", size = 15, color = \"white\"),\n    bgcolor = \"#b3b3b3\", bordercolor = \"black\", borderwidth = 2\n  )\n}\n\n# reusable function for axis formatting\naxis &lt;- function(txt) {\n  list(\n    title = txt, tickformat = \".0%\", tickfont = list(size = 10)\n  )\n}\n\nternaryAxes &lt;- list(\n  aaxis = axis(\"Young\"), \n  baxis = axis(\"Active\"), \n  caxis = axis(\"Old\")\n)\n\n# Initiating a plotly visualization \nplot_ly(\n  agpop_mutated, \n  a = ~YOUNG, \n  b = ~ACTIVE, \n  c = ~OLD, \n  color = I(\"black\"), \n  type = \"scatterternary\"\n) %&gt;%\n  layout(\n    annotations = label(\"Ternary Markers\"), \n    ternary = ternaryAxes\n  )"
   }
 ]

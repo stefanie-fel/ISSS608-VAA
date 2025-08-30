@@ -24,7 +24,7 @@ Objective of this exercise is to:
 ## Import Libraries
 
 ```{r}
-pacman::p_load(tidyverse, lubridate, ggthemes, gtExtras, reactable, reactablefmtr, )
+pacman::p_load(tidyverse, lubridate, ggthemes, gtExtras, reactable, reactablefmtr)
 ```
 
 The libraries used in this exercise would be:
