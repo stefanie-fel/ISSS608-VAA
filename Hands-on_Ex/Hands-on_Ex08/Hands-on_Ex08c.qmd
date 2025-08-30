@@ -141,7 +141,7 @@ get.var <- function(vname,df) {
 }
 ```
 
-::: {.callout-note}
+::: callout-note
 -   We'll extract a variable (wp_nonfunctional) as a vector from sf dataframe
 
 -   The function takes vname (variable name) and df (name of dataframe) as input
@@ -149,7 +149,7 @@ get.var <- function(vname,df) {
 -   The function return v, which is the vector with values
 :::
 
-####  Percentile Mapping Function 
+#### Percentile Mapping Function
 
 ```{r}
 percentmap <- function(vnam, df, legtitle=NA, mtitle="Percentile Map"){
@@ -218,7 +218,7 @@ boxbreaks <- function(v,mult=1.5) {
 }
 ```
 
-::: {.callout-note}
+::: callout-note
 -   the function creates box break function
 
 -   The function takes in input of: v (vector with observations) and mult (multiplier for IQR)
@@ -236,7 +236,7 @@ get.var <- function(vname,df) {
 }
 ```
 
-::: {.callout-note}
+::: callout-note
 -   The function extract a variable as a vector from sf dataframe
 
 -   The function takes in these two input: vname (variable name) and df (dataframe name)
